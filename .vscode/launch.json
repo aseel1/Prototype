@@ -1,0 +1,43 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "vmArgs": "--module-path C:/Users/User/Desktop/javafx-sdk-21.0.2/lib --add-modules javafx.controls,javafx.fxml",
+
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "il.cshaifasweng.OCSFMediatorExample.client.App",
+            "projectName": "client",
+            "vmArgs": "--module-path C:/Users/User/Desktop/javafx-sdk-21.0.2/lib --add-modules javafx.controls,javafx.fxml",
+
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "il.cshaifasweng.OCSFMediatorExample.client.Main",
+            "projectName": "client",
+            "vmArgs": "--module-path C:/Users/User/Desktop/javafx-sdk-21.0.2/lib --add-modules javafx.controls,javafx.fxml",
+
+        },
+        {
+            "type": "java",
+            "name": "App(1)",
+            "request": "launch",
+            "mainClass": "il.cshaifasweng.OCSFMediatorExample.server.App",
+            "projectName": "server",
+            "vmArgs": "--module-path C:/Users/User/Desktop/javafx-sdk-21.0.2/lib --add-modules javafx.controls,javafx.fxml",
+
+        }
+    ]
+}
