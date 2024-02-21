@@ -14,6 +14,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Task;
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
+
 public class DatabaseManager {
     private static Session session;
 
