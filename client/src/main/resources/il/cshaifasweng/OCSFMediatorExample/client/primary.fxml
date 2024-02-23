@@ -3,9 +3,15 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
+<VBox alignment="CENTER" prefHeight="603.0" prefWidth="788.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
    <children>
       <Label text="Welcome" />
       <Button mnemonicParsing="false" onAction="#sendWarning" text="Send me a warning!" />
@@ -13,4 +19,16 @@
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
+   <children>
+      <AnchorPane prefHeight="590.0" prefWidth="790.0">
+         <children>
+            <Text fill="#d71b1b" layoutX="300.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ATIS" textAlignment="CENTER" underline="true" wrappingWidth="167.78927612304688">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Text>
+            <Button layoutX="300.0" layoutY="100.0" text="Show Tasks" fx:id="showTasksButton" onAction="#handleShowTasksButtonAction" />
+         </children>
+      </AnchorPane>
+   </children>
 </VBox>
