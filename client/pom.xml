@@ -13,6 +13,16 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>11.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>11.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-base</artifactId>
 			<version>${javafx.version}</version>
 		</dependency>
@@ -49,21 +59,31 @@
 			<artifactId>eventbus</artifactId>
 			<version>3.2.0</version>
 		</dependency>
+
 		<dependency>
 			<groupId>${groupId}</groupId>
 			<artifactId>entities</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
+
 		<plugins>
 			<plugin>
-				<groupId>org.openjfx</groupId>
-				<artifactId>javafx-maven-plugin</artifactId>
-				<version>0.0.4</version>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>3.1.1</version>
 				<configuration>
 					<mainClass>il.cshaifasweng.OCSFMediatorExample.client.Main</mainClass>
 				</configuration>
 			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.openjfx</groupId>-->
+<!--				<artifactId>javafx-maven-plugin</artifactId>-->
+<!--				<version>0.0.4</version>-->
+<!--				<configuration>-->
+<!--					<mainClass>il.cshaifasweng.OCSFMediatorExample.client.Main</mainClass>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
