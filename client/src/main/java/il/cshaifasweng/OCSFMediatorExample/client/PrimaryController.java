@@ -40,16 +40,13 @@ public class PrimaryController {
 		Message message = new Message("#showTasksList");
 		try {
 			SimpleClient.getClient().sendToServer(message);
-			System.out.println("Sending message to server: " + message);
-			System.err.println("Task sent to server");
-			App.setRoot("secondary");
+			System.out.println("(Primary)Sending message to server: ");
 
 		} catch (IOException e) {
 			System.out.println("Failed to connect to the server.");
 			e.printStackTrace();
 		}
 
-		System.out.println("Show Tasks button clicked");
 	}
 
 }

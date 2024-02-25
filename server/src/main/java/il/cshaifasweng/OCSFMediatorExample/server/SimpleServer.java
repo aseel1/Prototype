@@ -5,6 +5,17 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager;
 
 import java.io.IOException;
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
@@ -20,36 +31,47 @@ public class SimpleServer extends AbstractServer {
 
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		System.out.println("Received message from client: " + msg);
+		System.out.println("(server)Received message from client: " + msg);
 
 		Message message = (Message) msg;
 		String request = message.getMessage();
+
+		// Open a new session
+		Session session = DatabaseManager.getSessionFactory().openSession();
+		Transaction tx = null;
+
 		try {
+			tx = session.beginTransaction();
+
 			if (message.startsWith("#warning")) {
-				Warning warning = new Warning("Warning from server!");
-				try {
-					client.sendToClient(warning);
-					System.out.format("Sent warning to client %s\n", client.getInetAddress().getHostAddress());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				// Perform database operations
 
 			} else if (request.isBlank()) {
-				message.setMessage("Error! we got an empty message");
-				client.sendToClient(message);
+				// Perform database operations
 
 			} else if (message.startsWith("#showTasksList")) {
-				DatabaseManager.printAllTasks(); // this is for the print all tasks method
-				message.setMessage("Tasks list printed to the server console");
+
+				List<User> users = DatabaseManager.getAllUsers(session);
+
+				message.setObject(users);
+				message.setMessage("#showTasksList");
+
 				client.sendToClient(message);
-				System.err.println("task got to server from client now going back to client");
+				System.out.println("User list sent to client");
 			}
 
-		} catch (IOException e) {
-			e.printStackTrace();
+			tx.commit();
+
+		} catch (RuntimeException e) {
+			if (tx != null)
+				tx.rollback();
+			throw e; // Or display error message
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			// Close the session
+			if (session != null)
+				session.close();
 		}
 	}
-
 }

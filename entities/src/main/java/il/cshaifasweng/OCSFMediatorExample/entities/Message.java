@@ -8,9 +8,15 @@ public class Message implements Serializable {
     LocalDateTime timeStamp;
     String message;
     String data;
+    private Object object;
 
     public Message(String message) {
         this.message = message;
+    }
+
+    public Message(String message, Object object) {
+        this.message = message;
+        this.object = object;
     }
 
     public Message(int id, LocalDateTime timeStamp, String message) {
@@ -67,5 +73,13 @@ public class Message implements Serializable {
 
     public boolean startsWith(String string) {
         return message.startsWith(string);
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
+    public void setObject(Object object) {
+        this.object = object;
     }
 }
