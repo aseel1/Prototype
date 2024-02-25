@@ -66,17 +66,10 @@ public class SecondaryController {
         user_age.setCellValueFactory(new PropertyValueFactory<User, String>("age"));
         user_community.setCellValueFactory(new PropertyValueFactory<User, String>("community"));
 
-        ObservableList<User> data = FXCollections
-                .observableArrayList(new User(0, "Test", "Test", "Test", "2", "asdas"));
-        userTable.setItems(data);
-        System.out.println(message);
-
         ObservableList<User> observableUsers = FXCollections.observableArrayList((List<User>) message.getObject());
         System.out.println("Created ObservableList with " + observableUsers.size() +
                 " users.");
         userTable.setItems(observableUsers);
-
-        // ! userTable.setItems(users);
 
         System.out.println("Initialized TableView with " + userTable.getColumns().size() + " columns.");
         System.out.println("In initialize. userTable is " + (userTable == null ? "null" : "not null"));

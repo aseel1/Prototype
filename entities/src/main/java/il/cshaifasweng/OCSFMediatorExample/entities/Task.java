@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "taskId", updatable = false)
     private int taskId;
     private String taskName;
     private String date;

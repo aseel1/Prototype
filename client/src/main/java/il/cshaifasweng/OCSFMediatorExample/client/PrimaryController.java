@@ -33,7 +33,24 @@ public class PrimaryController {
 	}
 
 	@FXML
+	private Button showUsersButton;
+
+	@FXML
 	private Button showTasksButton;
+
+	@FXML
+	protected void handleShowUsersButtonAction(ActionEvent event) {
+		Message message = new Message("#showUsersList");
+		try {
+			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary)Sending message to server: ");
+
+		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
+			e.printStackTrace();
+		}
+
+	}
 
 	@FXML
 	protected void handleShowTasksButtonAction(ActionEvent event) {

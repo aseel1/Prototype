@@ -18,6 +18,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 
@@ -31,7 +32,6 @@ public class SimpleServer extends AbstractServer {
 
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		System.out.println("(server)Received message from client: " + msg);
 
 		Message message = (Message) msg;
 		String request = message.getMessage();
@@ -49,15 +49,33 @@ public class SimpleServer extends AbstractServer {
 			} else if (request.isBlank()) {
 				// Perform database operations
 
-			} else if (message.startsWith("#showTasksList")) {
+			} else if (message.startsWith("#showUsersList")) {
 
 				List<User> users = DatabaseManager.getAllUsers(session);
 
 				message.setObject(users);
+				message.setMessage("#showUsersList");
+
+				client.sendToClient(message);
+			} else if (message.startsWith("#showTasksList")) {
+
+				List<Task> tasks = DatabaseManager.getAllTasks(session);
+
+				message.setObject(tasks);
 				message.setMessage("#showTasksList");
 
 				client.sendToClient(message);
-				System.out.println("User list sent to client");
+			} else if (message.startsWith("#updateTask")) {
+
+				Task task = (Task) message.getObject();
+				System.out.println("taskname" + task.getTaskName() + "taskid" + task.getTaskId()
+						+ "taskvolunteer" + task.getVolunteer().getUserName() + "taskstatus" + task.getStatus());
+
+				DatabaseManager.updateTask(session, task);
+
+				message.setMessage("#updateTask");
+				message.setObject(task);
+				client.sendToClient(message);
 			}
 
 			tx.commit();
@@ -72,6 +90,7 @@ public class SimpleServer extends AbstractServer {
 			// Close the session
 			if (session != null)
 				session.close();
+			System.out.println("closed session");
 		}
 	}
 }

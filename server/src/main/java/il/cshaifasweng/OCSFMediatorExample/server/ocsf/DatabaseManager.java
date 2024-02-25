@@ -38,7 +38,7 @@ public class DatabaseManager {
 
     public static void generateUsers(Session session) throws Exception {
         Random random = new Random();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 14; i++) {
             User user = new User(i, "User" + i, "Male", "password" + random.nextInt(),
                     Integer.toString(20 + random.nextInt(60)), "Community" + random.nextInt(10));
             session.save(user);
@@ -86,6 +86,38 @@ public class DatabaseManager {
     // System.out.println("-------------------");
     // }
     // }
+
+    public static void updateTask(Session session, Task task) {
+        // Check if the task object has a primary key
+
+        if (task.getTaskId() != 0) {
+            // The task object is in the detached state, update it
+
+            session.update(task);
+            session.flush(); // Manually flush the session
+
+            System.err.println("hello");
+        } else {
+            // The task object is in the transient state, save it
+            System.out.println("Bye");
+            session.save(task);
+        }
+    }
+
+    public static List<Task> getAllTasks(Session session) {
+        List<Task> tasks = null;
+
+        try {
+            // Get all tasks
+            tasks = session.createQuery("from Task").list();
+            System.out.println("The tasks list has " + tasks.size() + " tasks.");
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+
+        return tasks;
+    }
 
     public static List<User> getAllUsers(Session session) {
         List<User> users = null;

@@ -29,57 +29,24 @@ public class SimpleClient extends AbstractClient {
 	@Override
 	protected void handleMessageFromServer(Object msg) {
 		message = (Message) msg;
-		System.out.println("615sdf" + message.getMessage());
 		if (msg.getClass().equals(Warning.class)) {
 			EventBus.getDefault().post(new WarningEvent((Warning) msg));
-		} else if (message.getMessage().equals("#showTasksList")) {
+		} else if (message.getMessage().equals("#showUsersList")) {
 			try {
-				App.setRoot("secondary");
+				App.setRoot("secondary"); // calling the fxml function will generate the initliaze of
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
-			// EventBus.getDefault().register(this);
-			System.out.println("(client)Task came back from server.");
-
-			List<User> users = (List<User>) message.getObject();// users now is a list of users
-
-			for (User user : users) {
-				System.out.println("meiw : " + user);
+		} else if (message.getMessage().equals("#showTasksList")) {
+			try {
+				App.setRoot("tasks"); // calling the fxml function will generate the initliaze of
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+		} else if (message.getMessage().equals("#updateTask")) {
+			System.out.println("Update request sent to server. Good job!");
 
-			// FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
-			// SecondaryController controller = new SecondaryController();
-			// loader.setController(controller);
-			// ! controller.setUsers(users);
-
-			Platform.runLater(() -> {
-				try {
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("secondary.fxml"));
-					Parent root = loader.load();
-					SecondaryController secondaryController = loader.getController();
-
-					TableView<User> userTable = secondaryController.getUserTable();
-
-					if (userTable == null) {
-						System.out.println("userTable is null");
-					} else if (userTable.getItems() == null) {
-						System.out.println("userTable.getItems() is null");
-					} else {
-						System.out.println("userTable and userTable.getItems() are not null");
-					}
-
-					ObservableList<User> items = secondaryController.getTableItems();
-					if (items != null) {
-						System.out.println("Items in userTable: " + items);
-					} else {
-						System.out.println("No items in userTable");
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			});
 		}
 	}
 
