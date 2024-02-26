@@ -108,8 +108,4 @@ public class SimpleServer extends AbstractServer {
 		}
 	}
 
-	private ConnectionToClient getClientById(String string) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getClientById'");
-	}
 }
