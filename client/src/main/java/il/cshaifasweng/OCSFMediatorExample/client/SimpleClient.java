@@ -7,7 +7,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import antlr.debug.MessageEvent;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
-import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
@@ -16,15 +15,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
 
 public class SimpleClient extends AbstractClient {
 
 	private static SimpleClient client = null;
 	public static Message message;
-
-	private static User currentUser = null; // this is for the current user(logged in user) holds his details
 
 	private SimpleClient(String host, int port) {
 		super(host, port);
@@ -33,7 +29,7 @@ public class SimpleClient extends AbstractClient {
 	@Override
 	protected void handleMessageFromServer(Object msg) {
 		message = (Message) msg;
-		if (msg.getClass().equals(Warning.class)) {
+		if (message.getClass().equals(Warning.class)) {
 			EventBus.getDefault().post(new WarningEvent((Warning) msg));
 		} else if (message.getMessage().equals("#showUsersList")) {
 			try {
@@ -42,9 +38,9 @@ public class SimpleClient extends AbstractClient {
 				e.printStackTrace();
 			}
 
-		} else if (message.getMessage().equals("#showTasksList")) {
+		} else if (message.getMessage().equals("sendingToClient#showTasksList")) {
 			try {
-				System.out.println("(Client) Tasks list received from server.");
+				System.out.println("client got \"sendingToClient#showTasksList\"");
 				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of
 
 			} catch (IOException e) {
@@ -53,87 +49,13 @@ public class SimpleClient extends AbstractClient {
 		} else if (message.getMessage().equals("#updateTask")) {
 			System.out.println("Update request sent to server. Good job!");
 
-		} else if (message.getMessage().equals("#openTask")) {
-			try {
-				App.setRoot("TaskForm");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else if (message.getMessage().equals("#loginSuccess")) {
-			try {
-				currentUser = (User) message.getObject();
-				System.err.println("Login success. Welcome, " + currentUser.getUserName() + " "
-						+ currentUser.getPassword() + " " + currentUser.getAge() + " " + currentUser.getGender() + " "
-						+ currentUser.getCommunity());
-				App.setRoot("primary");
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
-						PrimaryController.getInstance().updateLabels(currentUser.getUserName(),
-								currentUser.getStatus());
-					}
-				});
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		} else if (message.getMessage().equals("#loginFailed")) {
-			try {
-				Platform.runLater(() -> {
-					Alert alert = new Alert(Alert.AlertType.ERROR);
-					alert.setTitle("Login Failed");
-					alert.setHeaderText("null");
-					alert.setContentText("Login failed. Please try again.");
-
-					alert.showAndWait();
-				});
-			} catch (Exception e) {
-			}
-		} else if (message.getMessage().equals("#userCreated")) {
-			try {
-				Platform.runLater(() -> {
-					Alert alert = new Alert(Alert.AlertType.INFORMATION);
-					alert.setTitle("User Created");
-					alert.setHeaderText("Done");
-					alert.setContentText("User created successfully.");
-
-					alert.showAndWait();
-					try {
-						App.setRoot("Login");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				});
-			} catch (Exception e) {
-			}
-		} else if (message.getMessage().equals("#submitTask")) {
-			try {
-				Platform.runLater(() -> {
-					Alert alert = new Alert(Alert.AlertType.INFORMATION);
-					alert.setTitle("Task Submitted");
-					alert.setHeaderText("Done");
-					alert.setContentText("Task submitted successfully.");
-
-					alert.showAndWait();
-					try {
-						App.setRoot("primary");
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				});
-			} catch (Exception e) {
-			}
 		}
-
-	}
-
-	public static User getCurrentUser() { // retreive the current user
-		return currentUser;
 	}
 
 	public static SimpleClient getClient() {
 		if (client == null) {
-			client = new SimpleClient("localhost", 3000);
+			System.out.print("updateddddd");
+			client = new SimpleClient("192.168.137.1", 3000);
 
 		}
 		return client;
