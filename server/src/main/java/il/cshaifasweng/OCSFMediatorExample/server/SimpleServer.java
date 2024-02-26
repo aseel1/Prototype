@@ -38,6 +38,7 @@ public class SimpleServer extends AbstractServer {
 
 		// Open a new session
 		Session session = DatabaseManager.getSessionFactory().openSession();
+		System.out.println("opened session");
 		Transaction tx = null;
 
 		try {
@@ -63,7 +64,7 @@ public class SimpleServer extends AbstractServer {
 
 				message.setObject(tasks);
 				message.setMessage("#showTasksList");
-
+				System.out.println("(SimpleServer)message got from primary and now sending to client");
 				client.sendToClient(message);
 			} else if (message.startsWith("#updateTask")) {
 

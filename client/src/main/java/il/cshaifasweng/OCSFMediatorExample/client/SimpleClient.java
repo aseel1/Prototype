@@ -40,7 +40,9 @@ public class SimpleClient extends AbstractClient {
 
 		} else if (message.getMessage().equals("#showTasksList")) {
 			try {
+				System.out.println("(Client) Tasks list received from server.");
 				App.setRoot("tasks"); // calling the fxml function will generate the initliaze of
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

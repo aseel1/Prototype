@@ -148,7 +148,7 @@ public class DatabaseManager {
 
             // printAllUsers(session);
             // printAllTasks(session);
-
+            getAllTasks(session);
             getAllUsers(session);
         } catch (Exception exception) {
             if (session != null) {
