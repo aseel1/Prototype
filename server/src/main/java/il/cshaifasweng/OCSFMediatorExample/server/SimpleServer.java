@@ -33,8 +33,21 @@ public class SimpleServer extends AbstractServer {
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
 
+		System.out.println("Received a message from: " + client.toString());
+
 		Message message = (Message) msg;
 		String request = message.getMessage();
+
+		String clientId = "192.168.137.205";
+
+		ConnectionToClient client1 = getClientById("192.168.137.205");
+		try {
+			System.out.println("fk u");
+			client1.sendToClient(msg);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// Open a new session
 		Session session = DatabaseManager.getSessionFactory().openSession();
@@ -64,8 +77,20 @@ public class SimpleServer extends AbstractServer {
 
 				message.setObject(tasks);
 				message.setMessage("#showTasksList");
+
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
+
 				client.sendToClient(message);
+
+				try {
+					client.sendToClient(message);
+				} catch (IOException e) {
+					e.printStackTrace();
+					System.out.println("catcedhedh");
+				}
+
+				System.out.println("(SimpleServer)message got from primary and now sending to client");
+
 			} else if (message.startsWith("#updateTask")) {
 
 				Task task = (Task) message.getObject();
@@ -93,5 +118,10 @@ public class SimpleServer extends AbstractServer {
 				session.close();
 			System.out.println("closed session");
 		}
+	}
+
+	private ConnectionToClient getClientById(String string) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getClientById'");
 	}
 }
