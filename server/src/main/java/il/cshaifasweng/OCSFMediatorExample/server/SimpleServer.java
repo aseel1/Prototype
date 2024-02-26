@@ -57,8 +57,8 @@ public class SimpleServer extends AbstractServer {
 
 				message.setObject(users);
 				message.setMessage("#showUsersList");
-
 				client.sendToClient(message);
+
 			} else if (message.startsWith("#showTasksList")) {
 
 				List<Task> tasks = DatabaseManager.getAllTasks(session);
@@ -68,7 +68,6 @@ public class SimpleServer extends AbstractServer {
 
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
 
-				client.sendToClient(message);
 
 				try {
 					client.sendToClient(message);
