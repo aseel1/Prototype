@@ -79,7 +79,7 @@ public class PrimaryController {
 
 	@FXML
 	protected void handleShowTasksButtonAction(ActionEvent event) {
-		Message message = new Message("#showTasksListfgsgsdgfs");
+		Message message = new Message("#showTasksList");
 		try {
 			SimpleClient.getClient().sendToServer(message);
 			System.out.println("(Primary)Sending message to server: ");
