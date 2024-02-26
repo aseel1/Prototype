@@ -51,7 +51,7 @@ public class SimpleServer extends AbstractServer {
 			} else if (request.isBlank()) {
 				// Perform database operations
 
-			} else if (message.startsWith("#showUsersList")) {
+			} else if (request.startsWith("#showUsersList")) {
 
 				List<User> users = DatabaseManager.getAllUsers(session);
 
@@ -59,12 +59,12 @@ public class SimpleServer extends AbstractServer {
 				message.setMessage("#showUsersList");
 
 				client.sendToClient(message);
-			} else if (message.startsWith("#showTasksList")) {
+			} else if (request.startsWith("sendingToServer#showTasksList")) {
 
 				List<Task> tasks = DatabaseManager.getAllTasks(session);
 
 				message.setObject(tasks);
-				message.setMessage("#showTasksList");
+				message.setMessage("sendingToClient#showTasksList");
 
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
 
@@ -79,7 +79,7 @@ public class SimpleServer extends AbstractServer {
 
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
 
-			} else if (message.startsWith("#updateTask")) {
+			} else if (request.startsWith("#updateTask")) {
 
 				Task task = (Task) message.getObject();
 				System.out.println("taskname" + task.getTaskName() + "taskid" + task.getTaskId()

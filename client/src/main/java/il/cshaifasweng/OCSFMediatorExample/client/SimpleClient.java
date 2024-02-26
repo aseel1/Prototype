@@ -29,7 +29,7 @@ public class SimpleClient extends AbstractClient {
 	@Override
 	protected void handleMessageFromServer(Object msg) {
 		message = (Message) msg;
-		if (msg.getClass().equals(Warning.class)) {
+		if (message.getClass().equals(Warning.class)) {
 			EventBus.getDefault().post(new WarningEvent((Warning) msg));
 		} else if (message.getMessage().equals("#showUsersList")) {
 			try {
@@ -38,9 +38,9 @@ public class SimpleClient extends AbstractClient {
 				e.printStackTrace();
 			}
 
-		} else if (message.getMessage().equals("#showTasksList")) {
+		} else if (message.getMessage().equals("sendingToClient#showTasksList")) {
 			try {
-				System.out.println("(Client) Tasks list received from server.");
+				System.out.println("client got \"sendingToClient#showTasksList\"");
 				App.setRoot("tasks"); // calling the fxml function will generate the initliaze of
 
 			} catch (IOException e) {
