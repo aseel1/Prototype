@@ -41,7 +41,7 @@ public class SimpleClient extends AbstractClient {
 		} else if (message.getMessage().equals("sendingToClient#showTasksList")) {
 			try {
 				System.out.println("client got \"sendingToClient#showTasksList\"");
-				App.setRoot("tasks"); // calling the fxml function will generate the initliaze of
+				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -54,7 +54,8 @@ public class SimpleClient extends AbstractClient {
 
 	public static SimpleClient getClient() {
 		if (client == null) {
-			client = new SimpleClient("localhost", 3000);
+			System.out.print("updateddddd");
+			client = new SimpleClient("192.168.137.1", 3000);
 
 		}
 		return client;
