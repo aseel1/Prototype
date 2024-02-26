@@ -38,18 +38,6 @@ public class SimpleServer extends AbstractServer {
 		Message message = (Message) msg;
 		String request = message.getMessage();
 
-		String clientId = "192.168.137.205";
-
-		ConnectionToClient client1 = getClientById("192.168.137.205");
-		try {
-			System.out.println("fk u");
-			client1.sendToClient(msg);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// Open a new session
 		Session session = DatabaseManager.getSessionFactory().openSession();
 		System.out.println("opened session");
 		Transaction tx = null;

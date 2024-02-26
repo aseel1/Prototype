@@ -6,6 +6,7 @@ import java.io.IOException;
  * Hello world!
  *
  */
+
 public class SimpleChatServer {
 
     private static SimpleServer server;
