@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
+<?import javafx.scene.control.Label?>
 
 <!-- Add this line -->
 <!-- Add this line -->
@@ -38,14 +34,19 @@
                   <Font name="System Bold Italic" size="30.0" />
                </font>
             </Text>
-            <Button fx:id="showUsersButton" layoutX="329.0" layoutY="226.0" onAction="#handleShowUsersButtonAction" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="Show Users">
+            <Button fx:id="showUsersButton" layoutX="329.0" layoutY="226.0" onAction="#handleShowUsersButtonAction" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F;" text="Show Users">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></Button>
-            <Button fx:id="showTasksButton" layoutX="329.0" layoutY="278.0" onAction="#handleShowTasksButtonAction" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="Show Tasks">
+            <Button fx:id="showTasksButton" layoutX="329.0" layoutY="278.0" onAction="#handleShowTasksButtonAction" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F;" text="Show Tasks">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font></Button>
+            <Button fx:id="openTaskButton" layoutX="127.0" layoutY="158.0" onAction="#openTaskButtonAction" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F;" text="Open task">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Button>
 
             
          </children>

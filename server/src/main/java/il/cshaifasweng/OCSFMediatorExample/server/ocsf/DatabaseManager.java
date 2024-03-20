@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -132,6 +133,11 @@ public class DatabaseManager {
         }
 
         return users;
+    }
+
+    public static void addTask(Task task, Session session) {
+
+        session.save(task);
     }
 
     public static void initialize() {

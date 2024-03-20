@@ -36,6 +36,9 @@ public class PrimaryController {
 	private Button showUsersButton;
 
 	@FXML
+	private Button openTaskButton;
+
+	@FXML
 	private Button showTasksButton;
 
 	@FXML
@@ -66,4 +69,17 @@ public class PrimaryController {
 
 	}
 
+	@FXML
+	protected void openTaskButtonAction(ActionEvent event) {
+		Message message = new Message("#openTask");
+		try {
+			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary)Sending message to server: ");
+
+		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
+			e.printStackTrace();
+		}
+
+	}
 }

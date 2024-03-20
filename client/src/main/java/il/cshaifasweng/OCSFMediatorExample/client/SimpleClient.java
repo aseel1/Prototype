@@ -7,6 +7,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import antlr.debug.MessageEvent;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
@@ -28,7 +29,6 @@ public class SimpleClient extends AbstractClient {
 
 	@Override
 	protected void handleMessageFromServer(Object msg) {
-		System.out.println("here is the message beforreeeeeeee to check");
 		message = (Message) msg;
 		if (msg.getClass().equals(Warning.class)) {
 			EventBus.getDefault().post(new WarningEvent((Warning) msg));
@@ -42,7 +42,7 @@ public class SimpleClient extends AbstractClient {
 		} else if (message.getMessage().equals("#showTasksList")) {
 			try {
 				System.out.println("(Client) Tasks list received from server.");
-				App.setRoot("tasks"); // calling the fxml function will generate the initliaze of
+				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -50,7 +50,14 @@ public class SimpleClient extends AbstractClient {
 		} else if (message.getMessage().equals("#updateTask")) {
 			System.out.println("Update request sent to server. Good job!");
 
+		} else if (message.getMessage().equals("#openTask")) {
+			try {
+				App.setRoot("TaskForm");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+
 	}
 
 	public static SimpleClient getClient() {

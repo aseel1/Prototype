@@ -61,7 +61,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>${groupId}</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>entities</artifactId>
 		</dependency>
 	</dependencies>

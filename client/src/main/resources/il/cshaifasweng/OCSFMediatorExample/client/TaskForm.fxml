@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" prefHeight="603.0" prefWidth="788.0" spacing="20.0" style="-fx-background-color: #F7EFE7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.TaskFormController">
+ 
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <AnchorPane prefHeight="516.0" prefWidth="696.0">
+            <children>
+                <Text fill="#c41212c7" layoutX="148.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Task Details" textAlignment="CENTER" underline="true" wrappingWidth="488.2892761230469">
+                    <font>
+                        <Font name="System Bold Italic" size="30.0" />
+                    </font>
+                </Text>
+                <Label layoutX="100.0" layoutY="86.0" style="-fx-font-size: 18px;" text="Task Name:" />
+                <TextField fx:id="taskNameField" layoutX="248.0" layoutY="86.0" />
+
+                <Label layoutX="100.0" layoutY="126.0" style="-fx-font-size: 18px;" text="Date:" />
+                <TextField fx:id="dateField" layoutX="248.0" layoutY="126.0" />
+
+                <Label layoutX="100.0" layoutY="166.0" style="-fx-font-size: 18px;" text="Time:" />
+                <TextField fx:id="timeField" layoutX="248.0" layoutY="166.0" />
+
+                <Label layoutX="100.0" layoutY="206.0" style="-fx-font-size: 18px;" text="Volunteer:" />
+                <TextField fx:id="volunteerField" layoutX="248.0" layoutY="206.0" />
+
+                <Label layoutX="100.0" layoutY="246.0" style="-fx-font-size: 18px;" text="Status:" />
+                <TextField fx:id="statusField" layoutX="248.0" layoutY="246.0" />
+
+                <Button fx:id="submitButton" layoutX="248.0" layoutY="286.0" onAction="#submitTask" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Submit">                    <font>
+                        <Font name="System Italic" size="18.0" />
+                    </font>
+                </Button>
+                <Button fx:id="secondaryButton" layoutX="272.0" layoutY="481.0" onAction="#switchToPrimary" prefHeight="42.0" prefWidth="224.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Switch to Primary View">                    <font>
+                        <Font name="System Italic" size="18.0" />
+                    </font>
+                </Button>
+                
+            </children>
+        </AnchorPane>
+    </children>
+</VBox>

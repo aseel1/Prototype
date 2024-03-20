@@ -68,7 +68,6 @@ public class SimpleServer extends AbstractServer {
 
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
 
-
 				try {
 					client.sendToClient(message);
 				} catch (IOException e) {
@@ -88,6 +87,14 @@ public class SimpleServer extends AbstractServer {
 
 				message.setMessage("#updateTask");
 				message.setObject(task);
+				client.sendToClient(message);
+			} else if (message.startsWith("#openTask")) {
+				message.setMessage("#openTask");
+				client.sendToClient(message);
+			} else if (message.startsWith("#submitTask")) {
+				Task task = (Task) message.getObject(); // derefrence the object from the message
+				DatabaseManager.addTask(task, session);
+
 				client.sendToClient(message);
 			}
 
