@@ -13,6 +13,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
@@ -44,6 +45,8 @@ public class DatabaseManager {
                     Integer.toString(20 + random.nextInt(60)), "Community" + random.nextInt(10));
             session.save(user);
         }
+        User user = new User(15, "aseel", "male", "1234", "20", "community");
+        session.save(user);
         session.clear();
     }
 
@@ -138,6 +141,24 @@ public class DatabaseManager {
     public static void addTask(Task task, Session session) {
 
         session.save(task);
+    }
+
+    public static User authenticateUser(User user, Session session) {
+        User userFromDB = null;
+
+        try {
+            // Create a query to find the user with the provided username and password
+            Query query = session.createQuery("FROM User WHERE username = :username AND password = :password");
+            query.setParameter("username", user.getUserName());
+            query.setParameter("password", user.getPassword());
+
+            // Execute the query and get the result
+            userFromDB = (User) query.uniqueResult();
+        } catch (HibernateException e) {
+            // handle exception
+        }
+
+        return userFromDB;
     }
 
     public static void initialize() {

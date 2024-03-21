@@ -29,6 +29,13 @@ public class User implements Serializable {
         this.community = community;
     }
 
+    public User(String userName, String password) {
+
+        this.userName = userName;
+        this.password = password;
+
+    }
+
     public String getUserName() {
         return userName;
     }

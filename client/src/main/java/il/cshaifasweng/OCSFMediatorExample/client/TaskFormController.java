@@ -72,7 +72,6 @@ public class TaskFormController {
         try {
             SimpleClient.getClient().sendToServer(message);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

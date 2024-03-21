@@ -16,12 +16,15 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
 
 public class SimpleClient extends AbstractClient {
 
 	private static SimpleClient client = null;
 	public static Message message;
+
+	private static User currentUser = null; // this is for the current user(logged in user) holds his details
 
 	private SimpleClient(String host, int port) {
 		super(host, port);
@@ -55,6 +58,29 @@ public class SimpleClient extends AbstractClient {
 				App.setRoot("TaskForm");
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+		} else if (message.getMessage().equals("#loginSuccess")) {
+			try {
+				currentUser = (User) message.getObject();
+				System.out.println("Logged in as " + currentUser.getUserName() + " " + currentUser.getPassword() + " "
+						+ currentUser.getGender() + " " + currentUser.getAge() + " " + currentUser.getCommunity() + " "
+						+ currentUser.getId());
+				App.setRoot("primary");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		} else if (message.getMessage().equals("#loginFailed")) {
+			try {
+				Platform.runLater(() -> {
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("Login Failed");
+					alert.setHeaderText(null);
+					alert.setContentText("Login failed. Please try again.");
+
+					alert.showAndWait();
+				});
+			} catch (Exception e) {
 			}
 		}
 

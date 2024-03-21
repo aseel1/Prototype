@@ -96,6 +96,22 @@ public class SimpleServer extends AbstractServer {
 				DatabaseManager.addTask(task, session);
 
 				client.sendToClient(message);
+			} else if (message.startsWith("#Login")) {
+				User user = (User) message.getObject();// derefrence the object from the message
+				System.out.println("user name: " + user.getUserName() + " password: " +
+						user.getPassword());
+				User userFromDB = DatabaseManager.authenticateUser(user, session);
+
+				if (userFromDB != null && userFromDB.getPassword().equals(user.getPassword())) {
+					System.err.println("Login success");
+					message.setMessage("#loginSuccess");
+					message.setObject(user); // here we return the user object so we can save his details.
+				} else {
+					System.err.println("Login failed");
+					message.setMessage("#loginFailed");
+
+				}
+				client.sendToClient(message);
 			}
 
 			tx.commit();

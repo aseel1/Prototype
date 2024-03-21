@@ -19,6 +19,10 @@ public class Message implements Serializable {
         this.object = object;
     }
 
+    public Message(Object object) {
+        this.object = object;
+    }
+
     public Message(int id, LocalDateTime timeStamp, String message) {
         this.id = id;
         this.timeStamp = timeStamp;

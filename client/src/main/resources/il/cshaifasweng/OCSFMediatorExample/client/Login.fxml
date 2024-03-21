@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" prefHeight="603.0" prefWidth="788.0" spacing="10" style="-fx-background-color: #F7EFE7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.LoginController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+      <Text fill="#c41212c7" strokeType="OUTSIDE" strokeWidth="0.0" text="All Together Information System" textAlignment="CENTER" underline="true" wrappingWidth="488.2892761230469">
+         <font>
+            <Font name="System Bold Italic" size="30.0" />
+         </font>
+      </Text>
+        <Label style="-fx-font-size: 18px;" text="Username:" />
+        <TextField fx:id="usernameField" style="-fx-font-size: 18px;" prefWidth="200" maxWidth="300" />
+        <Label style="-fx-font-size: 18px;" text="Password:" />
+        <PasswordField fx:id="passwordField" style="-fx-font-size: 18px;" prefWidth="200" maxWidth="300"/>
+        <Button fx:id="loginButton" onAction="#handleLogin" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Login" />
+        <Hyperlink fx:id="createUserLink" onAction="#handleCreateUser" style="-fx-font-size: 18px;" text="Create User" />
+        <Hyperlink fx:id="forgotPasswordLink" onAction="#handleForgotPassword" style="-fx-font-size: 18px;" text="Forgot Password" />
+    </children>
+</VBox>
