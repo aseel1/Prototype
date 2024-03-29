@@ -62,10 +62,17 @@ public class SimpleClient extends AbstractClient {
 		} else if (message.getMessage().equals("#loginSuccess")) {
 			try {
 				currentUser = (User) message.getObject();
-				System.out.println("Logged in as " + currentUser.getUserName() + " " + currentUser.getPassword() + " "
-						+ currentUser.getGender() + " " + currentUser.getAge() + " " + currentUser.getCommunity() + " "
-						+ currentUser.getId());
+				System.err.println("Login success. Welcome, " + currentUser.getUserName() + " "
+						+ currentUser.getPassword() + " " + currentUser.getAge() + " " + currentUser.getGender() + " "
+						+ currentUser.getCommunity());
 				App.setRoot("primary");
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
+						PrimaryController.getInstance().updateLabels(currentUser.getUserName(),
+								currentUser.getStatus());
+					}
+				});
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -75,15 +82,53 @@ public class SimpleClient extends AbstractClient {
 				Platform.runLater(() -> {
 					Alert alert = new Alert(Alert.AlertType.ERROR);
 					alert.setTitle("Login Failed");
-					alert.setHeaderText(null);
+					alert.setHeaderText("null");
 					alert.setContentText("Login failed. Please try again.");
 
 					alert.showAndWait();
 				});
 			} catch (Exception e) {
 			}
+		} else if (message.getMessage().equals("#userCreated")) {
+			try {
+				Platform.runLater(() -> {
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setTitle("User Created");
+					alert.setHeaderText("Done");
+					alert.setContentText("User created successfully.");
+
+					alert.showAndWait();
+					try {
+						App.setRoot("Login");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+			} catch (Exception e) {
+			}
+		} else if (message.getMessage().equals("#submitTask")) {
+			try {
+				Platform.runLater(() -> {
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setTitle("Task Submitted");
+					alert.setHeaderText("Done");
+					alert.setContentText("Task submitted successfully.");
+
+					alert.showAndWait();
+					try {
+						App.setRoot("primary");
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+			} catch (Exception e) {
+			}
 		}
 
+	}
+
+	public static User getCurrentUser() { // retreive the current user
+		return currentUser;
 	}
 
 	public static SimpleClient getClient() {

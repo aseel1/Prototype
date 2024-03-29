@@ -40,12 +40,14 @@ public class DatabaseManager {
 
     public static void generateUsers(Session session) throws Exception {
         Random random = new Random();
+
         for (int i = 0; i < 14; i++) {
+            String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
             User user = new User(i, "User" + i, "Male", "password" + random.nextInt(),
-                    Integer.toString(20 + random.nextInt(60)), "Community" + random.nextInt(10));
+                    Integer.toString(20 + random.nextInt(60)), "Community" + random.nextInt(10), role);
             session.save(user);
         }
-        User user = new User(15, "aseel", "male", "1234", "20", "community");
+        User user = new User(212393532, "aseel", "male", "1234", "20", "community", "manger");
         session.save(user);
         session.clear();
     }
@@ -141,6 +143,10 @@ public class DatabaseManager {
     public static void addTask(Task task, Session session) {
 
         session.save(task);
+    }
+
+    public static void addUser(Session session, User user) {
+        session.save(user);
     }
 
     public static User authenticateUser(User user, Session session) {

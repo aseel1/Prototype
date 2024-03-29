@@ -11,6 +11,7 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String userName;
+    private String status;
     private String gender;
     private String password;
     private String age;
@@ -19,9 +20,10 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(int id, String userName, String gender, String password, String age, String community) {
+    public User(int id, String userName, String gender, String password, String age, String community, String status) {
         super();
         this.id = id;
+        this.status = status;
         this.userName = userName;
         this.gender = gender;
         this.password = password;
@@ -82,6 +84,14 @@ public class User implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }

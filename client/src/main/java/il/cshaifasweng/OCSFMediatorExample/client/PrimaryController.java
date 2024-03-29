@@ -19,6 +19,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 public class PrimaryController {
 
@@ -40,6 +41,27 @@ public class PrimaryController {
 
 	@FXML
 	private Button showTasksButton;
+
+	@FXML
+	private Label usernameLabel;
+
+	@FXML
+	private Label statusLabel;
+
+	private static PrimaryController instance;
+
+	public PrimaryController() {
+		instance = this;
+	}
+
+	public static PrimaryController getInstance() {
+		return instance;
+	}
+
+	public void updateLabels(String username, String status) {
+		usernameLabel.setText("Username: " + username);
+		statusLabel.setText("Status: " + status);
+	}
 
 	@FXML
 	protected void handleShowUsersButtonAction(ActionEvent event) {
@@ -82,4 +104,5 @@ public class PrimaryController {
 		}
 
 	}
+
 }

@@ -31,6 +31,11 @@ public class LoginController {
     @FXML
     void handleCreateUser(ActionEvent event) {
 
+        try {
+            App.setRoot("UserCreationForm");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

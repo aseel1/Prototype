@@ -60,14 +60,16 @@ public class TaskFormController {
         task.setTime(timeField.getText().isEmpty() ? now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond()
                 : Integer.parseInt(timeField.getText()));
 
-        // For the volunteer field, you would need to fetch the User object based on the
-        // entered ID
-        // This is a placeholder and might not work depending on your User class
-        // implementation
-        // task.setVolunteer(new User(volunteerField.getText()));
-        task.setStatus(statusField.getText());
+        task.setVolunteer(SimpleClient.getCurrentUser());
+
+        task.setStatus("Pending for approval");
         Message message = new Message("#submitTask", task);
-        System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " " + task.getVolunteer()
+        System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
+                + task.getVolunteer().getUserName()
+                + task.getVolunteer().getAge()
+                + task.getVolunteer().getGender()
+                + task.getVolunteer().getCommunity()
+                + task.getVolunteer().getPassword()
                 + " " + task.getStatus());
         try {
             SimpleClient.getClient().sendToServer(message);
