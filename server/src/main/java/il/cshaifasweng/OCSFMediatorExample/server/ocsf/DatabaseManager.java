@@ -10,8 +10,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
@@ -38,11 +40,15 @@ public class DatabaseManager {
 
     public static void generateUsers(Session session) throws Exception {
         Random random = new Random();
+
         for (int i = 0; i < 14; i++) {
+            String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
             User user = new User(i, "User" + i, "Male", "password" + random.nextInt(),
-                    Integer.toString(20 + random.nextInt(60)), "Community" + random.nextInt(10));
+                    Integer.toString(20 + random.nextInt(60)), "Community" + random.nextInt(10), role);
             session.save(user);
         }
+        User user = new User(212393532, "aseel", "male", "1234", "20", "community", "manger");
+        session.save(user);
         session.clear();
     }
 
@@ -132,6 +138,33 @@ public class DatabaseManager {
         }
 
         return users;
+    }
+
+    public static void addTask(Task task, Session session) {
+
+        session.save(task);
+    }
+
+    public static void addUser(Session session, User user) {
+        session.save(user);
+    }
+
+    public static User authenticateUser(User user, Session session) {
+        User userFromDB = null;
+
+        try {
+            // Create a query to find the user with the provided username and password
+            Query query = session.createQuery("FROM User WHERE username = :username AND password = :password");
+            query.setParameter("username", user.getUserName());
+            query.setParameter("password", user.getPassword());
+
+            // Execute the query and get the result
+            userFromDB = (User) query.uniqueResult();
+        } catch (HibernateException e) {
+            // handle exception
+        }
+
+        return userFromDB;
     }
 
     public static void initialize() {

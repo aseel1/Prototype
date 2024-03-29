@@ -34,7 +34,7 @@ public class App extends Application {
             System.out.println("Client failed to connect to the server.");
         }
 
-        scene = new Scene(loadFXML("primary"), 788, 603);
+        scene = new Scene(loadFXML("Login"), 788, 603);
         stage.setScene(scene);
         stage.show();
     }
