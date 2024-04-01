@@ -118,7 +118,8 @@ public class PrimaryController {
 	}
 
 	private void sendLogoutRequest() {
-		Message message = new Message("#LogOut");
+
+		Message message = new Message("#LogOut", SimpleClient.getCurrentUser());
 		System.out.println(message);
 		try {
 			SimpleClient.getClient().sendToServer(message);

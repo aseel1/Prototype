@@ -116,34 +116,24 @@ public class SimpleServer extends AbstractServer {
 				}
 				client.sendToClient(message);
 			} else if (message.startsWith("#LogOut")) {
-				System.out.println("aaaaaaaaaaaaaaa");
-				User userFromClient = (User) message.getObject(); // Received user info from the client
-
-				// Instead of using authenticateUser, directly retrieve the user based on a unique identifier, like userName.
-				System.out.println("bbbbbbbbbbb");
-				User userFromDB = session.createQuery("FROM User WHERE userName = :username", User.class)
-						.setParameter("username", userFromClient.getUserName())
-						.uniqueResult();
-				System.out.println("cccccccccccccccc");
-
+				User userFromClient = (User) message.getObject();// Received user info from the client
+				Session newsession=DatabaseManager.getSessionFactory().openSession();
+				User userFromDB = DatabaseManager.authenticateUser(userFromClient,newsession); // Retrieve the actual user object from DB
 				if (userFromDB != null && userFromDB.isLoggedIn()) {
-					System.out.println("jwa alif");
 					userFromDB.setLoggedIn(false); // Correctly update the userFromDB instance
 					session.update(userFromDB); // Persist the changes for userFromDB
-
-					// Send a success message back to the client
+					// Prepare a response message indicating success
 					Message responseMessage = new Message("#LoggedOut");
-					client.sendToClient(responseMessage);
+					client.sendToClient(responseMessage); // Send success message back to client
 					System.out.println("User logged out successfully: " + userFromDB.getUserName());
 				} else {
+					// Prepare a response message indicating failure or not logged in
 					Message responseMessage = new Message("#logoutFailed");
-					client.sendToClient(responseMessage);
+					client.sendToClient(responseMessage); // Send failure message back to client
 					System.err.println("Logout failed or user was not logged in.");
 				}
-				System.out.println("bal2a5rrr");
-				tx.commit();
+				tx.commit(); // This line commits the transaction including the loggedIn status update
 			}
-
 
 
 
