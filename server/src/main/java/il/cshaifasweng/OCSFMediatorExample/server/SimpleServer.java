@@ -97,23 +97,57 @@ public class SimpleServer extends AbstractServer {
 
 				client.sendToClient(message);
 			} else if (message.startsWith("#Login")) {
-				User user = (User) message.getObject();// derefrence the object from the message
-				System.err.println("Login success. Welcome, " + user.getUserName() + " "
-						+ user.getPassword() + " " + user.getAge() + " " + user.getGender() + " "
-						+ user.getCommunity());
-				User userFromDB = DatabaseManager.authenticateUser(user, session);
+				User userFromClient = (User) message.getObject(); // User info from the client
+				User userFromDB = DatabaseManager.authenticateUser(userFromClient, session);
 
-				if (userFromDB != null && userFromDB.getPassword().equals(user.getPassword())) {
-					System.err.println("Login success");
-					message.setMessage("#loginSuccess");
-					message.setObject(userFromDB); // here we return the user object so we can save his details.
+				if (userFromDB != null && userFromDB.getPassword().equals(userFromClient.getPassword())) {
+					if (userFromDB.isLoggedIn()) {
+						message.setMessage("User Already Signed In!");
+					} else {
+						userFromDB.setLoggedIn(true); // Set the user as logged in
+						session.update(userFromDB); // Make sure to update the user in the database
+						System.err.println("Login success");
+						message.setMessage("#loginSuccess");
+						message.setObject(userFromDB); // Return the updated user object
+					}
 				} else {
 					System.err.println("Login failed");
 					message.setMessage("#loginFailed");
-
 				}
 				client.sendToClient(message);
-			} else if (message.startsWith("#createUser")) {
+			} else if (message.startsWith("#LogOut")) {
+				System.out.println("aaaaaaaaaaaaaaa");
+				User userFromClient = (User) message.getObject(); // Received user info from the client
+
+				// Instead of using authenticateUser, directly retrieve the user based on a unique identifier, like userName.
+				System.out.println("bbbbbbbbbbb");
+				User userFromDB = session.createQuery("FROM User WHERE userName = :username", User.class)
+						.setParameter("username", userFromClient.getUserName())
+						.uniqueResult();
+				System.out.println("cccccccccccccccc");
+
+				if (userFromDB != null && userFromDB.isLoggedIn()) {
+					System.out.println("jwa alif");
+					userFromDB.setLoggedIn(false); // Correctly update the userFromDB instance
+					session.update(userFromDB); // Persist the changes for userFromDB
+
+					// Send a success message back to the client
+					Message responseMessage = new Message("#LoggedOut");
+					client.sendToClient(responseMessage);
+					System.out.println("User logged out successfully: " + userFromDB.getUserName());
+				} else {
+					Message responseMessage = new Message("#logoutFailed");
+					client.sendToClient(responseMessage);
+					System.err.println("Logout failed or user was not logged in.");
+				}
+				System.out.println("bal2a5rrr");
+				tx.commit();
+			}
+
+
+
+
+			else if (message.startsWith("#createUser")) {
 				User user = (User) message.getObject();
 				System.out.println("User created: " + user.getUserName() + " " + user.getPassword() + " "
 						+ user.getAge() + " " + user.getGender() + " " + user.getCommunity() + " " + user.getStatus());
