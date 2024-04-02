@@ -1,5 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
-
+import com.sun.istack.NotNull;
 import java.io.Serializable;
 
 import javax.persistence.*;
@@ -16,6 +16,9 @@ public class User implements Serializable {
     private String password;
     private String age;
     private String community;
+
+    @NotNull
+    private boolean loggedIn=false;
 
     public User() {
     }
@@ -93,5 +96,11 @@ public class User implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
 
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
 }
