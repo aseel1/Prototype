@@ -19,6 +19,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 public class PrimaryController {
 
@@ -36,7 +37,31 @@ public class PrimaryController {
 	private Button showUsersButton;
 
 	@FXML
+	private Button openTaskButton;
+
+	@FXML
 	private Button showTasksButton;
+
+	@FXML
+	private Label usernameLabel;
+
+	@FXML
+	private Label statusLabel;
+
+	private static PrimaryController instance;
+
+	public PrimaryController() {
+		instance = this;
+	}
+
+	public static PrimaryController getInstance() {
+		return instance;
+	}
+
+	public void updateLabels(String username, String status) {
+		usernameLabel.setText("Username: " + username);
+		statusLabel.setText("Status: " + status);
+	}
 
 	@FXML
 	protected void handleShowUsersButtonAction(ActionEvent event) {
@@ -55,6 +80,20 @@ public class PrimaryController {
 	@FXML
 	protected void handleShowTasksButtonAction(ActionEvent event) {
 		Message message = new Message("sendingToServer#showTasksList");
+		try {
+			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary)Sending message to server: ");
+
+		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
+			e.printStackTrace();
+		}
+
+	}
+
+	@FXML
+	protected void openTaskButtonAction(ActionEvent event) {
+		Message message = new Message("#openTask");
 		try {
 			SimpleClient.getClient().sendToServer(message);
 			System.out.println("(Primary)Sending message to server: ");

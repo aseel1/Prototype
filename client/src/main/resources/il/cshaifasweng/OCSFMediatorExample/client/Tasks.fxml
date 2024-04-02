@@ -12,14 +12,14 @@
     <AnchorPane prefHeight="568.0" prefWidth="748.0">
       <children>
         <Button fx:id="secondaryButton" layoutX="320.0" layoutY="496.0" onAction="#switchToPrimary" text="Switch to Primary View" />
-        <TableView fx:id="taskTable" layoutX="127.0" layoutY="46.0" prefHeight="380.0" prefWidth="436.0">
+        <TableView fx:id="taskTable" layoutX="127.0" layoutY="46.0" prefHeight="380.0" prefWidth="552.0">
           <columns>
             <TableColumn fx:id="taskId" prefWidth="75.0" text="Task ID" />
             <TableColumn fx:id="taskName" prefWidth="75.0" text="Task Name" />
-            <TableColumn fx:id="date" prefWidth="75.0" text="Date" />
-            <TableColumn fx:id="time" prefWidth="75.0" text="Time" />
-            <TableColumn fx:id="volunteer" prefWidth="75.0" text="Volunteer" />
-            <TableColumn fx:id="status" prefWidth="75.0" text="Status" />
+            <TableColumn fx:id="date" prefWidth="89.5999755859375" text="Date" />
+            <TableColumn fx:id="time" prefWidth="79.20001220703125" text="Time" />
+            <TableColumn fx:id="volunteer" prefWidth="83.199951171875" text="Volunteer" />
+            <TableColumn fx:id="status" prefWidth="128.800048828125" text="Status" />
           </columns>
         </TableView>
       </children>

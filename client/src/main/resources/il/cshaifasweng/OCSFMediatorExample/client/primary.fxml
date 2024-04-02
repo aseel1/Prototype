@@ -1,54 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
 
-
-<!-- Add this line -->
-<!-- Add this line -->
-
-<VBox alignment="CENTER" prefHeight="603.0" prefWidth="788.0" spacing="20.0" style="-fx-background-color: F7EFE7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
+<VBox alignment="TOP_LEFT" prefHeight="603.0" prefWidth="788.0" spacing="20.0"
+   style="-fx-background-color: F7EFE7;" xmlns="http://javafx.com/javafx/21"
+   xmlns:fx="http://javafx.com/fxml/1"
+   fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
-      <Label text="Welcome" />
-   </children>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-   <children>
+      <HBox spacing="10">
+         <Label fx:id="usernameLabel" text="Username: "
+            style="-fx-font-size: 20px; -fx-text-fill: #c41212c7; -fx-background-color: F7EFE7; -fx-padding: 10px;" />
+         <Label fx:id="statusLabel" text="Status: "
+            style="-fx-font-size: 20px; -fx-text-fill: #c41212c7; -fx-background-color: F7EFE7; -fx-padding: 10px;" />
+      </HBox>
       <AnchorPane prefHeight="516.0" prefWidth="696.0">
-         <children>
-            <!-- <ImageView fitHeight="320.0" fitWidth="482.0" layoutX="152.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@/../../../images/handinhand.jpg" />
-               </image>
-            </ImageView> -->
-            <Text fill="#c41212c7" layoutX="148.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Together Information System" textAlignment="CENTER" underline="true" wrappingWidth="488.2892761230469">
-               <font>
-                  <Font name="System Bold Italic" size="30.0" />
-               </font>
-            </Text>
-            <Button fx:id="showUsersButton" layoutX="329.0" layoutY="226.0" onAction="#handleShowUsersButtonAction" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="Show Users">
-               <font>
-                  <Font name="System Italic" size="12.0" />
-               </font></Button>
-            <Button fx:id="showTasksButton" layoutX="329.0" layoutY="278.0" onAction="#handleShowTasksButtonAction" prefHeight="32.0" prefWidth="90.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="Show Tasks">
-               <font>
-                  <Font name="System Italic" size="12.0" />
-               </font></Button>
-
-            
-         </children>
+         <AnchorPane prefHeight="516.0" prefWidth="696.0">
+            <children>
+               <Text fill="#c41212c7" layoutX="148.0" layoutY="46.0" strokeType="OUTSIDE"
+                  strokeWidth="0.0" text="All Together Information System" textAlignment="CENTER"
+                  underline="true" wrappingWidth="488.2892761230469">
+                  <font>
+                     <Font name="System Bold Italic" size="30.0" />
+                  </font>
+               </Text>
+               <Button fx:id="showUsersButton" layoutX="329.0" layoutY="226.0"
+                  onAction="#handleShowUsersButtonAction" prefHeight="32.0" prefWidth="90.0"
+                  style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="Show Users">
+                  <font>
+                     <Font name="System Italic" size="12.0" />
+                  </font>
+               </Button>
+               <Button fx:id="showTasksButton" layoutX="329.0" layoutY="278.0"
+                  onAction="#handleShowTasksButtonAction" prefHeight="32.0" prefWidth="90.0"
+                  style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="Show Tasks">
+                  <font>
+                     <Font name="System Italic" size="12.0" />
+                  </font>
+               </Button>
+               <Button fx:id="openTaskButton" layoutX="329.0" layoutY="171.0"
+                  onAction="#openTaskButtonAction" prefHeight="32.0" prefWidth="90.0"
+                  style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="Open task">
+                  <font>
+                     <Font name="System Italic" size="12.0" />
+                  </font>
+               </Button>
+            </children>
+         </AnchorPane>
       </AnchorPane>
    </children>
 </VBox>

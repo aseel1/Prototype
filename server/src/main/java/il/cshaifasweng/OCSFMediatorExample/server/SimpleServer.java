@@ -51,24 +51,22 @@ public class SimpleServer extends AbstractServer {
 			} else if (request.isBlank()) {
 				// Perform database operations
 
-			} else if (request.startsWith("#showUsersList")) {
+			} else if (message.startsWith("#showUsersList")) {
 
 				List<User> users = DatabaseManager.getAllUsers(session);
 
 				message.setObject(users);
 				message.setMessage("#showUsersList");
-
 				client.sendToClient(message);
-			} else if (request.startsWith("sendingToServer#showTasksList")) {
+
+			} else if (message.startsWith("#showTasksList")) {
 
 				List<Task> tasks = DatabaseManager.getAllTasks(session);
 
 				message.setObject(tasks);
-				message.setMessage("sendingToClient#showTasksList");
+				message.setMessage("#showTasksList");
 
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
-
-				client.sendToClient(message);
 
 				try {
 					client.sendToClient(message);
@@ -79,7 +77,7 @@ public class SimpleServer extends AbstractServer {
 
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
 
-			} else if (request.startsWith("#updateTask")) {
+			} else if (message.startsWith("#updateTask")) {
 
 				Task task = (Task) message.getObject();
 				System.out.println("taskname" + task.getTaskName() + "taskid" + task.getTaskId()
@@ -89,6 +87,38 @@ public class SimpleServer extends AbstractServer {
 
 				message.setMessage("#updateTask");
 				message.setObject(task);
+				client.sendToClient(message);
+			} else if (message.startsWith("#openTask")) {
+				message.setMessage("#openTask");
+				client.sendToClient(message);
+			} else if (message.startsWith("#submitTask")) {
+				Task task = (Task) message.getObject(); // derefrence the object from the message
+				DatabaseManager.addTask(task, session);
+
+				client.sendToClient(message);
+			} else if (message.startsWith("#Login")) {
+				User user = (User) message.getObject();// derefrence the object from the message
+				System.err.println("Login success. Welcome, " + user.getUserName() + " "
+						+ user.getPassword() + " " + user.getAge() + " " + user.getGender() + " "
+						+ user.getCommunity());
+				User userFromDB = DatabaseManager.authenticateUser(user, session);
+
+				if (userFromDB != null && userFromDB.getPassword().equals(user.getPassword())) {
+					System.err.println("Login success");
+					message.setMessage("#loginSuccess");
+					message.setObject(userFromDB); // here we return the user object so we can save his details.
+				} else {
+					System.err.println("Login failed");
+					message.setMessage("#loginFailed");
+
+				}
+				client.sendToClient(message);
+			} else if (message.startsWith("#createUser")) {
+				User user = (User) message.getObject();
+				System.out.println("User created: " + user.getUserName() + " " + user.getPassword() + " "
+						+ user.getAge() + " " + user.getGender() + " " + user.getCommunity() + " " + user.getStatus());
+				DatabaseManager.addUser(session, user);
+				message.setMessage("#userCreated");
 				client.sendToClient(message);
 			}
 
