@@ -15,7 +15,7 @@ import java.util.Random;
 public class SOS implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "SOSid", updatable = false)
+//    @Column(name = "SOSid", updatable = false)
     private int SOSid;
     private String date;
     private int time;

@@ -63,7 +63,6 @@ public class LoginController {
     }
 
 public void handlePressingSOS(ActionEvent event) {
-        System.out.print("sending SOS from login1");
         SOS newSOS=new SOS();//SimpleClient.getCurrentUser());
         Message message = new Message("#SOSAdd", newSOS);
         try {

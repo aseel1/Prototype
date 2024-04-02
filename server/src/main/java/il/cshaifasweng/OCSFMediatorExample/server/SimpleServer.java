@@ -138,10 +138,8 @@ public class SimpleServer extends AbstractServer {
 				client.sendToClient(message);
 			}
 			else if (message.startsWith("#SOSAdd")) {
-				 System.out.print("sending SOS from login2");
 				SOS newsos = (SOS) message.getObject(); // dereference the object from the message
 				DatabaseManager.addSOS(session,newsos);
-				System.out.print("sending SOS from login4");
 				Message doneMessage = new Message("#addSOSDone");
 				client.sendToClient(doneMessage);
 			}

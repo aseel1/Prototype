@@ -138,7 +138,6 @@ public class SimpleClient extends AbstractClient {
 			}
 		}
 		else if (message.getMessage().equals("#addSOSDone")) {
-			System.out.print("sending SOS from login3");
 			Platform.runLater(() -> {
 				try {
 
