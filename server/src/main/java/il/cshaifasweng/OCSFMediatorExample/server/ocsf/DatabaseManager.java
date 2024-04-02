@@ -43,11 +43,15 @@ public class DatabaseManager {
 
         for (int i = 0; i < 14; i++) {
             String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
+            String communityManager="";
+            if (role.equals("Manager")){
+                communityManager=(i % 2 == 0) ? "Haifa" : "Nazareth";
+            }
             User user = new User(i, "User" + i, "Male", "password" + random.nextInt(),
-                    Integer.toString(20 + random.nextInt(60)), "Community" + random.nextInt(10), role);
+                    Integer.toString(20 + random.nextInt(60)), "Community" + random.nextInt(10), role,communityManager);
             session.save(user);
         }
-        User user = new User(212393532, "aseel", "male", "1234", "20", "community", "manger");
+        User user = new User(212393532, "aseel", "male", "1234", "20", "community", "manager","Haifa");
         session.save(user);
         session.clear();
     }
