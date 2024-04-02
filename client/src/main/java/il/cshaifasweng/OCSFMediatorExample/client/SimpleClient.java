@@ -33,6 +33,7 @@ public class SimpleClient extends AbstractClient {
 	@Override
 	protected void handleMessageFromServer(Object msg) {
 		message = (Message) msg;
+
 		if (msg.getClass().equals(Warning.class)) {
 			EventBus.getDefault().post(new WarningEvent((Warning) msg));
 		} else if (message.getMessage().equals("#showUsersList")) {
@@ -42,7 +43,14 @@ public class SimpleClient extends AbstractClient {
 				e.printStackTrace();
 			}
 
-		} else if (message.getMessage().equals("#showTasksList")) {
+		}else if (message.getMessage().equals("#showMembersList")) {
+			try {
+				App.setRoot("MembersList"); // calling the fxml function will generate the initliaze of
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}else if (message.getMessage().equals("#showTasksList")) {
 			try {
 				System.out.println("(Client) Tasks list received from server.");
 				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of
@@ -64,7 +72,7 @@ public class SimpleClient extends AbstractClient {
 				currentUser = (User) message.getObject();
 				System.err.println("Login success. Welcome, " + currentUser.getUserName() + " "
 						+ currentUser.getPassword() + " " + currentUser.getAge() + " " + currentUser.getGender() + " "
-						+ currentUser.getCommunity());
+						+ currentUser.getCommunity()+ currentUser.getCommunityManager());
 				App.setRoot("primary");
 				Platform.runLater(new Runnable() {
 					@Override
