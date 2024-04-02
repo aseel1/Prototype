@@ -3,6 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import java.io.IOException;
 import java.util.List;
 
+import javafx.scene.control.ButtonType;
 import org.greenrobot.eventbus.EventBus;
 
 import antlr.debug.MessageEvent;
@@ -136,6 +137,21 @@ public class SimpleClient extends AbstractClient {
 			} catch (Exception e) {
 			}
 		}
+		else if (message.getMessage().equals("#addSOSDone")) {
+			System.out.print("sending SOS from login3");
+			Platform.runLater(() -> {
+				try {
+
+					//String currentFXMLPage = "Login"; //getCurrentFXMLPage(); // Implement this method to get the current FXML page
+					App.setRoot("Login"); // Navigate back to the current page
+					showAlert("your request have received", "Help on the way!", Alert.AlertType.INFORMATION);
+				} catch (IOException e) {
+					e.printStackTrace();
+					showAlert("Error", "Failed to contact help.", Alert.AlertType.ERROR);
+				}
+			});
+		}
+
 
 	}
 

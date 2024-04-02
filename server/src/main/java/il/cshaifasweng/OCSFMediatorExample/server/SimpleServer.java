@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager;
@@ -16,11 +17,6 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-
-import il.cshaifasweng.OCSFMediatorExample.entities.Message;
-import il.cshaifasweng.OCSFMediatorExample.entities.Task;
-import il.cshaifasweng.OCSFMediatorExample.entities.User;
-import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 
 public class SimpleServer extends AbstractServer {
 
@@ -133,9 +129,6 @@ public class SimpleServer extends AbstractServer {
 				}
 				tx.commit(); // This line commits the transaction including the loggedIn status update
 			}
-
-
-
 			else if (message.startsWith("#createUser")) {
 				User user = (User) message.getObject();
 				System.out.println("User created: " + user.getUserName() + " " + user.getPassword() + " "
@@ -143,6 +136,14 @@ public class SimpleServer extends AbstractServer {
 				DatabaseManager.addUser(session, user);
 				message.setMessage("#userCreated");
 				client.sendToClient(message);
+			}
+			else if (message.startsWith("#SOSAdd")) {
+				 System.out.print("sending SOS from login2");
+				SOS newsos = (SOS) message.getObject(); // dereference the object from the message
+				DatabaseManager.addSOS(session,newsos);
+				System.out.print("sending SOS from login4");
+				Message doneMessage = new Message("#addSOSDone");
+				client.sendToClient(doneMessage);
 			}
 
 			tx.commit();
