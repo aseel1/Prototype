@@ -117,8 +117,7 @@ public class SimpleServer extends AbstractServer {
 				client.sendToClient(message);
 			} else if (message.startsWith("#LogOut")) {
 				User userFromClient = (User) message.getObject();// Received user info from the client
-				Session newsession=DatabaseManager.getSessionFactory().openSession();
-				User userFromDB = DatabaseManager.authenticateUser(userFromClient,newsession); // Retrieve the actual user object from DB
+				User userFromDB = DatabaseManager.authenticateUser(userFromClient,session); // Retrieve the actual user object from DB
 				if (userFromDB != null && userFromDB.isLoggedIn()) {
 					userFromDB.setLoggedIn(false); // Correctly update the userFromDB instance
 					session.update(userFromDB); // Persist the changes for userFromDB

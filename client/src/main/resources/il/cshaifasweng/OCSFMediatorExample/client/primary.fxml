@@ -46,9 +46,9 @@
                <Button fx:id="logOutButton" layoutX="578.0" layoutY="421.0" mnemonicParsing="false" onAction="#logOutAction" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="LogOut" />
                <MenuButton fx:id="reportsButton" layoutX="49.0" layoutY="102.0" mnemonicParsing="false" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="Reports">
                   <items>
-                     <MenuItem mnemonicParsing="false" text="View Community Members" onAction="#handleViewCommunityMembers"/>
-                     <MenuItem mnemonicParsing="false" text="View Help Requests" onAction="#handleViewHelpRequests"/>
-                     <MenuItem mnemonicParsing="false" text="View Completed Tasks" onAction="#handleViewCompletedTasks"/>
+                     <MenuItem mnemonicParsing="false" onAction="#handleViewCommunityMembers" text="View Community Members" />
+                     <MenuItem mnemonicParsing="false" onAction="#handleViewHelpRequests" text="View Help Requests" />
+                     <MenuItem mnemonicParsing="false" onAction="#handleViewCompletedTasks" text="View Completed Tasks" />
                   </items>
                </MenuButton>
 
