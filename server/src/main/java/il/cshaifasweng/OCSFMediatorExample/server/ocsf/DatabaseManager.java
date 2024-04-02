@@ -154,7 +154,7 @@ public class DatabaseManager {
 
         try {
             // Create a query to find the user with the provided username and password
-            Query query = session.createQuery("FROM User WHERE username = :username AND password = :password");
+            Query query = session.createQuery("FROM User WHERE userName = :username AND password = :password");
             query.setParameter("username", user.getUserName());
             query.setParameter("password", user.getPassword());
 
