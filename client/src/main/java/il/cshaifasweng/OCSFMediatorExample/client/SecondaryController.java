@@ -7,6 +7,7 @@ import java.util.List;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -74,6 +75,10 @@ public class SecondaryController {
         System.out.println("Initialized TableView with " + userTable.getColumns().size() + " columns.");
         System.out.println("In initialize. userTable is " + (userTable == null ? "null" : "not null"));
 
+    }
+
+    public void handlePressingSOS(ActionEvent event) {
+        SimpleClient.pressingSOS("secondary");
     }
 
     // public void updateTable(List<User> users) {

@@ -6,6 +6,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -154,4 +155,7 @@ public class TasksController {
         dialog.show();
     }
 
+    public void handlePressingSOS(ActionEvent event) {
+        SimpleClient.pressingSOS("Tasks");
+    }
 }

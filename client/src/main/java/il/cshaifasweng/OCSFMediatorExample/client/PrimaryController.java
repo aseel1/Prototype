@@ -158,4 +158,7 @@ public class PrimaryController {
 		// Implement fetching and displaying completed tasks
 	}
 
+	public void handlePressingSOS(ActionEvent event) {
+		SimpleClient.pressingSOS("primary");
+	}
 }

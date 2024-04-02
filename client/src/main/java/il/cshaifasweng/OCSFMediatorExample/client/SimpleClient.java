@@ -3,15 +3,12 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import java.io.IOException;
 import java.util.List;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import javafx.scene.control.ButtonType;
 import org.greenrobot.eventbus.EventBus;
 
 import antlr.debug.MessageEvent;
-import il.cshaifasweng.OCSFMediatorExample.entities.Message;
-import il.cshaifasweng.OCSFMediatorExample.entities.Task;
-import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
-import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -140,9 +137,8 @@ public class SimpleClient extends AbstractClient {
 		else if (message.getMessage().equals("#addSOSDone")) {
 			Platform.runLater(() -> {
 				try {
-
-					//String currentFXMLPage = "Login"; //getCurrentFXMLPage(); // Implement this method to get the current FXML page
-					App.setRoot("Login"); // Navigate back to the current page
+					String currentFXMLPage = (String) message.getObject(); // Implement this method to get the current FXML page
+					App.setRoot(currentFXMLPage); // Navigate back to the current page
 					showAlert("your request have received", "Help on the way!", Alert.AlertType.INFORMATION);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -172,6 +168,21 @@ public class SimpleClient extends AbstractClient {
 		alert.setHeaderText(null);
 		alert.setContentText(content);
 		alert.showAndWait();
+	}
+
+	//here we use it to when we press on the SOS button
+	protected static void pressingSOS(String page){
+		SOS newSOS=new SOS();
+		if(!page.equals("Login")&&!page.equals("UserCreationForm")) {
+			newSOS.setUser(getCurrentUser());
+        }
+		String sendingMassage ="#SOSAdd" + page;
+		Message message = new Message(sendingMassage, newSOS);
+		try {
+			getClient().sendToServer(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 

@@ -63,12 +63,6 @@ public class LoginController {
     }
 
 public void handlePressingSOS(ActionEvent event) {
-        SOS newSOS=new SOS();//SimpleClient.getCurrentUser());
-        Message message = new Message("#SOSAdd", newSOS);
-        try {
-            SimpleClient.getClient().sendToServer(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    SimpleClient.pressingSOS("Login");
     }
 }

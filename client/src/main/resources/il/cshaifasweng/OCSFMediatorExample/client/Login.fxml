@@ -24,7 +24,7 @@
             <TextField fx:id="usernameField" maxWidth="250" promptText="Username" style="-fx-font-size: 12px; -fx-background-color: #EEEEEE; -fx-background-radius: 15; -fx-text-fill: #333; -fx-prompt-text-fill: #888888;" />
             <PasswordField fx:id="passwordField" maxWidth="250" promptText="Password" style="-fx-font-size: 12px; -fx-background-color: #EEEEEE; -fx-background-radius: 15; -fx-text-fill: #333; -fx-prompt-text-fill: #888888;" />
         </VBox>
-      <Button fx:id="SOSbutton" mnemonicParsing="false" onAction="#handlePressingSOS" text="SOS" />
+        <Button fx:id="SOSbutton" layoutX="55.0" layoutY="421.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS" />
         <Button fx:id="loginButton" maxWidth="250" onAction="#handleLogin" style="-fx-background-radius: 15; -fx-background-color: rgba(213,75,75,0.82); -fx-text-fill: white; -fx-font-size: 14px;" text="Login" />
         <Button fx:id="createAccountButton" maxWidth="250" onAction="#handleCreateUser" style="-fx-background-radius: 15; -fx-background-color: rgba(213,75,75,0.82); -fx-text-fill: white; -fx-font-size: 14px;" text="Create Account" />
         <Hyperlink fx:id="forgotPasswordLink" onAction="#handleForgotPassword" style="-fx-text-fill: rgba(213,75,75,0.82); -fx-font-size: 12px;" text="Forgot Password?" />
