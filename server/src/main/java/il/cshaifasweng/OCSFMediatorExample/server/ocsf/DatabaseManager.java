@@ -30,6 +30,7 @@ public class DatabaseManager {
             Configuration configuration = new Configuration();
             configuration.addAnnotatedClass(Task.class);
             configuration.addAnnotatedClass(User.class);
+            configuration.addAnnotatedClass(SOS.class);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties())
                     .build();
