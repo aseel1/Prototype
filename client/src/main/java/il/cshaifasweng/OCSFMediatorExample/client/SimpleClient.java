@@ -89,7 +89,19 @@ public class SimpleClient extends AbstractClient {
 				});
 			} catch (Exception e) {
 			}
-		} else if (message.getMessage().equals("#userCreated")) {
+		}else if (message.getMessage().equals("#LoggedOut")) {
+			Platform.runLater(() -> {
+				try {
+					App.setRoot("Login"); // Navigate back to the login screen
+					showAlert("Logout Successful", "You have been successfully logged out.", Alert.AlertType.INFORMATION);
+				} catch (IOException e) {
+					e.printStackTrace();
+					showAlert("Error", "Failed to load the login page.", Alert.AlertType.ERROR);
+				}
+			});
+		}
+
+		else if (message.getMessage().equals("#userCreated")) {
 			try {
 				Platform.runLater(() -> {
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -139,4 +151,14 @@ public class SimpleClient extends AbstractClient {
 		return client;
 	}
 
+	private void showAlert(String title, String content, Alert.AlertType type) {
+		Alert alert = new Alert(type);
+		alert.setTitle(title);
+		alert.setHeaderText(null);
+		alert.setContentText(content);
+		alert.showAndWait();
+	}
+
+
 }
+

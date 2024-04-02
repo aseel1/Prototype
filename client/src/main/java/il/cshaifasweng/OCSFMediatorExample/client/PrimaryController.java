@@ -3,7 +3,11 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import org.greenrobot.eventbus.EventBus;
 
 import com.mysql.cj.xdevapi.Client;
@@ -48,6 +52,8 @@ public class PrimaryController {
 	@FXML
 	private Label statusLabel;
 
+	@FXML
+	private MenuButton reportsButton;
 	private static PrimaryController instance;
 
 	public PrimaryController() {
@@ -61,6 +67,8 @@ public class PrimaryController {
 	public void updateLabels(String username, String status) {
 		usernameLabel.setText("Username: " + username);
 		statusLabel.setText("Status: " + status);
+
+		reportsButton.setVisible("manager".equals(status));
 	}
 
 	@FXML
@@ -103,6 +111,51 @@ public class PrimaryController {
 			e.printStackTrace();
 		}
 
+	}
+
+	@FXML
+	protected void logOutAction(ActionEvent event) {
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to log out?", ButtonType.YES, ButtonType.NO);
+		alert.showAndWait().ifPresent(response -> {
+			if (response == ButtonType.YES) {
+				sendLogoutRequest();
+			}
+		});
+	}
+
+	private void sendLogoutRequest() {
+
+		Message message = new Message("#LogOut", SimpleClient.getCurrentUser());
+		System.out.println(message);
+		try {
+			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary) Sending logout message to server.");
+		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
+			e.printStackTrace();
+		}
+	}
+	@FXML
+	protected void handleViewCommunityMembers(ActionEvent event) {
+//		try {
+//			// Assume communityId is available and identifies the manager's community
+//			String communityId = SimpleClient.getCurrentUser().getCommunity(); // You need to implement this method
+//			Message requestMessage = new Message("#getCommunityMembers", communityId);
+//			SimpleClient.getClient().sendToServer(requestMessage);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			// Optionally, show an alert dialog to the user about the error
+//		}
+	}
+
+	@FXML
+	protected void handleViewHelpRequests(ActionEvent event) {
+		// Implement fetching and displaying help requests
+	}
+
+	@FXML
+	protected void handleViewCompletedTasks(ActionEvent event) {
+		// Implement fetching and displaying completed tasks
 	}
 
 }
