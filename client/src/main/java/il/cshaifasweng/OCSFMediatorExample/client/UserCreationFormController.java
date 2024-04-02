@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
@@ -20,6 +21,9 @@ public class UserCreationFormController {
 
     @FXML
     private TextField communityField;
+
+    @FXML
+    private TextField communityManagerField;
 
     @FXML
     private Button createUserButton;
@@ -45,7 +49,11 @@ public class UserCreationFormController {
         String age = ageField.getText();
         String community = communityField.getText();
         String status = statusField.getText();
-        User user = new User(id, username, gender, password, age, community, status);
+        String communitymanager=null;
+        if (Objects.equals(status, "manager")){
+            communitymanager = communityManagerField.getText();
+        }
+        User user = new User(id, username, gender, password, age, community, status, communitymanager);
         Message message = new Message("#createUser", user);
 
         try {

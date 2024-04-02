@@ -16,6 +16,7 @@ public class User implements Serializable {
     private String password;
     private String age;
     private String community;
+    private String communityManager;
 
     @NotNull
     private boolean loggedIn=false;
@@ -23,7 +24,7 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(int id, String userName, String gender, String password, String age, String community, String status) {
+    public User(int id, String userName, String gender, String password, String age, String community, String status, String communityManager) {
         super();
         this.id = id;
         this.status = status;
@@ -32,6 +33,7 @@ public class User implements Serializable {
         this.password = password;
         this.age = age;
         this.community = community;
+        this.communityManager=communityManager;
     }
 
     public User(String userName, String password) {
@@ -102,5 +104,12 @@ public class User implements Serializable {
 
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
+    }
+    public String getCommunityManager() {
+        return communityManager;
+    }
+
+    public void setCommunityManager(String communityManager) {
+        this.communityManager = communityManager;
     }
 }

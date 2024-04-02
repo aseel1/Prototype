@@ -46,13 +46,17 @@ public class DatabaseManager {
 
         for (int i = 0; i < 14; i++) {
             String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
+            String communityManager="";
+            if (role.equals("Manager")){
+                communityManager=(i % 2 == 0) ? "Haifa" : "Nazareth";
+            }
             User user = new User(i, "User" + i, "Male", "password" + random.nextInt(),
-                    Integer.toString(20 + random.nextInt(60)), "Community" + random.nextInt(10), role);
+                    Integer.toString(20 + random.nextInt(60)), "Community" + random.nextInt(10), role,communityManager);
             session.save(user);
         }
-        User user = new User(212393532, "aseel", "male", "1234", "20", "community", "manger");
-        User user2 = new User(324888155, "samih", "male", "1234", "21", "Nazareth", "manager");
+        User user = new User(212393532, "aseel", "male", "1234", "20", "community", "manager","Haifa");
         session.save(user);
+        User user2 = new User(324888155,"samih","Male","1234","21","nazareth","manager","haifa");
         session.save(user2);
         session.clear();
     }
@@ -152,7 +156,10 @@ public class DatabaseManager {
         return users;
     }
 
-    public static void addTask(Task task, Session session) {session.save(task); }
+    public static void addTask(Task task, Session session) {
+
+        session.save(task);
+    }
 
     public static void addUser(Session session, User user) {
         session.save(user);

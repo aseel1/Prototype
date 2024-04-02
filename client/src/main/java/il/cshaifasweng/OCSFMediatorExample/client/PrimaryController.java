@@ -137,6 +137,17 @@ public class PrimaryController {
 	}
 	@FXML
 	protected void handleViewCommunityMembers(ActionEvent event) {
+		Message message = new Message("#showMembersList", SimpleClient.getCurrentUser().getCommunityManager());
+		try {
+			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary)Sending message to server: ");
+
+		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
+			e.printStackTrace();
+		}
+
+
 //		try {
 //			// Assume communityId is available and identifies the manager's community
 //			String communityId = SimpleClient.getCurrentUser().getCommunity(); // You need to implement this method

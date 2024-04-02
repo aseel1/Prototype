@@ -18,6 +18,11 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.Task;
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
+
 public class SimpleServer extends AbstractServer {
 
 	public SimpleServer(int port) {
@@ -129,6 +134,9 @@ public class SimpleServer extends AbstractServer {
 				}
 				tx.commit(); // This line commits the transaction including the loggedIn status update
 			}
+
+
+
 			else if (message.startsWith("#createUser")) {
 				User user = (User) message.getObject();
 				System.out.println("User created: " + user.getUserName() + " " + user.getPassword() + " "
