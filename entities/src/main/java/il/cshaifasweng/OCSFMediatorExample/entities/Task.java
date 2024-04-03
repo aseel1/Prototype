@@ -31,6 +31,7 @@ public class Task implements Serializable {
     @ManyToOne
     @JoinColumn(name = "volunteer_id")
     private User volunteer;
+    private int volTime;
     private String status;
 
     public Task() {}
@@ -101,6 +102,10 @@ public class Task implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public int getVolTime() {return volTime;}
+
+    public void setVolTime(int volTime) {this.volTime = volTime;}
 
     public void displayTaskForm(Task task) {
         Stage stage = new Stage();

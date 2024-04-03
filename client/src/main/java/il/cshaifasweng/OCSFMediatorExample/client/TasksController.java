@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.*;
 
@@ -133,6 +134,8 @@ public class TasksController {
                 {
                     task.setStatus("In process");
                     task.setVolunteer(getCurrentUser());
+                    LocalDateTime now = LocalDateTime.now();
+                    task.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
                 }
                 taskTable.refresh();
             } catch (IOException b) {

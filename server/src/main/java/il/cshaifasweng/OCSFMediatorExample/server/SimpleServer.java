@@ -6,6 +6,7 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -73,7 +74,6 @@ public class SimpleServer extends AbstractServer {
 					client.sendToClient(message);
 				} catch (IOException e) {
 					e.printStackTrace();
-					System.out.println("catcedhedh");
 				}
 
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
@@ -109,7 +109,7 @@ public class SimpleServer extends AbstractServer {
 				message.setMessage("#openTask");
 				client.sendToClient(message);
 			} else if (message.startsWith("#submitTask")) {
-				Task task = (Task) message.getObject(); // derefrence the object from the message
+				Task task = (Task) message.getObject(); // dereference the object from the message
 				DatabaseManager.addTask(task, session);
 				client.sendToClient(message);
 			} else if (message.startsWith("#Login")) {
@@ -153,6 +153,8 @@ public class SimpleServer extends AbstractServer {
 				Task thisTask=(Task)message.getObject();
 				if(thisTask.getStatus().equals("idle")){
 					thisTask.setStatus("In Process");
+					LocalDateTime now = LocalDateTime.now();
+					thisTask.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
 					DatabaseManager.updateTask(session,thisTask);
 					message.setObject("Done");
 				}
