@@ -7,6 +7,8 @@ import java.util.Random;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+
+import il.cshaifasweng.OCSFMediatorExample.entities.SOS;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,6 +30,7 @@ public class DatabaseManager {
             Configuration configuration = new Configuration();
             configuration.addAnnotatedClass(Task.class);
             configuration.addAnnotatedClass(User.class);
+            configuration.addAnnotatedClass(SOS.class);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties())
                     .build();
@@ -53,6 +56,8 @@ public class DatabaseManager {
         }
         User user = new User(212393532, "aseel", "male", "1234", "20", "community", "manager","Haifa");
         session.save(user);
+        User user2 = new User(324888155,"samih","Male","1234","21","nazareth","manager","haifa");
+        session.save(user2);
         session.clear();
     }
 
@@ -68,6 +73,13 @@ public class DatabaseManager {
             Task task = new Task(i, "Task" + i, date, time, volunteer, status,user);
             session.save(task);
         }
+        session.clear();
+    }
+
+    public static void generateSOS(Session session) throws Exception{
+        SOS mySos = new SOS();
+        session.save(mySos);
+        session.clear();
     }
 
     public static List<Task> getTasksByStatusAndCommunity(Session session, String status, String community) {
@@ -173,6 +185,8 @@ public class DatabaseManager {
         session.save(user);
     }
 
+    public static void addSOS(Session session, SOS sos) {session.save(sos); }
+
     public static User authenticateUser(User user, Session session) {
         User userFromDB = null;
 
@@ -200,6 +214,7 @@ public class DatabaseManager {
             session.beginTransaction();
             generateUsers(session);
             generateTasks(session);
+            generateSOS(session);
 
             session.getTransaction().commit();
 

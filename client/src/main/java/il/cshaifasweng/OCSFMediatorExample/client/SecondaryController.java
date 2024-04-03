@@ -7,11 +7,13 @@ import java.util.List;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.message;
+import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.tableMessage;
 
 public class SecondaryController {
 
@@ -56,7 +58,6 @@ public class SecondaryController {
     private void switchToPrimary() throws IOException {
         App.setRoot("primary");
     }
-
     @FXML
     public void initialize() {
         user_id.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
@@ -66,14 +67,17 @@ public class SecondaryController {
         user_age.setCellValueFactory(new PropertyValueFactory<User, String>("age"));
         user_community.setCellValueFactory(new PropertyValueFactory<User, String>("community"));
 
-        ObservableList<User> observableUsers = FXCollections.observableArrayList((List<User>) message.getObject());
-        System.out.println("Created ObservableList with " + observableUsers.size() +
-                " users.");
+        ObservableList<User> observableUsers = FXCollections.observableArrayList((List<User>) tableMessage.getObject());
+        System.out.println("Created ObservableList with " + observableUsers.size() + " users.");
         userTable.setItems(observableUsers);
 
         System.out.println("Initialized TableView with " + userTable.getColumns().size() + " columns.");
         System.out.println("In initialize. userTable is " + (userTable == null ? "null" : "not null"));
 
+    }
+
+    public void handlePressingSOS(ActionEvent event) {
+        SimpleClient.pressingSOS("secondary");
     }
 
     // public void updateTable(List<User> users) {

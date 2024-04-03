@@ -80,4 +80,7 @@ public class TaskFormController {
 
     }
 
+    public void handlePressingSOS(ActionEvent event) {
+        SimpleClient.pressingSOS("TaskForm");
+    }
 }

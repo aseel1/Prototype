@@ -1,8 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import java.io.IOException;
-
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.SOS;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,4 +62,7 @@ public class LoginController {
 
     }
 
+public void handlePressingSOS(ActionEvent event) {
+    SimpleClient.pressingSOS("Login");
+    }
 }

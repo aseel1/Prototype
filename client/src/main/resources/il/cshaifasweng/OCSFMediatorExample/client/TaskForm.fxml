@@ -41,6 +41,7 @@
                         <Font name="System Italic" size="18.0" />
                     </font>
                 </Button>
+                <Button fx:id="SOSbutton" layoutX="69.0" layoutY="481.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS" />
                 <Button fx:id="secondaryButton" layoutX="272.0" layoutY="481.0" onAction="#switchToPrimary" prefHeight="42.0" prefWidth="224.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Switch to Primary View">                    <font>
                         <Font name="System Italic" size="18.0" />
                     </font>
