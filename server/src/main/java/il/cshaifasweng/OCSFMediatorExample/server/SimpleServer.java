@@ -62,9 +62,8 @@ public class SimpleServer extends AbstractServer {
 				client.sendToClient(message);
 
 			} else if (message.startsWith("#showTasksList")) {
-
-				List<Task> tasks = DatabaseManager.getAllTasks(session);
-
+				User thisUser = (User)message.getObject();
+				List<Task> tasks = DatabaseManager.getTasksByStatusAndUser(session,thisUser);
 				message.setObject(tasks);
 				message.setMessage("#showTasksList");
 
@@ -75,8 +74,6 @@ public class SimpleServer extends AbstractServer {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-
-				System.out.println("(SimpleServer)message got from primary and now sending to client");
 
 			}else if (message.startsWith("#showTasksListIdle")) {
 				// This assumes the message object contains the User or enough information to fetch the User

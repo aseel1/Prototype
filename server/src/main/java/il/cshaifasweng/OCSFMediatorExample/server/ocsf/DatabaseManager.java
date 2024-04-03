@@ -171,6 +171,23 @@ public class DatabaseManager {
 
         return tasks;
     }
+    public static List<Task> getTasksByStatusAndUser(Session session, User thisUser) {
+        List<Task> tasks = null;
+        try {
+            // Update the query to correctly navigate from Task to its User, then filter by the user's community.
+            // This assumes your User entity has a 'community' attribute or a way to identify the user's community.
+            // Adjust "user.community" to the correct path from User to the community attribute.
+            String hql = "SELECT t FROM Task t WHERE t.status = :status AND not t.user = :thisUser";
+            Query<Task> query = session.createQuery(hql, Task.class);
+            query.setParameter("status", "Idle");
+            query.setParameter("thisUser", thisUser);
+            tasks = query.list();
+            System.out.println("Found " + tasks.size() + " tasks with status idle " + " and not with user " + thisUser + ".");
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
     public static List<Notification> getUsersNotifications(Session session,User user) {
         List<Notification> allNotifications= new ArrayList<>();
         List<Notification> notifications= new ArrayList<>();
@@ -250,10 +267,10 @@ public class DatabaseManager {
 
             session.getTransaction().commit();
 
-            // printAllUsers(session);
-            // printAllTasks(session);
-            getAllTasks(session);
-            getAllUsers(session);
+//             printAllUsers(session);
+//             printAllTasks(session);
+//            getAllTasks(session);
+//            getAllUsers(session);
         } catch (Exception exception) {
             if (session != null) {
                 session.getTransaction().rollback();

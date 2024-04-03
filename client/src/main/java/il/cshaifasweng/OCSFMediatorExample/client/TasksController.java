@@ -32,19 +32,19 @@ public class TasksController {
     private TableColumn<Task, String> taskName;
 
     @FXML
+    private TableColumn<Task,User> user;
+
+    @FXML
     private TableColumn<Task, String> date;
 
     @FXML
     private TableColumn<Task, Integer> time;
 
-    @FXML
-    private TableColumn<Task, User> volunteer;
-
-    @FXML
-    private TableColumn<Task, String> status;
-
-    @FXML
-    private TableColumn<Task,User> user;
+//    @FXML
+//    private TableColumn<Task, User> volunteer;
+//
+//    @FXML
+//    private TableColumn<Task, String> status;
 
     @FXML
     private void switchToPrimary() throws IOException {
@@ -55,11 +55,11 @@ public class TasksController {
     public void initialize() {
         taskId.setCellValueFactory(new PropertyValueFactory<Task, Integer>("taskId"));
         taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("taskName"));
+        user.setCellValueFactory(new PropertyValueFactory<Task, User>("user"));
         date.setCellValueFactory(new PropertyValueFactory<Task, String>("date"));
         time.setCellValueFactory(new PropertyValueFactory<Task, Integer>("time"));
-        volunteer.setCellValueFactory(new PropertyValueFactory<Task, User>("volunteer"));
-        status.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
-        user.setCellValueFactory(new PropertyValueFactory<Task, User>("user"));
+//        volunteer.setCellValueFactory(new PropertyValueFactory<Task, User>("volunteer"));
+//        status.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
 
         ObservableList<Task> observableTasks = FXCollections.observableArrayList((List<Task>) tableMessage.getObject());
         taskTable.setItems(observableTasks);
@@ -82,26 +82,29 @@ public class TasksController {
         Label label2 = new Label("Task Name: ");
         Label label3 = new Label("Date: ");
         Label label4 = new Label("Time: ");
-//        Label label5 = new Label("Volunteer: ");
-        Label label6 = new Label("Status: ");
-        Label label7 = new Label("user: ");
+        Label label5 = new Label("Status: ");
+        Label label6 = new Label("user: ");
+//        Label label7 = new Label("Volunteer: ");
+
 
         TextField text1 = new TextField(String.valueOf(task.getTaskId()));
         TextField text2 = new TextField(task.getTaskName());
         TextField text3 = new TextField(task.getDate());
         TextField text4 = new TextField(String.valueOf(task.getTime()));
-//        TextField text5 = new TextField(task.getVolunteer().getUserName());
-        TextField text6 = new TextField(task.getStatus());
+        TextField text5 = new TextField(task.getStatus());
+        TextField text6 = new TextField(task.getUser().getUserName());
         Button changeStatusButton = new Button("I want to do this");
-        TextField text7 = new TextField(task.getUser().getUserName());
+//        TextField text7 = new TextField(task.getVolunteer().getUserName());
+
 
         text1.setEditable(false);
         text2.setEditable(false);
         text3.setEditable(false);
         text4.setEditable(false);
-//        text5.setEditable(false);
-        text7.setEditable(false);
+        text5.setEditable(false);
         text6.setEditable(false);
+//        text7.setEditable(false);
+
 
         // Create layout and add items
         GridPane grid = new GridPane();
@@ -113,13 +116,13 @@ public class TasksController {
         grid.add(text3, 2, 3);
         grid.add(label4, 1, 4);
         grid.add(text4, 2, 4);
-//        grid.add(label5, 1, 5);
-//        grid.add(text5, 2, 5);
-        grid.add(label6, 1, 5);
-        grid.add(text6, 2, 5);
-        grid.add(label7, 1, 6);
-        grid.add(text7, 2, 6);
+        grid.add(label5, 1, 5);
+        grid.add(text5, 2, 5);
+        grid.add(label6, 1, 6);
+        grid.add(text6, 2, 6);
         grid.add(changeStatusButton,1,7);
+//        grid.add(label7, 1, 8);
+//        grid.add(text7, 2, 8);
 
 
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);

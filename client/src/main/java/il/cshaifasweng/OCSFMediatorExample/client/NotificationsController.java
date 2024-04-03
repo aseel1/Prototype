@@ -22,11 +22,11 @@ public class NotificationsController {
     @FXML
     private TableView<Notification> notificationTableView;
 
-    @FXML
-    private ListView<String> notificationsList;
-
-    @FXML
-    private Button returnButton;
+//    @FXML
+//    private ListView<String> notificationsList;
+//
+//    @FXML
+//    private Button returnButton;
 
     @FXML
     private TableColumn<Notification, User> sender;
@@ -44,9 +44,16 @@ public class NotificationsController {
         ObservableList<Notification> observableNotification = FXCollections.observableArrayList((List<Notification>) tableMessage.getObject());
         System.out.println("Created ObservableList with " + observableNotification.size() + " notifications.");
         notificationTableView.setItems(observableNotification);
+//  idk if we want this
+//        notificationTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+//            if (newSelection != null) {
+//                showNotification(newSelection);
+//            }
+//        });
 
         System.out.println("Initialized TableView with " + notificationTableView.getColumns().size() + " columns.");
         System.out.println("In initialize. userTable is " + (notificationTableView == null ? "null" : "not null"));
+
     }
 
     @FXML

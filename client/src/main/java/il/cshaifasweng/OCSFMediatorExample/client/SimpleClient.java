@@ -67,6 +67,7 @@ public class SimpleClient extends AbstractClient {
 		} else if (message.getMessage().equals("#showTasksListIdleResponse")) {
 			try {
 				System.out.println("(Client) Tasks list received from server");
+				tableMessage=message;
 				App.setRoot("TasksIdle"); // calling the fxml function will generate the initliaze of
 
 			} catch (IOException e) {
@@ -77,7 +78,7 @@ public class SimpleClient extends AbstractClient {
 
 		}else if(message.getMessage().equals("changeStatusToIP")) {
 			if ("Done".equals(message.getObject())) {
-			Platform.runLater(() -> {
+				Platform.runLater(() -> {
 				try {
 					App.setRoot("Tasks"); // Navigate back to the current page
 					showAlert("Successful", "You can now proceed by start doing the task," +
@@ -97,6 +98,14 @@ public class SimpleClient extends AbstractClient {
 				}
 
 				});}
+			// to update the table again
+			Message message = new Message("#showTasksList",SimpleClient.getCurrentUser());
+			try {
+				SimpleClient.getClient().sendToServer(message);
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		} else if (message.getMessage().equals("#openTask")) {
 			try {
 				App.setRoot("TaskForm");

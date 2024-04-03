@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 // import net.bytebuddy.jar.asm.Label;
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
