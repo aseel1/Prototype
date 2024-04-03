@@ -25,6 +25,7 @@ public class SimpleClient extends AbstractClient {
 
 	private static SimpleClient client = null;
 	public static Message message;
+	public static Message tableMessage;
 
 	private static User currentUser = null; // this is for the current user(logged in user) holds his details
 
@@ -39,6 +40,7 @@ public class SimpleClient extends AbstractClient {
 		if (msg.getClass().equals(Warning.class)) {
 			EventBus.getDefault().post(new WarningEvent((Warning) msg));
 		} else if (message.getMessage().equals("#showUsersList")) {
+			tableMessage=message;
 			try {
 				App.setRoot("secondary"); // calling the fxml function will generate the initliaze of
 			} catch (IOException e) {
@@ -46,6 +48,7 @@ public class SimpleClient extends AbstractClient {
 			}
 
 		}else if (message.getMessage().equals("#showMembersList")) {
+			tableMessage=message;
 			try {
 				App.setRoot("MembersList"); // calling the fxml function will generate the initliaze of
 			} catch (IOException e) {
@@ -53,6 +56,7 @@ public class SimpleClient extends AbstractClient {
 			}
 
 		}else if (message.getMessage().equals("#showTasksList")) {
+			tableMessage=message;
 			try {
 				System.out.println("(Client) Tasks list received from server.");
 				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of

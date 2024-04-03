@@ -13,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.message;
+import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.tableMessage;
 
 public class SecondaryController {
 
@@ -57,7 +58,6 @@ public class SecondaryController {
     private void switchToPrimary() throws IOException {
         App.setRoot("primary");
     }
-
     @FXML
     public void initialize() {
         user_id.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
@@ -67,9 +67,8 @@ public class SecondaryController {
         user_age.setCellValueFactory(new PropertyValueFactory<User, String>("age"));
         user_community.setCellValueFactory(new PropertyValueFactory<User, String>("community"));
 
-        ObservableList<User> observableUsers = FXCollections.observableArrayList((List<User>) message.getObject());
-        System.out.println("Created ObservableList with " + observableUsers.size() +
-                " users.");
+        ObservableList<User> observableUsers = FXCollections.observableArrayList((List<User>) tableMessage.getObject());
+        System.out.println("Created ObservableList with " + observableUsers.size() + " users.");
         userTable.setItems(observableUsers);
 
         System.out.println("Initialized TableView with " + userTable.getColumns().size() + " columns.");
