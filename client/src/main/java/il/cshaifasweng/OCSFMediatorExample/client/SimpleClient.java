@@ -192,6 +192,17 @@ public class SimpleClient extends AbstractClient {
 				}
 			});
 		}
+		else if(message.getMessage().equals("#showNotificationsList")){
+			tableMessage=message;
+			try {
+				System.out.println("(Client) Notification list received from server.");
+				App.setRoot("Notifications"); // calling the fxml function will generate the initliaze of
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
 
 
 	}

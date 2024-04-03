@@ -1,18 +1,16 @@
 package il.cshaifasweng.OCSFMediatorExample.server.ocsf;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date; // this is for the date format
 import java.util.List;
 import java.util.Random;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-
+import il.cshaifasweng.OCSFMediatorExample.entities.Notification;
 import il.cshaifasweng.OCSFMediatorExample.entities.SOS;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
@@ -31,6 +29,7 @@ public class DatabaseManager {
             configuration.addAnnotatedClass(Task.class);
             configuration.addAnnotatedClass(User.class);
             configuration.addAnnotatedClass(SOS.class);
+            configuration.addAnnotatedClass(Notification.class);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties())
                     .build();
@@ -81,6 +80,18 @@ public class DatabaseManager {
         session.save(mySos);
         session.clear();
     }
+    public static void generateNotifications(Session session) throws Exception{
+        Random random = new Random();
+        List<User> user = getAllUsers(session);
+        for (int i = 0; i < 10; i++) {
+            User sender = user.get(14); // Assuming there are 10 users
+            User recever = user.get(14);
+            Notification notification = new Notification(sender,recever,"hi");
+            session.save(notification);
+        }
+        session.clear();
+    }
+
 
     public static List<Task> getTasksByStatusAndCommunity(Session session, String status, String community) {
         List<Task> tasks = null;
@@ -160,6 +171,26 @@ public class DatabaseManager {
 
         return tasks;
     }
+    public static List<Notification> getUsersNotifications(Session session,User user) {
+        List<Notification> allNotifications= new ArrayList<>();
+        List<Notification> notifications= new ArrayList<>();
+
+        try {
+            // Get all tasks
+            allNotifications = session.createQuery("from Notification").list();
+            System.out.println("ALLNotifications list has : " + allNotifications.size() + " notifications.");
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        for (Notification notification : allNotifications) {
+            if(notification.getRecipient().getId()==user.getId()){
+                notifications.add(notification);
+            }
+        }
+        System.out.println("Notifications list has : " + notifications.size() + " notifications.");
+        return notifications;
+    }
 
     public static List<User> getAllUsers(Session session) {
         List<User> users = null;
@@ -215,6 +246,7 @@ public class DatabaseManager {
             generateUsers(session);
             generateTasks(session);
             generateSOS(session);
+            generateNotifications(session);
 
             session.getTransaction().commit();
 

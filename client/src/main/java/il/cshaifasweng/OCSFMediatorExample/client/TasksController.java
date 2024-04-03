@@ -11,6 +11,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+
+import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.message;
+import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.tableMessage;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -141,6 +145,7 @@ public class TasksController {
             } catch (IOException b) {
                 b.printStackTrace();
             }
+            return null;
         });
 //        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
 //        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);

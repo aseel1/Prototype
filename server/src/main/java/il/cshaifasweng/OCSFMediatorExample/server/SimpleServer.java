@@ -178,6 +178,16 @@ public class SimpleServer extends AbstractServer {
 				Message doneMessage = new Message("#addSOSDone",page);
 				client.sendToClient(doneMessage);
 			}
+			else if (message.startsWith("#getUserNotifications")){
+
+                User user = (User) message.getObject();
+				List<Notification> notifications = DatabaseManager.getUsersNotifications(session,user);
+
+				message.setObject(notifications);
+				message.setMessage("#showNotificationsList");
+				client.sendToClient(message);
+
+			}
 
 			tx.commit();
 

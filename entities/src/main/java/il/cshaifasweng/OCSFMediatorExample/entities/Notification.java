@@ -1,0 +1,79 @@
+package il.cshaifasweng.OCSFMediatorExample.entities;
+
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "notifications")
+public class Notification implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User sender;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User recipient;
+
+    private String message;
+
+    private LocalDateTime timestamp;
+
+    public Notification(User sender, User recipient, String message) {
+        this.sender = sender;
+        this.recipient = recipient;
+        this.message = message;
+        LocalDateTime now = LocalDateTime.now();
+        this.timestamp = now;
+    }
+
+    public Notification() {
+
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public User getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(User recipient) {
+        this.recipient = recipient;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+}
