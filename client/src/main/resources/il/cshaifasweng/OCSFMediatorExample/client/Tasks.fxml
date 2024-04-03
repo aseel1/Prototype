@@ -21,6 +21,7 @@
             <TableColumn fx:id="time" prefWidth="79.20001220703125" text="Time" />
             <TableColumn fx:id="volunteer" prefWidth="83.199951171875" text="Volunteer" />
             <TableColumn fx:id="status" prefWidth="128.800048828125" text="Status" />
+            <TableColumn fx:id="user" prefWidth="128.800048828125" text="user" />
           </columns>
         </TableView>
       </children>

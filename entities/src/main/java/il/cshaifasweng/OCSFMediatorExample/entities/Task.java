@@ -26,20 +26,23 @@ public class Task implements Serializable {
     private int time;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne
     @JoinColumn(name = "volunteer_id")
     private User volunteer;
     private String status;
 
-    public Task() {
-    }
+    public Task() {}
 
-    public Task(int taskId, String taskName, String date, int time, User volunteer, String status) {
+    public Task(int taskId, String taskName, String date, int time, User volunteer, String status,User user) {
         super();
         this.taskId = taskId;
         this.taskName = taskName;
         this.date = date;
         this.time = time;
         this.volunteer = volunteer;
+        this.user=user;
         this.status = status;
     }
 
@@ -81,6 +84,14 @@ public class Task implements Serializable {
 
     public void setVolunteer(User volunteer) {
         this.volunteer = volunteer;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getStatus() {

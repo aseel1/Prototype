@@ -65,10 +65,12 @@ public class DatabaseManager {
         Random random = new Random();
         for (int i = 0; i < 10; i++) {
             User volunteer = session.get(User.class, random.nextInt(10)); // Assuming there are 10 users
-            String status = "idle"; // You need to implement this method
+            User user = session.get(User.class, random.nextInt(10));
+            System.out.println(user);
+            String status = (i%2==0)?"idle":"done"; // You need to implement this method
             String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             int time = random.nextInt(24); // Assuming time is in hours
-            Task task = new Task(i, "Task" + i, date, time, volunteer, status);
+            Task task = new Task(i, "Task" + i, date, time, volunteer, status,user);
             session.save(task);
         }
         session.clear();
@@ -78,6 +80,24 @@ public class DatabaseManager {
         SOS mySos = new SOS();
         session.save(mySos);
         session.clear();
+    }
+
+    public static List<Task> getTasksByStatusAndCommunity(Session session, String status, String community) {
+        List<Task> tasks = null;
+        try {
+            // Update the query to correctly navigate from Task to its User, then filter by the user's community.
+            // This assumes your User entity has a 'community' attribute or a way to identify the user's community.
+            // Adjust "user.community" to the correct path from User to the community attribute.
+            String hql = "SELECT t FROM Task t WHERE t.status = :status AND t.user.community = :community";
+            Query<Task> query = session.createQuery(hql, Task.class);
+            query.setParameter("status", status);
+            query.setParameter("community", community);
+            tasks = query.list();
+            System.out.println("Found " + tasks.size() + " tasks with status " + status + " in community " + community + ".");
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return tasks;
     }
 
     // public static void printAllUsers(Session session) throws Exception {
@@ -157,7 +177,7 @@ public class DatabaseManager {
     }
 
     public static void addTask(Task task, Session session) {
-
+        System.out.println(task.getUser().getUserName());//mzbot
         session.save(task);
     }
 

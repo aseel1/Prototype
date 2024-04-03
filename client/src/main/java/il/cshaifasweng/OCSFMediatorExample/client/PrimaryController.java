@@ -161,7 +161,15 @@ public class PrimaryController {
 
 	@FXML
 	protected void handleViewHelpRequests(ActionEvent event) {
-		// Implement fetching and displaying help requests
+		Message message = new Message("#showTasksListIdle", SimpleClient.getCurrentUser());
+		System.out.println(message);
+		try {
+			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary) Sending req message to server.");
+		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
+			e.printStackTrace();
+		}
 	}
 
 	@FXML

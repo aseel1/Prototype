@@ -48,6 +48,9 @@ public class TasksController {
     private TableColumn<Task, String> status;
 
     @FXML
+    private TableColumn<Task,User> user;
+
+    @FXML
     private void switchToPrimary() throws IOException {
         App.setRoot("primary");
     }
@@ -60,6 +63,7 @@ public class TasksController {
         time.setCellValueFactory(new PropertyValueFactory<Task, Integer>("time"));
         volunteer.setCellValueFactory(new PropertyValueFactory<Task, User>("volunteer"));
         status.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
+        user.setCellValueFactory(new PropertyValueFactory<Task, User>("user"));
 
         ObservableList<Task> observableTasks = FXCollections.observableArrayList((List<Task>) tableMessage.getObject());
         taskTable.setItems(observableTasks);
@@ -84,19 +88,22 @@ public class TasksController {
         Label label4 = new Label("Time: ");
         Label label5 = new Label("Volunteer: ");
         Label label6 = new Label("Status: ");
+        Label label7 = new Label("user: ");
 
         TextField text1 = new TextField(String.valueOf(task.getTaskId()));
         TextField text2 = new TextField(task.getTaskName());
         TextField text3 = new TextField(task.getDate());
         TextField text4 = new TextField(String.valueOf(task.getTime()));
-        TextField text5 = new TextField(task.getVolunteer().toString());
+        TextField text5 = new TextField(task.getVolunteer().getUserName());
         TextField text6 = new TextField(task.getStatus());
+        TextField text7 = new TextField(task.getUser().getUserName());
 
         text1.setEditable(false);
         text2.setEditable(true);
         text3.setEditable(true);
         text4.setEditable(true);
         text5.setEditable(true);
+        text7.setEditable(true);
         text6.setEditable(true);
 
         // Create layout and add items
@@ -113,6 +120,8 @@ public class TasksController {
         grid.add(text5, 2, 5);
         grid.add(label6, 1, 6);
         grid.add(text6, 2, 6);
+        grid.add(label7, 1, 7);
+        grid.add(text7, 2, 7);
 
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
 
