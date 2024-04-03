@@ -45,7 +45,7 @@ public class SimpleClient extends AbstractClient {
 
 		}else if (message.getMessage().equals("#showMembersList")) {
 			try {
-				App.setRoot("MembersList"); // calling the fxml function will generate the initliaze of
+				App.setRoot("secondary"); // calling the fxml function will generate the initliaze of
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

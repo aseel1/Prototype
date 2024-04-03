@@ -38,6 +38,12 @@ public class DatabaseManager {
 
     // You can add methods to generate and print Tasks and Users here
 
+    public static String selectRandomString(String... strings) {
+        Random random = new Random();
+        int index = random.nextInt(strings.length);
+        return strings[index];
+    }
+
     public static void generateUsers(Session session) throws Exception {
         Random random = new Random();
 
@@ -45,14 +51,21 @@ public class DatabaseManager {
             String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
             String communityManager="";
             if (role.equals("Manager")){
-                communityManager=(i % 2 == 0) ? "Haifa" : "Nazareth";
+                communityManager=selectRandomString("Haifa", "Nazareth");
             }
             User user = new User(i, "User" + i, "Male", "password" + random.nextInt(),
-                    Integer.toString(20 + random.nextInt(60)), "Community" + random.nextInt(10), role,communityManager);
+                    Integer.toString(20 + random.nextInt(60)), selectRandomString("Haifa", "Nazareth"), role,communityManager);
             session.save(user);
         }
-        User user = new User(212393532, "aseel", "male", "1234", "20", "community", "manager","Haifa");
-        session.save(user);
+        User user1 = new User(212393532, "aseel", "male", "1234", "20", "Haifa", "manager","Nazareth");
+        User user2 = new User(2345, "nawal", "female", "1234", "20", "Haifa", "manager","Haifa");
+        User user3 = new User(76543, "maya", "female", "1234", "20", "Nazareth", "manager","Nazareth");
+        User user4 = new User(1234567, "same7", "male", "1234", "20", "Nazareth", "manager","Haifa");
+
+        session.save(user1);
+        session.save(user2);
+        session.save(user3);
+        session.save(user4);
         session.clear();
     }
 
@@ -137,6 +150,22 @@ public class DatabaseManager {
             users = session.createQuery("from User").list();
             System.out.println("The users list has aseel   " + users.size() + " users.");
 
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+
+        return users;
+    }
+
+    public static List<User> getAllUsersByCommunity(Session session, String communityName) {
+        List<User> users = null;
+
+        try {
+            // Get all users by community
+            Query<User> query = session.createQuery("SELECT u FROM User u WHERE u.community = :communityName", User.class);
+            query.setParameter("communityName", communityName);
+            users = query.list();
+            System.out.println("The users list has " + users.size() + " users in community " + communityName + ".");
         } catch (HibernateException e) {
             e.printStackTrace();
         }
