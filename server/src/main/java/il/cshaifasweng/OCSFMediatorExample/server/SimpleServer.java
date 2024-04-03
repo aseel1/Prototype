@@ -110,9 +110,7 @@ public class SimpleServer extends AbstractServer {
 				client.sendToClient(message);
 			} else if (message.startsWith("#submitTask")) {
 				Task task = (Task) message.getObject(); // derefrence the object from the message
-				System.out.println(task.getTaskName() + " 1");//sa7
 				DatabaseManager.addTask(task, session);
-				System.out.println(task.getTaskName()+" 2");//sa7
 				client.sendToClient(message);
 			} else if (message.startsWith("#Login")) {
 				User userFromClient = (User) message.getObject(); // User info from the client
@@ -151,9 +149,18 @@ public class SimpleServer extends AbstractServer {
 				}
 				tx.commit(); // This line commits the transaction including the loggedIn status update
 			}
-
-
-
+			else if(message.startsWith("changeStatusToIP")){
+				Task thisTask=(Task)message.getObject();
+				if(thisTask.getStatus().equals("idle")){
+					thisTask.setStatus("In Process");
+					DatabaseManager.updateTask(session,thisTask);
+					message.setObject("Done");
+				}
+				else{
+					message.setObject("Failed");
+				}
+				client.sendToClient(message);
+			}
 			else if (message.startsWith("#createUser")) {
 				User user = (User) message.getObject();
 				System.out.println("User created: " + user.getUserName() + " " + user.getPassword() + " "

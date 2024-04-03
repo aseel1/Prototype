@@ -58,7 +58,7 @@ public class SimpleClient extends AbstractClient {
 		}else if (message.getMessage().equals("#showTasksList")) {
 			tableMessage=message;
 			try {
-				System.out.println("(Client) Tasks list received from server.gggg");
+				System.out.println("(Client) Tasks list received from server");
 				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of
 
 			} catch (IOException e) {
@@ -66,7 +66,7 @@ public class SimpleClient extends AbstractClient {
 			}
 		} else if (message.getMessage().equals("#showTasksListIdleResponse")) {
 			try {
-				System.out.println("(Client) Tasks list received from server.idlee");
+				System.out.println("(Client) Tasks list received from server");
 				App.setRoot("TasksIdle"); // calling the fxml function will generate the initliaze of
 
 			} catch (IOException e) {
@@ -75,6 +75,28 @@ public class SimpleClient extends AbstractClient {
 		}else if (message.getMessage().equals("#updateTask")) {
 			System.out.println("Update request sent to server. Good job!");
 
+		}else if(message.getMessage().equals("changeStatusToIP")) {
+			if ("Done".equals(message.getObject())) {
+			Platform.runLater(() -> {
+				try {
+					App.setRoot("Tasks"); // Navigate back to the current page
+					showAlert("Successful", "You can now proceed by start doing the task," +
+							" when the task is done please change the status.", Alert.AlertType.INFORMATION);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+			});}
+			else {
+				Platform.runLater(() -> {
+				try {
+					App.setRoot("Tasks"); // Navigate back to the current page
+					showAlert("Error", "Cannot choose this task please choose another.", Alert.AlertType.ERROR);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				});}
 		} else if (message.getMessage().equals("#openTask")) {
 			try {
 				App.setRoot("TaskForm");
