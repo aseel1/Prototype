@@ -180,4 +180,18 @@ public class PrimaryController {
 	public void handlePressingSOS(ActionEvent event) {
 		SimpleClient.pressingSOS("primary");
 	}
+
+	public void notificationButtonAction(ActionEvent actionEvent) {
+		Message message = new Message("#getUserNotifications", SimpleClient.getCurrentUser());
+		System.out.println(message);
+		try {
+			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary) Sending req message to server2.");
+		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
+			e.printStackTrace();
+		}
+	}
+
+
 }

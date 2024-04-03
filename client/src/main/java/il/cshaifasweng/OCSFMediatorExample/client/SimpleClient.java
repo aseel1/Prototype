@@ -58,7 +58,7 @@ public class SimpleClient extends AbstractClient {
 		}else if (message.getMessage().equals("#showTasksList")) {
 			tableMessage=message;
 			try {
-				System.out.println("(Client) Tasks list received from server.gggg");
+				System.out.println("(Client) Tasks list received from server.");
 				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of
 
 			} catch (IOException e) {
@@ -169,6 +169,17 @@ public class SimpleClient extends AbstractClient {
 					showAlert("Error", "Failed to contact help.", Alert.AlertType.ERROR);
 				}
 			});
+		}
+		else if(message.getMessage().equals("#showNotificationsList")){
+			tableMessage=message;
+			try {
+				System.out.println("(Client) Notification list received from server.");
+				App.setRoot("Notifications"); // calling the fxml function will generate the initliaze of
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
 
 

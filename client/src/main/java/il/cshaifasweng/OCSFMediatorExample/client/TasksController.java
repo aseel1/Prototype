@@ -94,7 +94,9 @@ public class TasksController {
         TextField text2 = new TextField(task.getTaskName());
         TextField text3 = new TextField(task.getDate());
         TextField text4 = new TextField(String.valueOf(task.getTime()));
-        TextField text5 = new TextField(task.getVolunteer().getUserName());
+        TextField text5 = new TextField();
+        if(task.getVolunteer()!=null)
+           text5 = new TextField(task.getVolunteer().getUserName());
         TextField text6 = new TextField(task.getStatus());
         TextField text7 = new TextField(task.getUser().getUserName());
 
