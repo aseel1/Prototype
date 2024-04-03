@@ -77,11 +77,27 @@ public class SimpleServer extends AbstractServer {
 
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
 
-			} else if (message.startsWith("#updateTask")) {
+			}else if (message.startsWith("#showTasksListIdle")) {
+				// This assumes the message object contains the User or enough information to fetch the User
+				User userFromClient = (User) message.getObject(); // Make sure this casting is valid based on your message structure
+				String community = userFromClient.getCommunity(); // Adjust according to how you access the community in your User entity
+
+				List<Task> tasks = DatabaseManager.getTasksByStatusAndCommunity(session, "idle", community);
+				System.out.println(tasks);
+				message.setObject(tasks);
+				message.setMessage("#showTasksListIdleResponse");
+
+				try {
+					client.sendToClient(message);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			else if (message.startsWith("#updateTask")) {
 
 				Task task = (Task) message.getObject();
 				System.out.println("taskname" + task.getTaskName() + "taskid" + task.getTaskId()
-						+ "taskvolunteer" + task.getVolunteer().getUserName() + "taskstatus" + task.getStatus());
+						+ "taskvolunteer" + task.getVolunteer().getUserName() + "taskstatus" + task.getStatus()+ "taskuser"+ task.getUser().getUserName());
 
 				DatabaseManager.updateTask(session, task);
 
@@ -93,8 +109,9 @@ public class SimpleServer extends AbstractServer {
 				client.sendToClient(message);
 			} else if (message.startsWith("#submitTask")) {
 				Task task = (Task) message.getObject(); // derefrence the object from the message
+				System.out.println(task.getTaskName() + " 1");//sa7
 				DatabaseManager.addTask(task, session);
-
+				System.out.println(task.getTaskName()+" 2");//sa7
 				client.sendToClient(message);
 			} else if (message.startsWith("#Login")) {
 				User userFromClient = (User) message.getObject(); // User info from the client

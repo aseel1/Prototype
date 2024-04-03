@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -60,8 +61,8 @@ public class TaskFormController {
         task.setTime(timeField.getText().isEmpty() ? now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond()
                 : Integer.parseInt(timeField.getText()));
 
+        task.setUser(SimpleClient.getCurrentUser());
         task.setVolunteer(SimpleClient.getCurrentUser());
-
         task.setStatus("Pending for approval");
         Message message = new Message("#submitTask", task);
         System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "

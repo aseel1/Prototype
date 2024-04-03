@@ -52,13 +52,21 @@ public class SimpleClient extends AbstractClient {
 
 		}else if (message.getMessage().equals("#showTasksList")) {
 			try {
-				System.out.println("(Client) Tasks list received from server.");
+				System.out.println("(Client) Tasks list received from server.gggg");
 				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of
 
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else if (message.getMessage().equals("#updateTask")) {
+		} else if (message.getMessage().equals("#showTasksListIdleResponse")) {
+			try {
+				System.out.println("(Client) Tasks list received from server.idlee");
+				App.setRoot("TasksIdle"); // calling the fxml function will generate the initliaze of
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}else if (message.getMessage().equals("#updateTask")) {
 			System.out.println("Update request sent to server. Good job!");
 
 		} else if (message.getMessage().equals("#openTask")) {
@@ -169,4 +177,3 @@ public class SimpleClient extends AbstractClient {
 
 
 }
-
