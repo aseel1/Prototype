@@ -85,8 +85,8 @@ public class DatabaseManager {
         List<User> user = getAllUsers(session);
         for (int i = 0; i < 10; i++) {
             User sender = user.get(14); // Assuming there are 10 users
-            User recever = user.get(14);
-            Notification notification = new Notification(sender,recever,"hi");
+            User receiver = user.get(14);
+            Notification notification = new Notification(sender,receiver,"hi");
             session.save(notification);
         }
         session.clear();

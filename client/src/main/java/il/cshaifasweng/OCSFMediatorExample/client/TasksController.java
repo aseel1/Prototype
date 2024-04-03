@@ -145,7 +145,6 @@ public class TasksController {
             } catch (IOException b) {
                 b.printStackTrace();
             }
-            return null;
         });
 //        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
 //        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);

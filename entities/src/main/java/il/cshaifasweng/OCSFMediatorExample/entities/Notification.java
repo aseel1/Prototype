@@ -13,11 +13,11 @@ public class Notification implements Serializable {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "sender_id")
     private User sender;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "recipient_id")
     private User recipient;
 
     private String message;
