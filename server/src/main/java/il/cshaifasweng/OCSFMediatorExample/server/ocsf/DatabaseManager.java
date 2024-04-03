@@ -49,7 +49,7 @@ public class DatabaseManager {
 
         for (int i = 0; i < 14; i++) {
             String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
-            String communityManager="";
+            String communityManager=null;
             if (role.equals("Manager")){
                 communityManager=selectRandomString("Haifa", "Nazareth");
             }
