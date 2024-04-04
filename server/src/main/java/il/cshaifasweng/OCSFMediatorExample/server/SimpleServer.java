@@ -6,7 +6,9 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -23,6 +25,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
+
 
 public class SimpleServer extends AbstractServer {
 
@@ -148,10 +151,14 @@ public class SimpleServer extends AbstractServer {
 			}
 			else if(message.startsWith("changeStatusToIP")){
 				Task thisTask=(Task)message.getObject();
+				User taskVolunteer = (User)message.getSecondObject();
 				if(thisTask.getStatus().equals("idle")){
 					thisTask.setStatus("In Process");
 					LocalDateTime now = LocalDateTime.now();
 					thisTask.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
+					String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+					thisTask.setVolDate(date);
+					thisTask.setVolunteer(taskVolunteer);
 					DatabaseManager.updateTask(session,thisTask);
 					message.setObject("Done");
 				}

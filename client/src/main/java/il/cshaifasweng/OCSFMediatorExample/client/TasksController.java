@@ -16,7 +16,9 @@ import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.message;
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.tableMessage;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.*;
 
@@ -134,7 +136,7 @@ public class TasksController {
         });
 
         changeStatusButton.setOnAction(e -> {
-            Message message = new Message("changeStatusToIP",task);
+            Message message = new Message("changeStatusToIP",task,getCurrentUser());
             try {
                 SimpleClient.getClient().sendToServer(message);
                 if(task.getStatus().equals("idle"))
@@ -143,6 +145,8 @@ public class TasksController {
                     task.setVolunteer(getCurrentUser());
                     LocalDateTime now = LocalDateTime.now();
                     task.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
+                    String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                    task.setVolDate(date);
                 }
                 taskTable.refresh();
             } catch (IOException b) {
