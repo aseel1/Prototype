@@ -135,7 +135,7 @@ public class PrimaryController {
 	}
 	@FXML
 	protected void handleViewCommunityMembers(ActionEvent event) {
-		Message message = new Message("#showMembersList", SimpleClient.getCurrentUser().getCommunityManager());
+		Message message = new Message("#showMembersList", SimpleClient.getCurrentUser());
 		try {
 			SimpleClient.getClient().sendToServer(message);
 			System.out.println("(Primary)Sending message to server: ");

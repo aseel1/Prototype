@@ -64,6 +64,16 @@ public class SimpleServer extends AbstractServer {
 				message.setMessage("#showUsersList");
 				client.sendToClient(message);
 
+			}else if (message.startsWith("#showMembersList")) {
+
+				User manager = (User) message.getObject();
+				String communityManager=manager.getCommunityManager();
+				List<User> users = DatabaseManager.getAllUsersByCommunity(session,communityManager);
+
+				message.setObject(users);
+				message.setMessage("#showMembersList");
+				client.sendToClient(message);
+
 			} else if (message.startsWith("#showTasksList")) {
 				User thisUser = (User)message.getObject();
 				List<Task> tasks = DatabaseManager.getTasksByStatusAndUser(session,thisUser);
