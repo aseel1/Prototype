@@ -87,13 +87,11 @@ public class PrimaryController {
 
 	@FXML
 	protected void handleShowTasksButtonAction(ActionEvent event) {
-		Message message = new Message("#showTasksList");
+		Message message = new Message("#showTasksList",SimpleClient.getCurrentUser());
 		try {
 			SimpleClient.getClient().sendToServer(message);
-			System.out.println("(Primary)Sending message to server: ");
 
 		} catch (IOException e) {
-			System.out.println("Failed to connect to the server.");
 			e.printStackTrace();
 		}
 
@@ -180,4 +178,18 @@ public class PrimaryController {
 	public void handlePressingSOS(ActionEvent event) {
 		SimpleClient.pressingSOS("primary");
 	}
+
+	public void notificationButtonAction(ActionEvent actionEvent) {
+		Message message = new Message("#getUserNotifications", SimpleClient.getCurrentUser());
+		System.out.println(message);
+		try {
+			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary) Sending req message to server2.");
+		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
+			e.printStackTrace();
+		}
+	}
+
+
 }

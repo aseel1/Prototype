@@ -6,6 +6,9 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,6 +25,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
+
 
 public class SimpleServer extends AbstractServer {
 
@@ -71,9 +75,8 @@ public class SimpleServer extends AbstractServer {
 				client.sendToClient(message);
 
 			} else if (message.startsWith("#showTasksList")) {
-
-				List<Task> tasks = DatabaseManager.getAllTasks(session);
-
+				User thisUser = (User)message.getObject();
+				List<Task> tasks = DatabaseManager.getTasksByStatusAndUser(session,thisUser);
 				message.setObject(tasks);
 				message.setMessage("#showTasksList");
 
@@ -83,10 +86,7 @@ public class SimpleServer extends AbstractServer {
 					client.sendToClient(message);
 				} catch (IOException e) {
 					e.printStackTrace();
-					System.out.println("catcedhedh");
 				}
-
-				System.out.println("(SimpleServer)message got from primary and now sending to client");
 
 			}else if (message.startsWith("#showTasksListIdle")) {
 				// This assumes the message object contains the User or enough information to fetch the User
@@ -119,10 +119,8 @@ public class SimpleServer extends AbstractServer {
 				message.setMessage("#openTask");
 				client.sendToClient(message);
 			} else if (message.startsWith("#submitTask")) {
-				Task task = (Task) message.getObject(); // derefrence the object from the message
-				System.out.println(task.getTaskName() + " 1");//sa7
+				Task task = (Task) message.getObject(); // dereference the object from the message
 				DatabaseManager.addTask(task, session);
-				System.out.println(task.getTaskName()+" 2");//sa7
 				client.sendToClient(message);
 			} else if (message.startsWith("#Login")) {
 				User userFromClient = (User) message.getObject(); // User info from the client
@@ -161,9 +159,24 @@ public class SimpleServer extends AbstractServer {
 				}
 				tx.commit(); // This line commits the transaction including the loggedIn status update
 			}
-
-
-
+			else if(message.startsWith("changeStatusToIP")){
+				Task thisTask=(Task)message.getObject();
+				User taskVolunteer = (User)message.getSecondObject();
+				if(thisTask.getStatus().equals("idle")){
+					thisTask.setStatus("In Process");
+					LocalDateTime now = LocalDateTime.now();
+					thisTask.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
+					String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+					thisTask.setVolDate(date);
+					thisTask.setVolunteer(taskVolunteer);
+					DatabaseManager.updateTask(session,thisTask);
+					message.setObject("Done");
+				}
+				else{
+					message.setObject("Failed");
+				}
+				client.sendToClient(message);
+			}
 			else if (message.startsWith("#createUser")) {
 				User user = (User) message.getObject();
 				System.out.println("User created: " + user.getUserName() + " " + user.getPassword() + " "
@@ -178,6 +191,16 @@ public class SimpleServer extends AbstractServer {
 				String page = message.getMessage().substring("#SOSAdd".length()).trim();
 				Message doneMessage = new Message("#addSOSDone",page);
 				client.sendToClient(doneMessage);
+			}
+			else if (message.startsWith("#getUserNotifications")){
+
+                User user = (User) message.getObject();
+				List<Notification> notifications = DatabaseManager.getUsersNotifications(session,user);
+
+				message.setObject(notifications);
+				message.setMessage("#showNotificationsList");
+				client.sendToClient(message);
+
 			}
 
 			tx.commit();

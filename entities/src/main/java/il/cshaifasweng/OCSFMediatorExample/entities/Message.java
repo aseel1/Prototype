@@ -10,6 +10,8 @@ public class Message implements Serializable {
     String data;
     private Object object;
 
+    private Object secondObject;
+
     public Message(String message) {
         this.message = message;
     }
@@ -17,6 +19,11 @@ public class Message implements Serializable {
     public Message(String message, Object object) {
         this.message = message;
         this.object = object;
+    }
+    public Message(String message, Object object,Object secondObject) {
+        this.message = message;
+        this.object = object;
+        this.secondObject = secondObject;
     }
 
     public Message(Object object) {
@@ -85,5 +92,13 @@ public class Message implements Serializable {
 
     public void setObject(Object object) {
         this.object = object;
+    }
+
+    public Object getSecondObject() {
+        return secondObject;
+    }
+
+    public void setSecondObject(Object secondObject) {
+        this.secondObject = secondObject;
     }
 }

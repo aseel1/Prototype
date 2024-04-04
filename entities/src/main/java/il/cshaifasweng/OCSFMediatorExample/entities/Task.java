@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 // import net.bytebuddy.jar.asm.Label;
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -31,6 +30,8 @@ public class Task implements Serializable {
     @ManyToOne
     @JoinColumn(name = "volunteer_id")
     private User volunteer;
+    private int volTime;
+    private String volDate;
     private String status;
 
     public Task() {}
@@ -44,6 +45,14 @@ public class Task implements Serializable {
         this.volunteer = volunteer;
         this.user=user;
         this.status = status;
+    }
+
+    public String getVolDate() {
+        return volDate;
+    }
+
+    public void setVolDate(String volDate) {
+        this.volDate = volDate;
     }
 
     public int getTaskId() {
@@ -101,6 +110,10 @@ public class Task implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public int getVolTime() {return volTime;}
+
+    public void setVolTime(int volTime) {this.volTime = volTime;}
 
     public void displayTaskForm(Task task) {
         Stage stage = new Stage();

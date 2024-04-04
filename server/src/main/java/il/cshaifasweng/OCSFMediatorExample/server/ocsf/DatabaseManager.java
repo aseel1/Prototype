@@ -1,14 +1,18 @@
 package il.cshaifasweng.OCSFMediatorExample.server.ocsf;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date; // this is for the date format
 import java.util.List;
 import java.util.Random;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-
+import il.cshaifasweng.OCSFMediatorExample.entities.Notification;
 import il.cshaifasweng.OCSFMediatorExample.entities.SOS;
+import il.cshaifasweng.OCSFMediatorExample.entities.Task;
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,11 +22,18 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.Task;
-import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 
 public class DatabaseManager {
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
+    public DatabaseManager() {
+        // Schedule calculateTimeDiff to run every 6 seconds
+        scheduler.scheduleAtFixedRate(this::calculateTimeDiff, 0, 6, TimeUnit.SECONDS);
+    }
     private static SessionFactory sessionFactory;
 
     public static SessionFactory getSessionFactory() throws HibernateException {
@@ -31,6 +42,7 @@ public class DatabaseManager {
             configuration.addAnnotatedClass(Task.class);
             configuration.addAnnotatedClass(User.class);
             configuration.addAnnotatedClass(SOS.class);
+            configuration.addAnnotatedClass(Notification.class);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties())
                     .build();
@@ -74,14 +86,23 @@ public class DatabaseManager {
 
     public static void generateTasks(Session session) throws Exception {
         Random random = new Random();
+        Random randomUser = new Random();
+        List<User> users = getAllUsers(session);
         for (int i = 0; i < 10; i++) {
-            User volunteer = session.get(User.class, random.nextInt(10)); // Assuming there are 10 users
-            User user = session.get(User.class, random.nextInt(10));
+            User user = users.get(randomUser.nextInt(15));//session.get(User.class, random.nextInt(10));
+            User volunteer = null;
             System.out.println(user);
             String status = (i%2==0)?"idle":"done"; // You need to implement this method
+            if(status.equals("done"))
+                volunteer = users.get(randomUser.nextInt(15));//session.get(User.class, random.nextInt(10)); // Assuming there are 10 users
             String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-            int time = random.nextInt(24); // Assuming time is in hours
+            LocalDateTime now = LocalDateTime.now();
+            int time = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();//random.nextInt(24); // Assuming time is in hours
             Task task = new Task(i, "Task" + i, date, time, volunteer, status,user);
+            if(status.equals("done")) {
+                task.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond() + randomUser.nextInt(15));
+                task.setVolDate(date);
+            }
             session.save(task);
         }
         session.clear();
@@ -92,6 +113,18 @@ public class DatabaseManager {
         session.save(mySos);
         session.clear();
     }
+    public static void generateNotifications(Session session) throws Exception{
+        Random random = new Random();
+        List<User> user = getAllUsers(session);
+        for (int i = 0; i < 10; i++) {
+            User sender = user.get(14); // Assuming there are 10 users
+            User receiver = user.get(14);
+            Notification notification = new Notification(sender,receiver,"hi");
+            session.save(notification);
+        }
+        session.clear();
+    }
+
 
     public static List<Task> getTasksByStatusAndCommunity(Session session, String status, String community) {
         List<Task> tasks = null;
@@ -171,6 +204,43 @@ public class DatabaseManager {
 
         return tasks;
     }
+    public static List<Task> getTasksByStatusAndUser(Session session, User thisUser) {
+        List<Task> tasks = null;
+        try {
+            // Update the query to correctly navigate from Task to its User, then filter by the user's community.
+            // This assumes your User entity has a 'community' attribute or a way to identify the user's community.
+            // Adjust "user.community" to the correct path from User to the community attribute.
+            String hql = "SELECT t FROM Task t WHERE t.status = :status AND not t.user = :thisUser";
+            Query<Task> query = session.createQuery(hql, Task.class);
+            query.setParameter("status", "Idle");
+            query.setParameter("thisUser", thisUser);
+            tasks = query.list();
+            System.out.println("Found " + tasks.size() + " tasks with status idle " + " and not with user " + thisUser + ".");
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
+    public static List<Notification> getUsersNotifications(Session session,User user) {
+        List<Notification> allNotifications= new ArrayList<>();
+        List<Notification> notifications= new ArrayList<>();
+
+        try {
+            // Get all tasks
+            allNotifications = session.createQuery("from Notification").list();
+            System.out.println("ALLNotifications list has : " + allNotifications.size() + " notifications.");
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        for (Notification notification : allNotifications) {
+            if(notification.getRecipient().getId()==user.getId()){
+                notifications.add(notification);
+            }
+        }
+        System.out.println("Notifications list has : " + notifications.size() + " notifications.");
+        return notifications;
+    }
 
     public static List<User> getAllUsers(Session session) {
         List<User> users = null;
@@ -204,7 +274,7 @@ public class DatabaseManager {
     }
 
     public static void addTask(Task task, Session session) {
-        System.out.println(task.getUser().getUserName());//mzbot
+        System.out.println(task.getUser().getUserName());
         session.save(task);
     }
 
@@ -230,6 +300,7 @@ public class DatabaseManager {
         }
 
         return userFromDB;
+
     }
 
     public static void initialize() {
@@ -237,18 +308,20 @@ public class DatabaseManager {
 
         try {
             SessionFactory sessionFactory = getSessionFactory();
+
             session = sessionFactory.openSession();
             session.beginTransaction();
             generateUsers(session);
             generateTasks(session);
             generateSOS(session);
+            generateNotifications(session);
 
             session.getTransaction().commit();
 
-            // printAllUsers(session);
-            // printAllTasks(session);
-            getAllTasks(session);
-            getAllUsers(session);
+//            printAllUsers(session);
+//            printAllTasks(session);
+//            getAllTasks(session);
+//            getAllUsers(session);
         } catch (Exception exception) {
             if (session != null) {
                 session.getTransaction().rollback();
@@ -257,6 +330,53 @@ public class DatabaseManager {
             exception.printStackTrace();
         } finally {
             session.close();
+            //please do not change this two comments
+//            new DatabaseManager();
+
         }
     }
+    public void calculateTimeDiff() {
+        List<Task> tasks = null;
+        Session session = DatabaseManager.getSessionFactory().openSession();
+        System.out.println("opened session");
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            System.err.println("its been a 6 seconds");
+            tasks = getAllTasks(session);
+//            System.out.println(tasks.get(0).getTaskId());
+            // Your time difference calculation logic here
+//            LocalDateTime specifiedDate = LocalDateTime.parse(tasks.get(0).getDate());
+//            LocalDateTime now = LocalDateTime.now();
+//            System.out.println(now);
+//            long minutesPassed = ChronoUnit.MINUTES.between(specifiedDate, now);
+//            System.out.println("Minutes passed since the specified date: " + minutesPassed);
+        } catch (RuntimeException e) {
+            if (tx != null)
+                tx.rollback();
+            throw e; // Or display error message
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the session
+            if (session != null)
+                session.close();
+            System.out.println("closed session");
+        }
+        if(tasks!=null) {
+            System.err.println(tasks.get(0).getTaskName());
+//            for (int i = 0; i < tasks.size(); i++) {
+//                if(tasks.get(i).getStatus().equals("idle")){
+//
+//                }
+//            }
+        }
+        else
+            System.err.println("there is no tasks");
+    }
+//    public static void calculateTimeDiff(LocalDateTime specifiedDate){
+//        LocalDateTime now = LocalDateTime.now();
+//        long minutesPassed = ChronoUnit.MINUTES.between(specifiedDate, now);
+//    }
 }
