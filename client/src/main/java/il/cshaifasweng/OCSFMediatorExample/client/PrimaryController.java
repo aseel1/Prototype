@@ -53,6 +53,9 @@ public class PrimaryController {
 	private Label statusLabel;
 
 	@FXML
+	private Button SOSReports;
+
+	@FXML
 	private MenuButton reportsButton;
 	private static PrimaryController instance;
 
@@ -69,6 +72,7 @@ public class PrimaryController {
 		statusLabel.setText("Status: " + status);
 
 		reportsButton.setVisible("manager".equals(status));
+		SOSReports.setVisible("manager".equals(status));
 	}
 
 	@FXML
@@ -159,6 +163,7 @@ public class PrimaryController {
 //		}
 	}
 
+
 	@FXML
 	protected void handleViewHelpRequests(ActionEvent event) {
 		Message message = new Message("#showTasksIdle", SimpleClient.getCurrentUser());
@@ -190,4 +195,19 @@ public class PrimaryController {
 	public void handlePressingSOS(ActionEvent event) {
 		SimpleClient.pressingSOS("primary");
 	}
+
+	@FXML
+	protected void handleSOSReports(ActionEvent event) {
+		System.out.println("aseelwashere");
+
+		try {
+			System.out.println("aseelwashere");
+			App.setRoot("SOSReports");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
 }

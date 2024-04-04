@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server.ocsf;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date; // this is for the date format
 import java.util.List;
 import java.util.Random;
@@ -102,6 +103,26 @@ public class DatabaseManager {
         }
         return tasks;
     }
+    public static List<SOS> getSOSBetweenDates(Session session, String startDate, String endDate) {
+        String hql = "FROM SOS s WHERE s.date BETWEEN :startDate AND :endDate";
+        System.out.println(hql);
+        return session.createQuery(hql, SOS.class)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
+                .list();
+    }
+
+    public static List<SOS> getSOSByCommunityAndDates(Session session, String community, String startDate, String endDate) {
+        String hql = "FROM SOS s WHERE s.user.community = :community AND s.date BETWEEN :startDate AND :endDate";
+        return session.createQuery(hql, SOS.class)
+                .setParameter("community", community)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
+                .list();
+    }
+
+// In DatabaseManager.java
+
 
     // public static void printAllUsers(Session session) throws Exception {
     // CriteriaBuilder builder = session.getCriteriaBuilder();

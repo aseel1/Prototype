@@ -89,6 +89,11 @@ public class SimpleClient extends AbstractClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}else if (message.getMessage().equals("#showSOSResponse")) {
+
+				System.out.println(message.getObject());
+				// Assuming 'sosReportsController' is your SOSReportsController instance
+			SOSReportsController.updateHistogramFromMessage(message);
 		} else if (message.getMessage().equals("#loginSuccess")) {
 			try {
 				currentUser = (User) message.getObject();
