@@ -7,17 +7,24 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class TaskFormController {
+    @FXML // fx:id="MenuBtn"
+    private MenuButton MenuBtn; // Value injected by FXMLLoader
+
+    @FXML // fx:id="Task1"
+    private MenuItem Task1; // Value injected by FXMLLoader
+
+    @FXML // fx:id="Specification"
+    private TextField Specification; // Value injected by FXMLLoader
+
     @FXML
     private TextField dateField;
 
@@ -36,11 +43,35 @@ public class TaskFormController {
     @FXML
     private TextField volunteerField;
 
+    @FXML // fx:id="tskDetails"
+    private Label tskDetails; // Value injected by FXMLLoader
+
     private Task task;
 
     @FXML
     private void switchToPrimary() throws IOException {
         App.setRoot("primary");
+    }
+    private String taskPicked= "";
+
+    @FXML
+    void otherTask(ActionEvent event) {
+        taskPicked= "Other";
+    }
+
+    @FXML
+    void pickTask1(ActionEvent event) {
+        taskPicked= "Walk The Dog";
+    }
+
+    @FXML
+    void picktask2(ActionEvent event) {
+        taskPicked= "Buying Medicine";
+    }
+
+    @FXML
+    void picktask3(ActionEvent event) {
+        taskPicked= "Get a Ride";
     }
 
     public void setTask(Task task) {
@@ -63,6 +94,10 @@ public class TaskFormController {
         task.setVolunteer(SimpleClient.getCurrentUser());
 
         task.setStatus("Pending for approval");
+        //details:
+        String str1= Specification.getText().isEmpty() ? "" : Specification.getText();
+        String details= taskPicked+str1;
+        task.setDetails(details);
         Message message = new Message("#submitTask", task);
         System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
                 + task.getVolunteer().getUserName()

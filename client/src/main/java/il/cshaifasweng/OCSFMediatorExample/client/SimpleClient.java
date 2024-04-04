@@ -36,7 +36,20 @@ public class SimpleClient extends AbstractClient {
 
 		if (msg.getClass().equals(Warning.class)) {
 			EventBus.getDefault().post(new WarningEvent((Warning) msg));
-		} else if (message.getMessage().equals("#showUsersList")) {
+		}
+		//server received open task request and needs the clients details
+		else if(message.getMessage().equals("#GetCurrentUser")){
+			System.out.println("sending client's details");
+			Message dearGodHelpMe= new Message("#GetCurrentUser",currentUser, message.getObject());
+			try {
+				this.sendToServer(dearGodHelpMe);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		else if (message.getMessage().equals("#showUsersList")) {
 			try {
 				App.setRoot("secondary"); // calling the fxml function will generate the initliaze of
 			} catch (IOException e) {
@@ -50,7 +63,7 @@ public class SimpleClient extends AbstractClient {
 				e.printStackTrace();
 			}
 
-		}else if (message.getMessage().equals("#showTasksList")) {
+		} else if (message.getMessage().equals("#showTasksList")) {
 			try {
 				System.out.println("(Client) Tasks list received from server.");
 				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of
@@ -70,7 +83,7 @@ public class SimpleClient extends AbstractClient {
 		} else if (message.getMessage().equals("#loginSuccess")) {
 			try {
 				currentUser = (User) message.getObject();
-				System.err.println("Login success. Welcome, " + currentUser.getUserName() + " "
+				System.out.println("Login success. Welcome, " + currentUser.getUserName() + " "
 						+ currentUser.getPassword() + " " + currentUser.getAge() + " " + currentUser.getGender() + " "
 						+ currentUser.getCommunity()+ currentUser.getCommunityManager());
 				App.setRoot("primary");
