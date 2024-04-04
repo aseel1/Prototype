@@ -161,11 +161,12 @@ public class PrimaryController {
 
 	@FXML
 	protected void handleViewHelpRequests(ActionEvent event) {
-		Message message = new Message("#showTasksListIdle", SimpleClient.getCurrentUser());
+		Message message = new Message("#showTasksIdle", SimpleClient.getCurrentUser());
 		System.out.println(message);
 		try {
+			System.out.println(message.getMessage());
 			SimpleClient.getClient().sendToServer(message);
-			System.out.println("(Primary) Sending req message to server.");
+			System.out.println("(Primary) Sending req message to server from helpReequest.");
 		} catch (IOException e) {
 			System.out.println("Failed to connect to the server.");
 			e.printStackTrace();
@@ -174,7 +175,16 @@ public class PrimaryController {
 
 	@FXML
 	protected void handleViewCompletedTasks(ActionEvent event) {
-		// Implement fetching and displaying completed tasks
+		Message message = new Message("#showTasksDone", SimpleClient.getCurrentUser());
+		System.out.println(message);
+		try {
+			System.out.println(message.getMessage());
+			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary) Sending req message to server from doneee.");
+		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
+			e.printStackTrace();
+		}
 	}
 
 	public void handlePressingSOS(ActionEvent event) {

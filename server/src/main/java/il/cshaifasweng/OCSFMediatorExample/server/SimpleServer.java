@@ -78,15 +78,32 @@ public class SimpleServer extends AbstractServer {
 
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
 
-			}else if (message.startsWith("#showTasksListIdle")) {
+			}else if (message.startsWith("#showTasksIdle")) {
 				// This assumes the message object contains the User or enough information to fetch the User
+				System.out.println("we aree hereeeeeeeee");
 				User userFromClient = (User) message.getObject(); // Make sure this casting is valid based on your message structure
 				String community = userFromClient.getCommunity(); // Adjust according to how you access the community in your User entity
-
 				List<Task> tasks = DatabaseManager.getTasksByStatusAndCommunity(session, "idle", community);
 				System.out.println(tasks);
 				message.setObject(tasks);
-				message.setMessage("#showTasksListIdleResponse");
+				message.setMessage("#showIdleList");
+				System.out.println(message.getMessage());
+
+				try {
+					client.sendToClient(message);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else if (message.startsWith("#showTasksDone")) {
+				// This assumes the message object contains the User or enough information to fetch the User
+				System.out.println("we aree hereeeeeeeee");
+				User userFromClient = (User) message.getObject(); // Make sure this casting is valid based on your message structure
+				String community = userFromClient.getCommunity(); // Adjust according to how you access the community in your User entity
+				List<Task> tasks = DatabaseManager.getTasksByStatusAndCommunity(session, "done", community);
+				System.out.println(tasks);
+				message.setObject(tasks);
+				message.setMessage("#showDoneList");
+				System.out.println(message.getMessage());
 
 				try {
 					client.sendToClient(message);

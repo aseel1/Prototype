@@ -45,16 +45,17 @@ public class DatabaseManager {
         Random random = new Random();
 
         for (int i = 0; i < 14; i++) {
-            String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
+           // String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
+            String role="Regular";
             String communityManager="";
             if (role.equals("Manager")){
                 communityManager=(i % 2 == 0) ? "Haifa" : "Nazareth";
             }
             User user = new User(i, "User" + i, "Male", "password" + random.nextInt(),
-                    Integer.toString(20 + random.nextInt(60)), "Community" + random.nextInt(10), role,communityManager);
+                    Integer.toString(20 + random.nextInt(60)), "Haifa", role,communityManager);
             session.save(user);
         }
-        User user = new User(212393532, "aseel", "male", "1234", "20", "community", "manager","Haifa");
+        User user = new User(212393532, "aseel", "male", "1234", "20", "Haifa", "manager","Haifa");
         session.save(user);
         User user2 = new User(324888155,"samih","Male","1234","21","nazareth","manager","haifa");
         session.save(user2);
@@ -67,6 +68,7 @@ public class DatabaseManager {
             User volunteer = session.get(User.class, random.nextInt(10)); // Assuming there are 10 users
             User user = session.get(User.class, random.nextInt(10));
             System.out.println(user);
+            //String status="idle";
             String status = (i%2==0)?"idle":"done"; // You need to implement this method
             String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             int time = random.nextInt(24); // Assuming time is in hours
@@ -93,6 +95,7 @@ public class DatabaseManager {
             query.setParameter("status", status);
             query.setParameter("community", community);
             tasks = query.list();
+            System.out.println(query.list());
             System.out.println("Found " + tasks.size() + " tasks with status " + status + " in community " + community + ".");
         } catch (HibernateException e) {
             e.printStackTrace();
