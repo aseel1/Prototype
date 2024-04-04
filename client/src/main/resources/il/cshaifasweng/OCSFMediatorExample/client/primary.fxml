@@ -43,7 +43,8 @@
                      <Font name="System Italic" size="12.0" />
                   </font>
                </Button>
-               <Button fx:id="logOutButton" layoutX="578.0" layoutY="421.0" mnemonicParsing="false" onAction="#logOutAction" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="LogOut" />
+               <Button fx:id="logOutButton" layoutX="578.0" layoutY="421.0" mnemonicParsing="false" onAction="#logOutAction" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="LogOut" />
+               <Button fx:id="SOSbutton" layoutX="55.0" layoutY="421.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS" />
                <MenuButton fx:id="reportsButton" layoutX="49.0" layoutY="102.0" mnemonicParsing="false" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="Reports">
                   <items>
                      <MenuItem mnemonicParsing="false" onAction="#handleViewCommunityMembers" text="View Community Members" />

@@ -42,9 +42,10 @@
                 <TextField fx:id="communityField" layoutX="285.0" layoutY="287.0" />
                 
                 <Label layoutX="100.0" layoutY="326.0" style="-fx-font-size: 18px;" text="Status:" />
-                <TextField fx:id="statusField" layoutX="285.0" layoutY="327.0" />
-                
-                <Button fx:id="createUserButton" layoutX="314.0" layoutY="422.0" onAction="#handleCreateUser" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Create User">
+                <TextField fx:id="statusField" layoutX="248.0" layoutY="326.0" />
+                <Button fx:id="SOSbutton" layoutX="95.0" layoutY="424.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS" />
+                <Button fx:id="createUserButton" layoutX="248.0" layoutY="366.0" onAction="#handleCreateUser" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Create User">
+
                     <font>
                         <Font name="System Italic" size="18.0" />
                     </font>

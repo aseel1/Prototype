@@ -11,6 +11,7 @@
   <children>
     <AnchorPane prefHeight="568.0" prefWidth="748.0">
       <children>
+        <Button fx:id="SOSbutton" layoutX="96.0" layoutY="495.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS" />
         <Button fx:id="secondaryButton" layoutX="320.0" layoutY="496.0" onAction="#switchToPrimary" text="Switch to Primary View" />
         <TableView fx:id="taskTable" layoutX="127.0" layoutY="46.0" prefHeight="380.0" prefWidth="552.0">
           <columns>

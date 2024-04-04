@@ -11,8 +11,9 @@
   <children>
     <AnchorPane prefHeight="568.0" prefWidth="748.0">
       <children>
-        <Button fx:id="secondaryButton" layoutX="320.0" layoutY="496.0" onAction="#switchToPrimary" text="Switch to Primary View" />
-        <TableView fx:id="userTable" layoutX="127.0" layoutY="46.0" prefHeight="380.0" prefWidth="436.0">
+        <Button fx:id="SOSbutton" layoutX="64.0" layoutY="482.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS" />
+        <Button fx:id="secondaryButton" layoutX="276.0" layoutY="483.0" onAction="#switchToPrimary" text="Switch to Primary View" />
+        <TableView fx:id="userTable" layoutX="127.0" layoutY="47.0" prefHeight="380.0" prefWidth="436.0">
           <columns>
             <TableColumn fx:id="user_id" prefWidth="75.0" text="id" />
             <TableColumn fx:id="user_userName" prefWidth="75.0" text="userName" />

@@ -6,6 +6,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
@@ -18,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.message;
+import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.tableMessage;
 
 import java.io.IOException;
 import java.util.List;
@@ -59,7 +61,7 @@ public class TasksController {
         volunteer.setCellValueFactory(new PropertyValueFactory<Task, User>("volunteer"));
         status.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
 
-        ObservableList<Task> observableTasks = FXCollections.observableArrayList((List<Task>) message.getObject());
+        ObservableList<Task> observableTasks = FXCollections.observableArrayList((List<Task>) tableMessage.getObject());
         taskTable.setItems(observableTasks);
 
         taskTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
@@ -154,4 +156,7 @@ public class TasksController {
         dialog.show();
     }
 
+    public void handlePressingSOS(ActionEvent event) {
+        SimpleClient.pressingSOS("Tasks");
+    }
 }

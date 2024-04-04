@@ -3,6 +3,8 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import java.io.IOException;
 import java.util.List;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
+import javafx.scene.control.ButtonType;
 import org.greenrobot.eventbus.EventBus;
 
 import antlr.debug.MessageEvent;
@@ -23,6 +25,7 @@ public class SimpleClient extends AbstractClient {
 
 	private static SimpleClient client = null;
 	public static Message message;
+	public static Message tableMessage;
 
 	private static User currentUser = null; // this is for the current user(logged in user) holds his details
 
@@ -37,6 +40,7 @@ public class SimpleClient extends AbstractClient {
 		if (msg.getClass().equals(Warning.class)) {
 			EventBus.getDefault().post(new WarningEvent((Warning) msg));
 		} else if (message.getMessage().equals("#showUsersList")) {
+			tableMessage=message;
 			try {
 				App.setRoot("secondary"); // calling the fxml function will generate the initliaze of
 			} catch (IOException e) {
@@ -44,6 +48,7 @@ public class SimpleClient extends AbstractClient {
 			}
 
 		}else if (message.getMessage().equals("#showMembersList")) {
+			tableMessage=message;
 			try {
 				App.setRoot("secondary"); // calling the fxml function will generate the initliaze of
 			} catch (IOException e) {
@@ -51,6 +56,7 @@ public class SimpleClient extends AbstractClient {
 			}
 
 		}else if (message.getMessage().equals("#showTasksList")) {
+			tableMessage=message;
 			try {
 				System.out.println("(Client) Tasks list received from server.");
 				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of
@@ -144,6 +150,19 @@ public class SimpleClient extends AbstractClient {
 			} catch (Exception e) {
 			}
 		}
+		else if (message.getMessage().equals("#addSOSDone")) {
+			Platform.runLater(() -> {
+				try {
+					String currentFXMLPage = (String) message.getObject(); // Implement this method to get the current FXML page
+					App.setRoot(currentFXMLPage); // Navigate back to the current page
+					showAlert("your request have received", "Help on the way!", Alert.AlertType.INFORMATION);
+				} catch (IOException e) {
+					e.printStackTrace();
+					showAlert("Error", "Failed to contact help.", Alert.AlertType.ERROR);
+				}
+			});
+		}
+
 
 	}
 
@@ -165,6 +184,21 @@ public class SimpleClient extends AbstractClient {
 		alert.setHeaderText(null);
 		alert.setContentText(content);
 		alert.showAndWait();
+	}
+
+	//here we use it to when we press on the SOS button
+	protected static void pressingSOS(String page){
+		SOS newSOS=new SOS();
+		if(!page.equals("Login")&&!page.equals("UserCreationForm")) {
+			newSOS.setUser(getCurrentUser());
+        }
+		String sendingMassage ="#SOSAdd" + page;
+		Message message = new Message(sendingMassage, newSOS);
+		try {
+			getClient().sendToServer(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 

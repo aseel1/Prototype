@@ -63,4 +63,7 @@ public class UserCreationFormController {
         }
     }
 
+    public void handlePressingSOS(ActionEvent event) {
+        SimpleClient.pressingSOS("UserCreationForm");
+    }
 }
