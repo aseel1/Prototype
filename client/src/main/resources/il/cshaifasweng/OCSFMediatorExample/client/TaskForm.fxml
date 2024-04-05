@@ -33,23 +33,17 @@
                 <Label layoutX="100.0" layoutY="166.0" style="-fx-font-size: 18px;" text="Time:" />
                 <TextField fx:id="timeField" layoutX="248.0" layoutY="166.0" />
 
-                <Label layoutX="100.0" layoutY="206.0" style="-fx-font-size: 18px;" text="Volunteer:" />
-                <TextField fx:id="volunteerField" layoutX="248.0" layoutY="206.0" />
-
-                <Label layoutX="100.0" layoutY="246.0" style="-fx-font-size: 18px;" text="Status:" />
-                <TextField fx:id="statusField" layoutX="248.0" layoutY="246.0" />
-
                 <Button fx:id="submitButton" layoutX="263.0" layoutY="367.0" onAction="#submitTask" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Submit">                    <font>
                         <Font name="System Italic" size="18.0" />
                     </font>
                 </Button>
-                <Button fx:id="SOSbutton" layoutX="69.0" layoutY="481.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS" />
-                <Button fx:id="secondaryButton" layoutX="272.0" layoutY="481.0" onAction="#switchToPrimary" prefHeight="42.0" prefWidth="224.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Switch to Primary View">                    <font>
+                <Button fx:id="SOSbutton" layoutX="531.0" layoutY="179.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS" />
+                <Button fx:id="secondaryButton" layoutX="220.0" layoutY="481.0" onAction="#switchToPrimary" prefHeight="42.0" prefWidth="224.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Switch to Primary View">                    <font>
                         <Font name="System Italic" size="18.0" />
                     </font>
                 </Button>
-            <TextField fx:id="Specification" layoutX="248.0" layoutY="326.0" />
-            <MenuButton layoutX="274.0" layoutY="289.0" mnemonicParsing="false" text="MenuButton">
+            <TextField fx:id="Specification" layoutX="248.0" layoutY="269.0" />
+            <MenuButton layoutX="273.0" layoutY="220.0" mnemonicParsing="false" text="MenuButton">
               <items>
                 <MenuItem fx:id="Task1" mnemonicParsing="false" onAction="#picktask1" text="Walk The Dog" />
                 <MenuItem fx:id="task2" mnemonicParsing="false" onAction="#picktask2" text="Buying Medicine" />
@@ -57,8 +51,8 @@
                   <MenuItem fx:id="other" mnemonicParsing="false" onAction="#otherTask" text="Other" />
               </items>
             </MenuButton>
-            <Label layoutX="87.0" layoutY="288.0" prefHeight="27.0" prefWidth="130.0" style="-fx-font-size: 18px;" text="Task options:" />
-            <Label layoutX="78.0" layoutY="325.0" prefHeight="27.0" prefWidth="130.0" style="-fx-font-size: 18px;" text="Specifications:" />
+            <Label layoutX="78.0" layoutY="219.0" prefHeight="27.0" prefWidth="130.0" style="-fx-font-size: 18px;" text="Task options:" />
+            <Label layoutX="76.0" layoutY="268.0" prefHeight="27.0" prefWidth="130.0" style="-fx-font-size: 18px;" text="Specifications:" />
                 
             </children>
         </AnchorPane>

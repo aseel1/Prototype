@@ -39,8 +39,6 @@ public class TaskFormController {
     @FXML
     private TextField dateField;
 
-    @FXML
-    private TextField statusField;
 
     @FXML
     private Button submitButton;
@@ -51,8 +49,6 @@ public class TaskFormController {
     @FXML
     private TextField timeField;
 
-    @FXML
-    private TextField volunteerField;
 
     private Task task;
     private String taskPicked= "";
@@ -104,11 +100,11 @@ public class TaskFormController {
         task.setVolunteer(null); //no volunteer yet!
         task.setStatus("pending");
         String str1= Specification.getText().isEmpty() ? "" : Specification.getText();
-        String details= taskPicked+str1;
+        String details= taskPicked+"-"+str1;
         task.setDetails(details);
         Message message = new Message("#submitTask", task);
         System.out.println("received");
-        System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
+        System.out.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
                 + task.getUser().getUserName()
                 + task.getUser().getAge()
                 + task.getUser().getGender()
@@ -121,6 +117,11 @@ public class TaskFormController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //empty the textfields:
+        dateField.setText("");
+        timeField.setText("");
+        Specification.setText("");
+        taskNameField.setText("");
 
     }
 

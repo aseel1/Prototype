@@ -121,6 +121,14 @@ public class SimpleClient extends AbstractClient {
 				e.printStackTrace();
 			}
 		}
+
+		else if(message.getMessage().equals("#taskSubmitted")) {
+			Platform.runLater(() -> {
+					showAlert("Task was submitted", "Now we're waiting for your manager's approval!", Alert.AlertType.INFORMATION);
+
+			});
+		}
+
 		else if(message.getMessage().equals("#managerApproved")) {
 			Platform.runLater(() -> {
 				showAlert("Approved!", "The request has been approved :)", Alert.AlertType.INFORMATION);

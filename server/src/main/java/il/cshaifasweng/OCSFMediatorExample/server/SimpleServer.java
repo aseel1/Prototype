@@ -195,6 +195,8 @@ public class SimpleServer extends AbstractServer {
 					System.err.println("Manager not found");
 					task.setStatus("manager not found");
 				}
+				message.setMessage("#taskSubmitted");
+				client.sendToClient(message);
 			}
 
 			//manager approved the task. just update the status
