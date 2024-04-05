@@ -29,6 +29,7 @@
                         <Button fx:id="LoadDataButton" onAction="#handleloadDataButton" text="Load Data" />
                     </children>
                 </HBox>
+                <Button fx:id="secondaryButton" layoutX="320.0" layoutY="496.0" onAction="#switchToPrimary" text="Switch to Primary View" />
             </children>
         </VBox>
     </top>

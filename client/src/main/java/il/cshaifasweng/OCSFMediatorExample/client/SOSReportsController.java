@@ -3,6 +3,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.SOS;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -105,5 +106,10 @@ public class SOSReportsController {
 
         // Add series to histogram
         sosHistogram.getData().add(series);
+    }
+
+    @FXML
+    private void switchToPrimary() throws IOException {
+        App.setRoot("primary");
     }
 }
