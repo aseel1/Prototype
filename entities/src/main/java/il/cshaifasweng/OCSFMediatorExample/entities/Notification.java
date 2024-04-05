@@ -32,8 +32,6 @@ public class Notification implements Serializable {
         this.timestamp = now;
     }
 
-//    public Notification(User sender, String message) {}
-
     public Notification() {
 
     }
