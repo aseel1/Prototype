@@ -44,7 +44,7 @@
 
 .chart-bar {
     -fx-bar-fill: #9a5454;
-    -fx-background-radius: 5px;
+    -fx-background-radius: 6px;
 }
 
 .axis, .axis-label {
