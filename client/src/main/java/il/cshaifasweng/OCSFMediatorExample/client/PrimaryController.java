@@ -100,7 +100,6 @@ public class PrimaryController {
 			System.out.println("Failed to connect to the server.");
 			e.printStackTrace();
 		}
-
 	}
 
 	@FXML
@@ -178,7 +177,7 @@ public class PrimaryController {
 
 	@FXML
 	protected void handleViewCompletedTasks(ActionEvent event) {
-		Message message = new Message("#showTasksDone", SimpleClient.getCurrentUser());
+		Message message = new Message("#showDoneTasks", SimpleClient.getCurrentUser());
 		System.out.println(message);
 		try {
 			System.out.println(message.getMessage());

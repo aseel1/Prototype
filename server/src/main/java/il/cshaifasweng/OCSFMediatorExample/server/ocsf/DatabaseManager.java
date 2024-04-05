@@ -94,7 +94,15 @@ public class DatabaseManager {
             User user = users.get(randomUser.nextInt(15));//session.get(User.class, random.nextInt(10));
             User volunteer = null;
             System.out.println(user);
-            String status = (i%2==0)?"pending":"done"; // You need to implement this method
+            String status;
+            if(i%3==0) {
+                status="pending";
+            } else if (i%3==1) {
+                status="done";
+            }
+            else {
+                status="idle";
+            }
             if(status.equals("done"))
                 volunteer = users.get(randomUser.nextInt(15));//session.get(User.class, random.nextInt(10)); // Assuming there are 10 users
             String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -131,10 +139,21 @@ public class DatabaseManager {
     public static List<Task> getTasksByStatusAndCommunity(Session session, String status, String community) {
         List<Task> tasks = null;
         try {
-            // Update the query to correctly navigate from Task to its User, then filter by the user's community.
-            // This assumes your User entity has a 'community' attribute or a way to identify the user's community.
-            // Adjust "user.community" to the correct path from User to the community attribute.
             String hql = "SELECT t FROM Task t WHERE t.status = :status AND t.user.community = :community";
+            Query<Task> query = session.createQuery(hql, Task.class);
+            query.setParameter("status", status);
+            query.setParameter("community", community);
+            tasks = query.list();
+            System.out.println("Found " + tasks.size() + " tasks with status " + status + " in community " + community + ".");
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
+    public static List<Task> getTasksDone(Session session, String status, String community) {
+        List<Task> tasks = null;
+        try {
+            String hql = "SELECT t FROM Task t WHERE t.status = :status AND t.volunteer.community = :community";
             Query<Task> query = session.createQuery(hql, Task.class);
             query.setParameter("status", status);
             query.setParameter("community", community);

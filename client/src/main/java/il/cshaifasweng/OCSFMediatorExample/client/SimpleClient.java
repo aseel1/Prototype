@@ -59,6 +59,7 @@ public class SimpleClient extends AbstractClient {
 			tableMessage=message;
 			try {
 				System.out.println("(Client) Tasks list received from server");
+				tableMessage=message;
 				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of
 
 			} catch (IOException e) {

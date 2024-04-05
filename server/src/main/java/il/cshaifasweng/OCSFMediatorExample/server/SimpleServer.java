@@ -79,9 +79,7 @@ public class SimpleServer extends AbstractServer {
 				List<Task> tasks = DatabaseManager.getTasksByStatusAndUser(session,thisUser);
 				message.setObject(tasks);
 				message.setMessage("#showTasksList");
-
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
-
 				try {
 					client.sendToClient(message);
 				} catch (IOException e) {
@@ -103,11 +101,11 @@ public class SimpleServer extends AbstractServer {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-			}else if (message.startsWith("#showTasksDone")) {
+			}else if (message.startsWith("#showDoneTasks")) {
 				// This assumes the message object contains the User or enough information to fetch the User
 				User userFromClient = (User) message.getObject(); // Make sure this casting is valid based on your message structure
-				String community = userFromClient.getCommunity(); // Adjust according to how you access the community in your User entity
-				List<Task> tasks = DatabaseManager.getTasksByStatusAndCommunity(session, "done", community);
+				String community = userFromClient.getCommunityManager();// Adjust according to how you access the community in your User entity
+				List<Task> tasks = DatabaseManager.getTasksDone(session, "done", community);
 				System.out.println(tasks);
 				message.setObject(tasks);
 				message.setMessage("#showDoneList");
@@ -121,19 +119,9 @@ public class SimpleServer extends AbstractServer {
 			}else if (message.startsWith("#showSOS")) {
 				// Split the message to extract parameters
 				String[] parts = message.getObject().toString().split(" ", 3);
-//				if (parts.length < 3) {
-//					System.err.println("Invalid #showSOS request: " + message.getMessage());
-//					return;
-//				}
-// Now it's safe to access parts[1], parts[2], and parts[3]
-				System.out.println("AAAAAAAAAAAAAAAAAA");
-				System.out.println("BBBBBBBBBBBBBBBBBBB");
 				System.out.println(parts[0]);
-				System.out.println("CCCCCCCCCCCCCCC");
 				System.out.println(parts[1]);
-				System.out.println("DDDDDDDDDDDD");
 				System.out.println(parts[2]);
-
 				String startDate = parts[0];
 				String endDate = parts[1];
 				String communityName = parts[2];
@@ -152,9 +140,6 @@ public class SimpleServer extends AbstractServer {
 					// Prepare the response with the fetched SOS records
 					message.setObject(sosList); // Set the list of SOS records as the message object
 					message.setMessage("#showSOSResponse"); // Indicate this message is a response to the #showSOS request
-					System.out.println(sosList);
-					//perfectoooooooooooooooooooooooo
-					// Attempt to send the response back to the client
 					client.sendToClient(message);
 				} catch (IOException e) {
 					System.err.println("Failed to send SOS list to client: " + e.getMessage());
