@@ -186,16 +186,14 @@ public class SimpleServer extends AbstractServer {
 						System.out.println("found manager, updating task manager ID and sending him a notification");
 						foundManager=1;
 						task.setManagerId(user.getId());
-						//sending a notification to manager
-						user.addNotification("You have a new task request: "+" taskname= " + task.getTaskName() + " taskid= " + task.getTaskId() +
-								" taskstatus= " + task.getStatus()+ " taskdetails= "+task.getDetails());
-
+						message.setSecondObject(user);
 						break;
 					}
 				}
 				if(foundManager==0){
 					System.err.println("Manager not found");
 					task.setStatus("manager not found");
+					message.setSecondObject(null);
 				}
 				message.setMessage("#taskSubmitted");
 				client.sendToClient(message);
@@ -209,7 +207,6 @@ public class SimpleServer extends AbstractServer {
 				task.setStatus("idle");
 				DatabaseManager.updateTask(session, task);
 				System.out.println("task status updated to idle");
-				//we need to send a notification!
 				client.sendToClient(message);
 			}
 

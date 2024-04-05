@@ -125,13 +125,24 @@ public class SimpleClient extends AbstractClient {
 		else if(message.getMessage().equals("#taskSubmitted")) {
 			Platform.runLater(() -> {
 					showAlert("Task was submitted", "Now we're waiting for your manager's approval!", Alert.AlertType.INFORMATION);
-
+				Task task = (Task) message.getObject();
+				User manager= (User) message.getSecondObject();
+				if(manager!=null) {
+					//sending a notification to manager
+					String notification = ("You have a new task request: " + " taskname= " + task.getTaskName() + " taskid= " + task.getTaskId() +
+							" taskstatus= " + task.getStatus() + " taskdetails= " + task.getDetails());
+					SimpleClient.sendNotification(SimpleClient.currentUser, manager.getId(), notification);
+				}
 			});
 		}
 
 		else if(message.getMessage().equals("#managerApproved")) {
 			Platform.runLater(() -> {
 				showAlert("Approved!", "The request has been approved :)", Alert.AlertType.INFORMATION);
+				Task task = (Task) message.getObject();
+				//sending a notification to everyone
+				String txt="A new help-request was opened! Come on, help us help them!";
+				SimpleClient.sendNotification(SimpleClient.currentUser,-1,txt);
 			});
 		}
 
@@ -151,7 +162,7 @@ public class SimpleClient extends AbstractClient {
 					// Process user input if available
 					String enteredText = result.get();
 					Task task = (Task) message.getObject();
-					task.getUser().addNotification(enteredText);
+					SimpleClient.sendNotification(SimpleClient.currentUser,task.getUser().getId(),enteredText);
 					System.out.println("(Simple Client) Sent a notification to user: " + enteredText);
 				} else {
 					// Handle cancel action or dialog closure
