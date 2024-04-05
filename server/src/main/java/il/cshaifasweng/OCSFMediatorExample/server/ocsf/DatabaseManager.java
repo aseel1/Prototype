@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server.ocsf;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -63,8 +64,9 @@ public class DatabaseManager {
         Random random = new Random();
 
         for (int i = 0; i < 14; i++) {
-            String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
+           // String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
             String communityManager=null;
+            String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
             if (role.equals("Manager")){
                 communityManager=selectRandomString("Haifa", "Nazareth");
             }
@@ -76,11 +78,18 @@ public class DatabaseManager {
         User user2 = new User(2345, "nawal", "female", "1234", "20", "Haifa", "manager","Haifa");
         User user3 = new User(76543, "maya", "female", "1234", "20", "Nazareth", "manager","Nazareth");
         User user4 = new User(1234567, "samih", "male", "123", "20", "Nazareth", "manager","Haifa");
+        User user5 = new User(1111, "mary", "female", "123", "20", "Cana", "manager","Cana");
+
+        User user6 = new User(2222, "user1", "female", "123", "21", "Cana", "user"," ");
+
+
 
         session.save(user1);
         session.save(user2);
         session.save(user3);
         session.save(user4);
+        session.save(user5);
+        session.save(user6);
         session.clear();
     }
 
@@ -92,7 +101,15 @@ public class DatabaseManager {
             User user = users.get(randomUser.nextInt(15));//session.get(User.class, random.nextInt(10));
             User volunteer = null;
             System.out.println(user);
-            String status = (i%2==0)?"idle":"done"; // You need to implement this method
+            String status;
+            if(i%3==0) {
+                status="pending";
+            } else if (i%3==1) {
+                status="done";
+            }
+            else {
+                status="idle";
+            }
             if(status.equals("done"))
                 volunteer = users.get(randomUser.nextInt(15));//session.get(User.class, random.nextInt(10)); // Assuming there are 10 users
             String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -143,6 +160,40 @@ public class DatabaseManager {
         }
         return tasks;
     }
+    public static List<Task> getTasksDone(Session session, String status, String community) {
+        List<Task> tasks = null;
+        try {
+            String hql = "SELECT t FROM Task t WHERE t.status = :status AND t.volunteer.community = :community";
+            Query<Task> query = session.createQuery(hql, Task.class);
+            query.setParameter("status", status);
+            query.setParameter("community", community);
+            tasks = query.list();
+            System.out.println("Found " + tasks.size() + " tasks with status " + status + " in community " + community + ".");
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
+    public static List<SOS> getSOSBetweenDates(Session session, String startDate, String endDate) {
+        String hql = "FROM SOS s WHERE s.date BETWEEN :startDate AND :endDate";
+        System.out.println(hql);
+        return session.createQuery(hql, SOS.class)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
+                .list();
+    }
+
+    public static List<SOS> getSOSByCommunityAndDates(Session session, String community, String startDate, String endDate) {
+        String hql = "FROM SOS s WHERE s.user.community = :community AND s.date BETWEEN :startDate AND :endDate";
+        return session.createQuery(hql, SOS.class)
+                .setParameter("community", community)
+                .setParameter("startDate", startDate)
+                .setParameter("endDate", endDate)
+                .list();
+    }
+
+// In DatabaseManager.java
+
 
     // public static void printAllUsers(Session session) throws Exception {
     // CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -212,7 +263,7 @@ public class DatabaseManager {
             // Adjust "user.community" to the correct path from User to the community attribute.
             String hql = "SELECT t FROM Task t WHERE t.status = :status AND not t.user = :thisUser";
             Query<Task> query = session.createQuery(hql, Task.class);
-            query.setParameter("status", "Idle");
+            query.setParameter("status", "idle");
             query.setParameter("thisUser", thisUser);
             tasks = query.list();
             System.out.println("Found " + tasks.size() + " tasks with status idle " + " and not with user " + thisUser + ".");

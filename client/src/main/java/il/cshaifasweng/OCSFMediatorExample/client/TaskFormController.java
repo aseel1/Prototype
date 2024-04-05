@@ -8,17 +8,34 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class TaskFormController {
+
+    @FXML // fx:id="MenuBtn"
+    private MenuButton MenuBtn; // Value injected by FXMLLoader
+
+    @FXML // fx:id="Specification"
+    private TextField Specification; // Value injected by FXMLLoader
+
+    @FXML // fx:id="Task1"
+    private MenuItem Task1; // Value injected by FXMLLoader
+
+    @FXML // fx:id="task2"
+    private MenuItem task2; // Value injected by FXMLLoader
+
+    @FXML // fx:id="task3"
+    private MenuItem task3; // Value injected by FXMLLoader
+
+    @FXML // fx:id="other"
+    private MenuItem other; // Value injected by FXMLLoader
+
     @FXML
     private TextField dateField;
 
@@ -38,6 +55,29 @@ public class TaskFormController {
     private TextField volunteerField;
 
     private Task task;
+    private String taskPicked= "";
+
+
+    @FXML
+    void otherTask(ActionEvent event) {
+        taskPicked= "Other";
+    }
+
+    @FXML
+    void picktask1(ActionEvent event) {
+        taskPicked= "Walk The Dog";
+    }
+
+    @FXML
+    void picktask2(ActionEvent event) {
+        taskPicked= "Buying Medicine";
+    }
+
+    @FXML
+    void picktask3(ActionEvent event) {
+        taskPicked= "Get a Ride";
+    }
+
 
     @FXML
     private void switchToPrimary() throws IOException {
@@ -63,8 +103,12 @@ public class TaskFormController {
 
         task.setUser(SimpleClient.getCurrentUser());
         task.setVolunteer(SimpleClient.getCurrentUser());
-        task.setStatus("Pending for approval");
+        task.setStatus("pending");
+        String str1= Specification.getText().isEmpty() ? "" : Specification.getText();
+        String details= taskPicked+str1;
+        task.setDetails(details);
         Message message = new Message("#submitTask", task);
+        System.out.println("received");
         System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
                 + task.getVolunteer().getUserName()
                 + task.getVolunteer().getAge()
@@ -74,6 +118,7 @@ public class TaskFormController {
                 + " " + task.getStatus());
         try {
             SimpleClient.getClient().sendToServer(message);
+            System.out.println("(Task from client) sent task request");
         } catch (IOException e) {
             e.printStackTrace();
         }

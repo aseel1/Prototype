@@ -1,0 +1,60 @@
+.root {
+    -fx-background-color: #ECEFF1;
+}
+
+.label {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #01171c;
+    -fx-padding: 4px;
+}
+
+.date-picker {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #B0BEC5;
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-size: 12px;
+    -fx-background-radius: 5px;
+}
+
+.button {
+    -fx-background-color: rgba(245, 183, 183, 0.8);
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-font-family: "Arial", sans-serif;
+    -fx-padding: 8px 15px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #e8beb5;
+}
+
+.combo-box {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #B0BEC5;
+    -fx-font-family: "Arial", sans-serif;
+    -fx-background-radius: 5px;
+}
+
+.bar-chart {
+    -fx-font-family: "Arial", sans-serif;
+}
+
+.chart-bar {
+    -fx-bar-fill: #9a5454;
+    -fx-background-radius: 6px;
+}
+
+.axis, .axis-label {
+    -fx-tick-label-fill: #455A64;
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-size: 12px;
+}
+
+.axis-label {
+    -fx-text-fill: #37474F;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}

@@ -53,6 +53,9 @@ public class PrimaryController {
 	private Label statusLabel;
 
 	@FXML
+	private Button SOSReports;
+
+	@FXML
 	private MenuButton reportsButton;
 	private static PrimaryController instance;
 
@@ -69,6 +72,7 @@ public class PrimaryController {
 		statusLabel.setText("Status: " + status);
 
 		reportsButton.setVisible("manager".equals(status));
+		SOSReports.setVisible("manager".equals(status));
 	}
 
 	@FXML
@@ -90,11 +94,12 @@ public class PrimaryController {
 		Message message = new Message("#showTasksList",SimpleClient.getCurrentUser());
 		try {
 			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary)Sending message to server: ");
 
 		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
 			e.printStackTrace();
 		}
-
 	}
 
 	@FXML
@@ -159,11 +164,11 @@ public class PrimaryController {
 
 	@FXML
 	protected void handleViewHelpRequests(ActionEvent event) {
-		Message message = new Message("#showTasksListIdle", SimpleClient.getCurrentUser());
+		Message message = new Message("#showPendingList", SimpleClient.getCurrentUser());
 		System.out.println(message);
 		try {
 			SimpleClient.getClient().sendToServer(message);
-			System.out.println("(Primary) Sending req message to server.");
+			System.out.println("(Primary) Sending req message to server from helpReequest.");
 		} catch (IOException e) {
 			System.out.println("Failed to connect to the server.");
 			e.printStackTrace();
@@ -172,7 +177,16 @@ public class PrimaryController {
 
 	@FXML
 	protected void handleViewCompletedTasks(ActionEvent event) {
-		// Implement fetching and displaying completed tasks
+		Message message = new Message("#showDoneTasks", SimpleClient.getCurrentUser());
+		System.out.println(message);
+		try {
+			System.out.println(message.getMessage());
+			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary) Sending req message to server from doneee.");
+		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
+			e.printStackTrace();
+		}
 	}
 
 	public void handlePressingSOS(ActionEvent event) {
@@ -190,6 +204,21 @@ public class PrimaryController {
 			e.printStackTrace();
 		}
 	}
+
+
+
+	@FXML
+	protected void handleSOSReports(ActionEvent event) {
+		System.out.println("aseelwashere");
+
+		try {
+			System.out.println("aseelwashere");
+			App.setRoot("SOSReports");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 
 }

@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -79,36 +80,80 @@ public class SimpleServer extends AbstractServer {
 				List<Task> tasks = DatabaseManager.getTasksByStatusAndUser(session,thisUser);
 				message.setObject(tasks);
 				message.setMessage("#showTasksList");
-
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
-
 				try {
 					client.sendToClient(message);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 
-			}else if (message.startsWith("#showTasksListIdle")) {
+			}else if (message.startsWith("#showPendingList")) {
 				// This assumes the message object contains the User or enough information to fetch the User
 				User userFromClient = (User) message.getObject(); // Make sure this casting is valid based on your message structure
 				String community = userFromClient.getCommunity(); // Adjust according to how you access the community in your User entity
-
-				List<Task> tasks = DatabaseManager.getTasksByStatusAndCommunity(session, "idle", community);
+				List<Task> tasks = DatabaseManager.getTasksByStatusAndCommunity(session, "pending", community);
 				System.out.println(tasks);
 				message.setObject(tasks);
-				message.setMessage("#showTasksListIdleResponse");
+				message.setMessage("#showPendingList");
+				System.out.println(message.getMessage());
 
 				try {
 					client.sendToClient(message);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}else if (message.startsWith("#showDoneTasks")) {
+				// This assumes the message object contains the User or enough information to fetch the User
+				User userFromClient = (User) message.getObject(); // Make sure this casting is valid based on your message structure
+				String community = userFromClient.getCommunityManager();// Adjust according to how you access the community in your User entity
+				List<Task> tasks = DatabaseManager.getTasksDone(session, "done", community);
+				System.out.println(tasks);
+				message.setObject(tasks);
+				message.setMessage("#showDoneList");
+				System.out.println(message.getMessage());
+
+				try {
+					client.sendToClient(message);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else if (message.startsWith("#showSOS")) {
+				// Split the message to extract parameters
+				String[] parts = message.getObject().toString().split(" ", 3);
+				System.out.println(parts[0]);
+				System.out.println(parts[1]);
+				System.out.println(parts[2]);
+				String startDate = parts[0];
+				String endDate = parts[1];
+				String communityName = parts[2];
+
+				List<SOS> sosList;
+				try {
+					// Determine if we're fetching for a specific community or all communities
+					if (communityName.equalsIgnoreCase("all")) {
+						// Fetch SOS records across all communities within the date range
+						sosList = DatabaseManager.getSOSBetweenDates(session, startDate, endDate);
+						System.out.println(startDate+endDate);
+					} else {
+						// Fetch SOS records for a specific community within the date range
+						sosList = DatabaseManager.getSOSByCommunityAndDates(session, communityName, startDate, endDate);
+					}
+					// Prepare the response with the fetched SOS records
+					message.setObject(sosList); // Set the list of SOS records as the message object
+					message.setMessage("#showSOSResponse"); // Indicate this message is a response to the #showSOS request
+					client.sendToClient(message);
+				} catch (IOException e) {
+					System.err.println("Failed to send SOS list to client: " + e.getMessage());
+				} catch (HibernateException e) {
+					System.err.println("Database access earrrror: " + e.getMessage());
+				}
 			}
+
 			else if (message.startsWith("#updateTask")) {
 
 				Task task = (Task) message.getObject();
 				System.out.println("taskname" + task.getTaskName() + "taskid" + task.getTaskId()
-						+ "taskvolunteer" + task.getVolunteer().getUserName() + "taskstatus" + task.getStatus()+ "taskuser"+ task.getUser().getUserName());
+						+ "taskvolunteer" + task.getVolunteer().getUserName() + "taskstatus" + task.getStatus()+ "taskuser"+ task.getUser().getUserName()+ "taskdetails"+task.getDetails());
 
 				DatabaseManager.updateTask(session, task);
 
@@ -118,11 +163,53 @@ public class SimpleServer extends AbstractServer {
 			} else if (message.startsWith("#openTask")) {
 				message.setMessage("#openTask");
 				client.sendToClient(message);
-			} else if (message.startsWith("#submitTask")) {
-				Task task = (Task) message.getObject(); // dereference the object from the message
+			}
+
+			//when creating a new task. add it and send a message back to client to get the user and then find out whe is the manager
+			else if (message.startsWith("#submitTask")) {
+				//receive task, print it and update in taskstable
+				Task task = (Task) message.getObject(); // derefrence the object from the message
+				System.out.println(" taskname " + task.getTaskName() + " taskid " + task.getTaskId()
+						+ " taskstatus " + task.getStatus()+ " taskdetails "+task.getDetails());
 				DatabaseManager.addTask(task, session);
+				System.out.println("task updated as pending");
+				//now we need the user in order to know the manager
+				User currentUser= task.getUser();
+				List<User> users = DatabaseManager.getAllUsers(session);
+				int foundManager=0;
+				for(User user:users){
+					if(Objects.equals(currentUser.getCommunity(), user.getCommunityManager())){
+						//if reached here, then found manager :))))
+						//update task managerID:
+						System.out.println("found manager, updating task manager ID and sending him a notification");
+						foundManager=1;
+						task.setManagerId(user.getId());
+						//sending a notification to manager
+						user.addNotification("You have a new task request: "+" taskname= " + task.getTaskName() + " taskid= " + task.getTaskId() +
+								" taskstatus= " + task.getStatus()+ " taskdetails= "+task.getDetails());
+
+						break;
+					}
+				}
+				if(foundManager==0){
+					System.err.println("Manager not found");
+					task.setStatus("manager not found");
+				}
+			}
+
+			//when manager approved the task. just update the status
+			else if(message.startsWith("#managerApproved")){
+				System.out.println("manager approved of task");
+				//manager approves of task, add it to list
+				Task task = (Task) message.getObject(); // derefrence the object from the message
+				task.setStatus("idle");
+				DatabaseManager.addTask(task, session);
+				System.out.println("task status updated to idle");
 				client.sendToClient(message);
-			} else if (message.startsWith("#Login")) {
+
+			}
+
+			else if (message.startsWith("#Login")) {
 				User userFromClient = (User) message.getObject(); // User info from the client
 				User userFromDB = DatabaseManager.authenticateUser(userFromClient, session);
 
