@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class Notification implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "taskId", updatable = false)
+    @Column(name = "notificationId", updatable = false)
     private int id;
 
     @ManyToOne
@@ -28,7 +28,7 @@ public class Notification implements Serializable {
         this.sender = sender;
         this.recipient = recipient;
         this.message = message;
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().withNano(0);
         this.timestamp = now;
     }
 

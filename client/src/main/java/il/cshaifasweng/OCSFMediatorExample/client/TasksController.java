@@ -18,6 +18,7 @@ import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.tableMessa
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.*;
@@ -91,7 +92,8 @@ public class TasksController {
 
         TextField text1 = new TextField(String.valueOf(task.getTaskId()));
         TextField text2 = new TextField(task.getTaskName());
-        TextField text3 = new TextField(task.getDate());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        TextField text3 = new TextField(task.getDate().format(formatter));
         TextField text4 = new TextField(String.valueOf(task.getTime()));
         TextField text5 = new TextField(task.getStatus());
         TextField text6 = new TextField(task.getUser().getUserName());
@@ -141,12 +143,12 @@ public class TasksController {
                 SimpleClient.getClient().sendToServer(message);
                 if(task.getStatus().equals("idle"))
                 {
-                    task.setStatus("In process");
+                    task.setStatus("in process");
                     task.setVolunteer(getCurrentUser());
-                    LocalDateTime now = LocalDateTime.now();
+                    LocalDateTime now = LocalDateTime.now().withNano(0);
                     task.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
-                    String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-                    task.setVolDate(date);
+//                    String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                    task.setVolDate(now);
                 }
                 taskTable.refresh();
             } catch (IOException b) {

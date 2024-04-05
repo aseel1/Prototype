@@ -28,6 +28,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 
 import static il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager.updateNotification;
+import static il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager.updateTask;
 
 
 public class SimpleServer extends AbstractServer {
@@ -197,6 +198,7 @@ public class SimpleServer extends AbstractServer {
 					System.err.println("Manager not found");
 					task.setStatus("manager not found");
 				}
+				updateTask(session, task);
 			}
 
 			//when manager approved the task. just update the status
@@ -252,11 +254,11 @@ public class SimpleServer extends AbstractServer {
 				Task thisTask=(Task)message.getObject();
 				User taskVolunteer = (User)message.getSecondObject();
 				if(thisTask.getStatus().equals("idle")){
-					thisTask.setStatus("In Process");
-					LocalDateTime now = LocalDateTime.now();
+					thisTask.setStatus("in Process");
+					LocalDateTime now = LocalDateTime.now().withNano(0);
 					thisTask.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
-					String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-					thisTask.setVolDate(date);
+//					String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+					thisTask.setVolDate(now);
 					thisTask.setVolunteer(taskVolunteer);
 					DatabaseManager.updateTask(session,thisTask);
 					message.setObject("Done");

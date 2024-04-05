@@ -38,14 +38,14 @@ public class Message implements Serializable {
 
     public Message(int id, String message) {
         this.id = id;
-        this.timeStamp = LocalDateTime.now();
+        this.timeStamp = LocalDateTime.now().withNano(0);
         this.message = message;
         this.data = null;
     }
 
     public Message(int id, String message, String data) {
         this.id = id;
-        this.timeStamp = LocalDateTime.now();
+        this.timeStamp = LocalDateTime.now().withNano(0);
         this.message = message;
         this.data = data;
     }

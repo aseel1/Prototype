@@ -95,28 +95,35 @@ public class TaskFormController {
         task = new Task();
         task.setTaskName(taskNameField.getText());
         // Set the date and time to now
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        task.setDate(dateField.getText().isEmpty() ? now.format(dateFormatter) : dateField.getText());
+        LocalDateTime now = LocalDateTime.now().withNano(0);
+//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
+//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+//        task.setDate(dateField.getText().isEmpty() ? now.format(dateFormatter) : dateField.getText());
+//        task.setTime(timeField.getText().isEmpty() ? now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond()
+//                : Integer.parseInt(timeField.getText()));
+        task.setDate(now);
         task.setTime(timeField.getText().isEmpty() ? now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond()
                 : Integer.parseInt(timeField.getText()));
 
+
         task.setUser(SimpleClient.getCurrentUser());
-        task.setVolunteer(SimpleClient.getCurrentUser());
+//        task.setVolunteer(SimpleClient.getCurrentUser());
         task.setStatus("pending");
         String str1= Specification.getText().isEmpty() ? "" : Specification.getText();
         String details= taskPicked+str1;
         task.setDetails(details);
         Message message = new Message("#submitTask", task);
         System.out.println("received");
-        System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
-                + task.getVolunteer().getUserName()
+        System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " ");
+        if(task.getVolunteer()!=null){
+//        System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
+            System.err.println(
+                 task.getVolunteer().getUserName()
                 + task.getVolunteer().getAge()
                 + task.getVolunteer().getGender()
                 + task.getVolunteer().getCommunity()
                 + task.getVolunteer().getPassword()
-                + " " + task.getStatus());
+                + " " + task.getStatus());}
         try {
             SimpleClient.getClient().sendToServer(message);
             System.out.println("(Task from client) sent task request");
@@ -125,8 +132,8 @@ public class TaskFormController {
             e.printStackTrace();
         }
         //hello marry uncomment this one and use it
-        // receiver_id = -1 if its for all
-        // SimpleClient.sendNotification(SimpleClient.getCurrentUser(),receiver_id,"message");
+//         int receiver_id = -1;  //if its for all
+//         SimpleClient.sendNotification(SimpleClient.getCurrentUser(),receiver_id,("Id="+task.getTaskId()));
 
     }
 
