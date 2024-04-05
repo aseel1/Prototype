@@ -88,15 +88,14 @@ public class SimpleServer extends AbstractServer {
 					e.printStackTrace();
 				}
 
-			}else if (message.startsWith("#showTasksIdle")) {
+			}else if (message.startsWith("#showPendingList")) {
 				// This assumes the message object contains the User or enough information to fetch the User
 				User userFromClient = (User) message.getObject(); // Make sure this casting is valid based on your message structure
 				String community = userFromClient.getCommunity(); // Adjust according to how you access the community in your User entity
-
-				List<Task> tasks = DatabaseManager.getTasksByStatusAndCommunity(session, "idle", community);
+				List<Task> tasks = DatabaseManager.getTasksByStatusAndCommunity(session, "pending", community);
 				System.out.println(tasks);
 				message.setObject(tasks);
-				message.setMessage("#showIdleList");
+				message.setMessage("#showPendingList");
 				System.out.println(message.getMessage());
 
 				try {

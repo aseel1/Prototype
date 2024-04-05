@@ -94,7 +94,7 @@ public class DatabaseManager {
             User user = users.get(randomUser.nextInt(15));//session.get(User.class, random.nextInt(10));
             User volunteer = null;
             System.out.println(user);
-            String status = (i%2==0)?"idle":"done"; // You need to implement this method
+            String status = (i%2==0)?"pending":"done"; // You need to implement this method
             if(status.equals("done"))
                 volunteer = users.get(randomUser.nextInt(15));//session.get(User.class, random.nextInt(10)); // Assuming there are 10 users
             String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());

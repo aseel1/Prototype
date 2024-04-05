@@ -165,7 +165,7 @@ public class PrimaryController {
 
 	@FXML
 	protected void handleViewHelpRequests(ActionEvent event) {
-		Message message = new Message("#showTasksIdle", SimpleClient.getCurrentUser());
+		Message message = new Message("#showPendingList", SimpleClient.getCurrentUser());
 		System.out.println(message);
 		try {
 			SimpleClient.getClient().sendToServer(message);

@@ -64,13 +64,9 @@ public class SimpleClient extends AbstractClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else if (message.getMessage().equals("#showIdleList")) {
+		} else if (message.getMessage().equals("#showPendingList")) {
 			try {
-				System.out.println("(Client) Tasks list received from server");
-				tableMessage=message;
-				App.setRoot("TasksIdle"); // calling the fxml function will generate the initliaze of
-
-				System.out.println("(Client) Tasks list received from server.idlee");
+				System.out.println("(Client) Tasks list received from server pendingg");
 				tableMessage=message;
 				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of
 			} catch (IOException e) {
@@ -124,9 +120,7 @@ public class SimpleClient extends AbstractClient {
 				e.printStackTrace();
 			}
 		}else if (message.getMessage().equals("#showSOSResponse")) {
-
-				System.out.println(message.getObject());
-				// Assuming 'sosReportsController' is your SOSReportsController instance
+			System.out.println(message.getObject());
 			SOSReportsController.updateHistogramFromMessage(message);
 		} else if (message.getMessage().equals("#loginSuccess")) {
 			try {
