@@ -80,31 +80,75 @@ public class SimpleServer extends AbstractServer {
 				List<Task> tasks = DatabaseManager.getTasksByStatusAndUser(session,thisUser);
 				message.setObject(tasks);
 				message.setMessage("#showTasksList");
-
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
-
 				try {
 					client.sendToClient(message);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 
-			}else if (message.startsWith("#showTasksListIdle")) {
+			}else if (message.startsWith("#showPendingList")) {
 				// This assumes the message object contains the User or enough information to fetch the User
 				User userFromClient = (User) message.getObject(); // Make sure this casting is valid based on your message structure
 				String community = userFromClient.getCommunity(); // Adjust according to how you access the community in your User entity
-
-				List<Task> tasks = DatabaseManager.getTasksByStatusAndCommunity(session, "idle", community);
+				List<Task> tasks = DatabaseManager.getTasksByStatusAndCommunity(session, "pending", community);
 				System.out.println(tasks);
 				message.setObject(tasks);
-				message.setMessage("#showTasksListIdleResponse");
+				message.setMessage("#showPendingList");
+				System.out.println(message.getMessage());
 
 				try {
 					client.sendToClient(message);
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}else if (message.startsWith("#showDoneTasks")) {
+				// This assumes the message object contains the User or enough information to fetch the User
+				User userFromClient = (User) message.getObject(); // Make sure this casting is valid based on your message structure
+				String community = userFromClient.getCommunityManager();// Adjust according to how you access the community in your User entity
+				List<Task> tasks = DatabaseManager.getTasksDone(session, "done", community);
+				System.out.println(tasks);
+				message.setObject(tasks);
+				message.setMessage("#showDoneList");
+				System.out.println(message.getMessage());
+
+				try {
+					client.sendToClient(message);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else if (message.startsWith("#showSOS")) {
+				// Split the message to extract parameters
+				String[] parts = message.getObject().toString().split(" ", 3);
+				System.out.println(parts[0]);
+				System.out.println(parts[1]);
+				System.out.println(parts[2]);
+				String startDate = parts[0];
+				String endDate = parts[1];
+				String communityName = parts[2];
+
+				List<SOS> sosList;
+				try {
+					// Determine if we're fetching for a specific community or all communities
+					if (communityName.equalsIgnoreCase("all")) {
+						// Fetch SOS records across all communities within the date range
+						sosList = DatabaseManager.getSOSBetweenDates(session, startDate, endDate);
+						System.out.println(startDate+endDate);
+					} else {
+						// Fetch SOS records for a specific community within the date range
+						sosList = DatabaseManager.getSOSByCommunityAndDates(session, communityName, startDate, endDate);
+					}
+					// Prepare the response with the fetched SOS records
+					message.setObject(sosList); // Set the list of SOS records as the message object
+					message.setMessage("#showSOSResponse"); // Indicate this message is a response to the #showSOS request
+					client.sendToClient(message);
+				} catch (IOException e) {
+					System.err.println("Failed to send SOS list to client: " + e.getMessage());
+				} catch (HibernateException e) {
+					System.err.println("Database access earrrror: " + e.getMessage());
+				}
 			}
+
 			else if (message.startsWith("#updateTask")) {
 
 				Task task = (Task) message.getObject();

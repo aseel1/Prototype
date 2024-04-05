@@ -52,14 +52,6 @@ public class Task implements Serializable {
         this.managerId=-1;
     }
 
-    public String getVolDate() {
-        return volDate;
-    }
-
-    public void setVolDate(String volDate) {
-        this.volDate = volDate;
-    }
-
     public int getTaskId() {
         return taskId;
     }
@@ -188,4 +180,7 @@ public class Task implements Serializable {
         // Save the task to the database
     }
 
+
+    public void setVolDate(String date) {
+    }
 }

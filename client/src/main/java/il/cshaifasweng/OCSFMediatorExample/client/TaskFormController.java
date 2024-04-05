@@ -103,7 +103,7 @@ public class TaskFormController {
 
         task.setUser(SimpleClient.getCurrentUser());
         task.setVolunteer(SimpleClient.getCurrentUser());
-        task.setStatus("Pending for approval");
+        task.setStatus("pending");
         String str1= Specification.getText().isEmpty() ? "" : Specification.getText();
         String details= taskPicked+str1;
         task.setDetails(details);
