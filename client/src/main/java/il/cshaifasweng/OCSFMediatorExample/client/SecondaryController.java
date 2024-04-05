@@ -58,6 +58,7 @@ public class SecondaryController {
     private void switchToPrimary() throws IOException {
         App.setRoot("primary");
     }
+
     @FXML
     public void initialize() {
         user_id.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));

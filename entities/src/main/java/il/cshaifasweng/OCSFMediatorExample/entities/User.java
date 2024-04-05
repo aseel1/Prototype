@@ -1,12 +1,15 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 import com.sun.istack.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -21,6 +24,10 @@ public class User implements Serializable {
     @NotNull
     private boolean loggedIn=false;
 
+    @ElementCollection
+//    @Column(name = "notification")
+    private List<String> notifications;
+
     public User() {
     }
 
@@ -34,6 +41,7 @@ public class User implements Serializable {
         this.age = age;
         this.community = community;
         this.communityManager=communityManager;
+        this.notifications=new ArrayList<>();
     }
 
     public User(String userName, String password) {
@@ -111,5 +119,27 @@ public class User implements Serializable {
 
     public void setCommunityManager(String communityManager) {
         this.communityManager = communityManager;
+    }
+    public List<String> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<String> notifications) {
+        this.notifications = notifications;
+    }
+
+    // Method to add a notification
+    public void addNotification(String notification) {
+        if (this.notifications == null) {
+            this.notifications = new ArrayList<>();
+        }
+        this.notifications.add(notification);
+    }
+
+    // Method to remove a notification
+    public void removeNotification(String notification) {
+        if (this.notifications != null) {
+            this.notifications.remove(notification);
+        }
     }
 }

@@ -91,7 +91,7 @@ public class PrimaryController {
 
 	@FXML
 	protected void handleShowTasksButtonAction(ActionEvent event) {
-		Message message = new Message("#showTasksList");
+		Message message = new Message("#showTasksList",SimpleClient.getCurrentUser());
 		try {
 			SimpleClient.getClient().sendToServer(message);
 			System.out.println("(Primary)Sending message to server: ");
@@ -141,7 +141,7 @@ public class PrimaryController {
 	}
 	@FXML
 	protected void handleViewCommunityMembers(ActionEvent event) {
-		Message message = new Message("#showMembersList", SimpleClient.getCurrentUser().getCommunityManager());
+		Message message = new Message("#showMembersList", SimpleClient.getCurrentUser());
 		try {
 			SimpleClient.getClient().sendToServer(message);
 			System.out.println("(Primary)Sending message to server: ");
@@ -163,13 +163,11 @@ public class PrimaryController {
 //		}
 	}
 
-
 	@FXML
 	protected void handleViewHelpRequests(ActionEvent event) {
 		Message message = new Message("#showTasksIdle", SimpleClient.getCurrentUser());
 		System.out.println(message);
 		try {
-			System.out.println(message.getMessage());
 			SimpleClient.getClient().sendToServer(message);
 			System.out.println("(Primary) Sending req message to server from helpReequest.");
 		} catch (IOException e) {
@@ -195,6 +193,20 @@ public class PrimaryController {
 	public void handlePressingSOS(ActionEvent event) {
 		SimpleClient.pressingSOS("primary");
 	}
+
+	public void notificationButtonAction(ActionEvent actionEvent) {
+		Message message = new Message("#getUserNotifications", SimpleClient.getCurrentUser());
+		System.out.println(message);
+		try {
+			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary) Sending req message to server2.");
+		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
+			e.printStackTrace();
+		}
+	}
+
+
 
 	@FXML
 	protected void handleSOSReports(ActionEvent event) {
