@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -108,7 +109,7 @@ public class SimpleServer extends AbstractServer {
 
 				Task task = (Task) message.getObject();
 				System.out.println("taskname" + task.getTaskName() + "taskid" + task.getTaskId()
-						+ "taskvolunteer" + task.getVolunteer().getUserName() + "taskstatus" + task.getStatus()+ "taskuser"+ task.getUser().getUserName());
+						+ "taskvolunteer" + task.getVolunteer().getUserName() + "taskstatus" + task.getStatus()+ "taskuser"+ task.getUser().getUserName()+ "taskdetails"+task.getDetails());
 
 				DatabaseManager.updateTask(session, task);
 
@@ -118,11 +119,53 @@ public class SimpleServer extends AbstractServer {
 			} else if (message.startsWith("#openTask")) {
 				message.setMessage("#openTask");
 				client.sendToClient(message);
-			} else if (message.startsWith("#submitTask")) {
-				Task task = (Task) message.getObject(); // dereference the object from the message
+			}
+
+			//when creating a new task. add it and send a message back to client to get the user and then find out whe is the manager
+			else if (message.startsWith("#submitTask")) {
+				//receive task, print it and update in taskstable
+				Task task = (Task) message.getObject(); // derefrence the object from the message
+				System.out.println(" taskname " + task.getTaskName() + " taskid " + task.getTaskId()
+						+ " taskstatus " + task.getStatus()+ " taskdetails "+task.getDetails());
 				DatabaseManager.addTask(task, session);
+				System.out.println("task updated as pending");
+				//now we need the user in order to know the manager
+				User currentUser= task.getUser();
+				List<User> users = DatabaseManager.getAllUsers(session);
+				int foundManager=0;
+				for(User user:users){
+					if(Objects.equals(currentUser.getCommunity(), user.getCommunityManager())){
+						//if reached here, then found manager :))))
+						//update task managerID:
+						System.out.println("found manager, updating task manager ID and sending him a notification");
+						foundManager=1;
+						task.setManagerId(user.getId());
+						//sending a notification to manager
+						user.addNotification("You have a new task request: "+" taskname= " + task.getTaskName() + " taskid= " + task.getTaskId() +
+								" taskstatus= " + task.getStatus()+ " taskdetails= "+task.getDetails());
+
+						break;
+					}
+				}
+				if(foundManager==0){
+					System.err.println("Manager not found");
+					task.setStatus("manager not found");
+				}
+			}
+
+			//when manager approved the task. just update the status
+			else if(message.startsWith("#managerApproved")){
+				System.out.println("manager approved of task");
+				//manager approves of task, add it to list
+				Task task = (Task) message.getObject(); // derefrence the object from the message
+				task.setStatus("idle");
+				DatabaseManager.addTask(task, session);
+				System.out.println("task status updated to idle");
 				client.sendToClient(message);
-			} else if (message.startsWith("#Login")) {
+
+			}
+
+			else if (message.startsWith("#Login")) {
 				User userFromClient = (User) message.getObject(); // User info from the client
 				User userFromDB = DatabaseManager.authenticateUser(userFromClient, session);
 

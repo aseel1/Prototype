@@ -76,11 +76,18 @@ public class DatabaseManager {
         User user2 = new User(2345, "nawal", "female", "1234", "20", "Haifa", "manager","Haifa");
         User user3 = new User(76543, "maya", "female", "1234", "20", "Nazareth", "manager","Nazareth");
         User user4 = new User(1234567, "same7", "male", "123", "20", "Nazareth", "manager","Haifa");
+        User user5 = new User(1111, "mary", "female", "123", "20", "Cana", "manager","Cana");
+
+        User user6 = new User(2222, "user1", "female", "123", "21", "Cana", "user"," ");
+
+
 
         session.save(user1);
         session.save(user2);
         session.save(user3);
         session.save(user4);
+        session.save(user5);
+        session.save(user6);
         session.clear();
     }
 
