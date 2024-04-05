@@ -10,43 +10,36 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
-<BorderPane prefHeight="365.0" prefWidth="584.0" style="-fx-background-color: F7EFE7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SOSReportsController">
+<BorderPane prefHeight="365.0" prefWidth="584.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SOSReportsController" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/SOSReportsStyle.css">
     <top>
-        <VBox prefHeight="72.0" prefWidth="747.0" spacing="40" style="-fx-background-color: F7EFE7;">
+        <VBox prefHeight="72.0" prefWidth="747.0" spacing="20" style="-fx-background-color: #ECEFF1; -fx-padding: 10;">
             <children>
-                <HBox spacing="5">
+                <HBox spacing="10" alignment="CENTER_LEFT">
                     <children>
-                        <Label style="-fx-border-color: D30F0F;" text="Start Date:" />
-                        <DatePicker fx:id="startDatePicker" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" />
-                        <Label style="-fx-border-color: D30F0F;" text="End Date:" />
-                        <DatePicker fx:id="endDatePicker" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" />
+                        <Label text="Start Date:" />
+                        <DatePicker fx:id="startDatePicker" />
+                        <Label text="End Date:" />
+                        <DatePicker fx:id="endDatePicker" />
                     </children>
                 </HBox>
-                <HBox prefHeight="0.0" prefWidth="584.0" spacing="5">
+                <HBox spacing="10" alignment="CENTER_LEFT">
                     <children>
-                        <Label prefHeight="32.0" prefWidth="95.0" style="-fx-border-color: D30F0F;" text="Community:" />
-                        <ComboBox fx:id="communityComboBox" minWidth="150" prefWidth="200.0" style="-fx-background-color: F7EFE7;">
-                            <!-- Placeholder for items to be added dynamically -->
-                        </ComboBox>
-                        <Button fx:id="LoadDataButton" onAction="#handleloadDataButton" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="Load Data" />
+                        <Label text="Community:" />
+                        <ComboBox fx:id="communityComboBox" minWidth="150" prefWidth="200.0" />
+                        <Button fx:id="LoadDataButton" onAction="#handleloadDataButton" text="Load Data" />
                     </children>
                 </HBox>
             </children>
         </VBox>
     </top>
-
     <center>
-        <BarChart fx:id="sosHistogram" animated="false" legendVisible="false" prefHeight="301.0" prefWidth="533.0" style="-fx-border-color: D30F0F;">
+        <BarChart fx:id="sosHistogram" animated="false" legendVisible="false" barGap="0.5" categoryGap="12.0" style="-fx-background-color: #ECEFF1;" prefHeight="301.0" prefWidth="533.0">
             <xAxis>
                 <CategoryAxis label="Date" fx:id="xAxis" />
             </xAxis>
             <yAxis>
-                <NumberAxis fx:id="yAxis" label="Number of Calls" style="-fx-border-color: D30F0F;" />
+                <NumberAxis fx:id="yAxis" label="Number of Calls" />
             </yAxis>
         </BarChart>
     </center>
-    <left>
-        <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER" />
-    </left>
 </BorderPane>
