@@ -7,6 +7,12 @@ import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import javafx.scene.control.ButtonType;
 import org.greenrobot.eventbus.EventBus;
 
+//for custom alert:
+import javafx.scene.control.TextInputDialog;
+import java.util.Optional;
+
+
+
 import antlr.debug.MessageEvent;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
@@ -114,7 +120,47 @@ public class SimpleClient extends AbstractClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else if (message.getMessage().equals("#openTask")) {
+		}
+		else if(message.getMessage().equals("#managerApproved")) {
+			Platform.runLater(() -> {
+				showAlert("Approved!", "The request has been approved :)", Alert.AlertType.INFORMATION);
+			});
+		}
+
+		else if (message.getMessage().equals("#managerDeclined")) {
+			Platform.runLater(() -> {
+				System.out.println("(Simple Client) manager declined");
+				// Create a TextInputDialog instead of CustomAlert
+				TextInputDialog textInputDialog = new TextInputDialog();
+				textInputDialog.setTitle("Explanation");
+				textInputDialog.setHeaderText("Please fill in an explanation to send to the user who opened this task.");
+
+				// Show the dialog and wait for user input
+				Optional<String> result = textInputDialog.showAndWait();
+
+				// Check if user input is present
+				if (result.isPresent()) {
+					// Process user input if available
+					String enteredText = result.get();
+					Task task = (Task) message.getObject();
+					task.getUser().addNotification(enteredText);
+					System.out.println("(Simple Client) Sent a notification to user: " + enteredText);
+				} else {
+					// Handle cancel action or dialog closure
+					System.out.println("(Simple Client) User canceled or closed the dialog");
+					message.setMessage("#cancelDecline");
+					try {
+						getClient().sendToServer(message);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		}
+
+
+
+		else if (message.getMessage().equals("#openTask")) {
 			try {
 				App.setRoot("TaskForm");
 			} catch (IOException e) {

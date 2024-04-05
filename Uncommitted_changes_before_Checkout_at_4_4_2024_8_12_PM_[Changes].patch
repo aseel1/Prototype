@@ -1,0 +1,652 @@
+Subject: [PATCH] Uncommitted changes before Checkout at 4/4/2024 8:12 PM [Changes]
+---
+Index: entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/Task.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/Task.java b/entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/Task.java
+--- a/entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/Task.java	
++++ b/entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/Task.java	
+@@ -25,12 +25,17 @@
+     private String date;
+     private int time;
+ 
++    private String taskDetails;
++    private int managerId;
++
+     @ManyToOne
+     @JoinColumn(name = "volunteer_id")
+     private User volunteer;
+     private String status;
+ 
+     public Task() {
++        this.taskDetails= "";
++        this.managerId=-1;
+     }
+ 
+     public Task(int taskId, String taskName, String date, int time, User volunteer, String status) {
+@@ -41,6 +46,8 @@
+         this.time = time;
+         this.volunteer = volunteer;
+         this.status = status;
++        this.taskDetails= "";
++        this.managerId=-1;
+     }
+ 
+     public int getTaskId() {
+@@ -50,6 +57,13 @@
+     public void setTaskId(int taskId) {
+         this.taskId = taskId;
+     }
++    public String getDetails() {
++        return this.taskDetails;
++    }
++
++    public void setDetails(String details) {
++        this.taskDetails = details;
++    }
+ 
+     public String getTaskName() {
+         return taskName;
+@@ -91,6 +105,14 @@
+         this.status = status;
+     }
+ 
++    public int getmanagerId() {
++        return managerId;
++    }
++
++    public void setManagerId(int id) {
++        this.managerId = id;
++    }
++
+     public void displayTaskForm(Task task) {
+         Stage stage = new Stage();
+         GridPane grid = new GridPane();
+Index: client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PrimaryController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PrimaryController.java b/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PrimaryController.java
+--- a/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PrimaryController.java	
++++ b/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PrimaryController.java	
+@@ -46,6 +46,9 @@
+ 	@FXML
+ 	private Button showTasksButton;
+ 
++	@FXML // fx:id="showPendingTasksButton"
++	private Button showPendingTasksButton; // Value injected by FXMLLoader
++
+ 	@FXML
+ 	private Label usernameLabel;
+ 
+@@ -56,6 +59,8 @@
+ 	private MenuButton reportsButton;
+ 	private static PrimaryController instance;
+ 
++	private int userID;
++
+ 	public PrimaryController() {
+ 		instance = this;
+ 	}
+@@ -64,13 +69,28 @@
+ 		return instance;
+ 	}
+ 
+-	public void updateLabels(String username, String status) {
++	public void updateLabels(String username, String status, int id) {
+ 		usernameLabel.setText("Username: " + username);
+ 		statusLabel.setText("Status: " + status);
+-
++		userID=id;
+ 		reportsButton.setVisible("manager".equals(status));
++		showPendingTasksButton.setVisible("manager".equals(status));
+ 	}
+ 
++	@FXML
++	void handleShowPendingTasksButtonAction(ActionEvent event) {
++		Message message = new Message("#showPendingTasks");
++		message.setObject(userID);
++		try {
++			SimpleClient.getClient().sendToServer(message);
++			System.out.println("(Primary)Sending message to server: ");
++			System.out.println("(Sending a request to show pending tasks");
++
++		} catch (IOException e) {
++			System.out.println("Failed to connect to the server.");
++			e.printStackTrace();
++		}
++	}
+ 	@FXML
+ 	protected void handleShowUsersButtonAction(ActionEvent event) {
+ 		Message message = new Message("#showUsersList");
+Index: server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/SimpleServer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/SimpleServer.java b/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/SimpleServer.java
+--- a/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/SimpleServer.java	
++++ b/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/SimpleServer.java	
+@@ -81,22 +81,96 @@
+ 
+ 				Task task = (Task) message.getObject();
+ 				System.out.println("taskname" + task.getTaskName() + "taskid" + task.getTaskId()
+-						+ "taskvolunteer" + task.getVolunteer().getUserName() + "taskstatus" + task.getStatus());
++						+ "taskvolunteer" + task.getVolunteer().getUserName() + "taskstatus" + task.getStatus()+ "taskdetails"+task.getDetails());
+ 
+ 				DatabaseManager.updateTask(session, task);
+-
+ 				message.setMessage("#updateTask");
+ 				message.setObject(task);
+ 				client.sendToClient(message);
+ 			} else if (message.startsWith("#openTask")) {
+ 				message.setMessage("#openTask");
+ 				client.sendToClient(message);
+-			} else if (message.startsWith("#submitTask")) {
++			}
++
++			//when creating a new task. add it and send a message back to client to get the user and then find out whe is the manager
++			else if (message.startsWith("#submitTask")) {
++				//receive task, print it and update in taskstable
++				Task task = (Task) message.getObject(); // derefrence the object from the message
++				System.out.println(" taskname " + task.getTaskName() + " taskid " + task.getTaskId()
++						+ " taskstatus " + task.getStatus()+ " taskdetails "+task.getDetails());
++				DatabaseManager.addTask(task, session);
++				//send message back to client to get his/her manager
++				System.out.println("sending message to client to receive user info");
++				message.setMessage("#GetCurrentUser");
++				//we need to send to manager for approval
++				//first, let's find the manager shall we? :)
++				client.sendToClient(message);
++			}
++
++			//after sending a message to client to get its information. search for manager and send the request
++			else if(message.startsWith("#GetCurrentUser")){
++				System.out.println("received user info from client");
++				//let's search for manager and send her the task for approving.
++				//this is taking waaaaaay too much time :((
++				User currentUser= (User) message.getObject();
++				Task task= (Task) message.getAdditionalObject();
++				System.out.println("received client's infos: user= "+ currentUser.getUserName()+", task= "+task.getTaskName());
++				List<User> users = DatabaseManager.getAllUsers(session);
++				for(User user:users){
++					if(currentUser.getCommunity() == user.getCommunityManager()){
++						//if reached here, then found manager :))))
++						//update task managerID:
++						System.out.println("found manager and updating task manager ID");
++						task.setManagerId(user.getId());
++						//now we should send him a notification ///////////////////////// we'll send after the function is ready
++						System.out.println("don't forget to send the manager a notification!!!!");
++					}
++				}
++			}
++
++			//when manager approved the task. just update the status
++			else if(message.startsWith("#managerApproved")){
++				System.out.println("manager approved of task");
++				//manager approves of task, add it to list
+ 				Task task = (Task) message.getObject(); // derefrence the object from the message
++				task.setStatus("idle");
+ 				DatabaseManager.addTask(task, session);
+-
++				System.out.println("task status updated to idle");
+ 				client.sendToClient(message);
+-			} else if (message.startsWith("#Login")) {
++
++			}
++			//manager requesting list of pending tasks////////////////////
++			else if(message.startsWith("#showPendingTasks")){
++				System.out.println("manager requesting pending tasks table");
++				List<Task> tasks = DatabaseManager.getAllTasks(session);
++				//now let's create list with only pending tasks :
++				int managerId= (int)message.getObject();
++				List<Task> pending = null;
++				for(Task task : tasks){
++					if(task.getmanagerId()==managerId){
++						if(task.getStatus()=="Pending for approval"){
++							pending.add(task);
++						}
++					}
++				}
++				System.out.println("sending pending list to client");
++				message.setObject(pending);
++				message.setMessage("#showpendingTasks");
++				System.out.println("(SimpleServer)message got from primary and now sending to client");
++
++				try {
++					client.sendToClient(message);
++				} catch (IOException e) {
++					e.printStackTrace();
++					System.out.println("catcedhedh");
++				}
++
++				System.out.println("(SimpleServer)message got from primary and now sending to client");
++
++			}
++
++
++			else if (message.startsWith("#Login")) {
+ 				User userFromClient = (User) message.getObject(); // User info from the client
+ 				User userFromDB = DatabaseManager.authenticateUser(userFromClient, session);
+ 
+Index: server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/ocsf/DatabaseManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/ocsf/DatabaseManager.java b/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/ocsf/DatabaseManager.java
+--- a/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/ocsf/DatabaseManager.java	
++++ b/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/ocsf/DatabaseManager.java	
+@@ -53,6 +53,8 @@
+         }
+         User user = new User(212393532, "aseel", "male", "1234", "20", "community", "manager","Haifa");
+         session.save(user);
++        User user2 = new User(206528275, "mary", "female", "1111", "25", "cana", "manager","cana");
++        session.save(user2);
+         session.clear();
+     }
+ 
+@@ -149,6 +151,8 @@
+         session.save(task);
+     }
+ 
++    //get manager of a specific community:
++
+     public static void addUser(Session session, User user) {
+         session.save(user);
+     }
+Index: client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/TaskFormController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/TaskFormController.java b/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/TaskFormController.java
+--- a/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/TaskFormController.java	
++++ b/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/TaskFormController.java	
+@@ -7,36 +7,70 @@
+ import il.cshaifasweng.OCSFMediatorExample.entities.Task;
+ import javafx.event.ActionEvent;
+ import javafx.fxml.FXML;
+-import javafx.scene.control.Button;
+-import javafx.scene.control.TextField;
++import javafx.scene.control.*;
+ import javafx.fxml.FXML;
+ import javafx.scene.control.Button;
+-import javafx.scene.control.Label;
+ import javafx.scene.control.TextField;
+ import javafx.scene.layout.AnchorPane;
+ import javafx.scene.layout.VBox;
+ import javafx.scene.text.Text;
+ 
+ public class TaskFormController {
+-    @FXML
+-    private TextField dateField;
++
++
++    @FXML // fx:id="MenuBtn"
++    private MenuButton MenuBtn; // Value injected by FXMLLoader
++
++    @FXML // fx:id="Task1"
++    private MenuItem Task1; // Value injected by FXMLLoader
++
++    @FXML // fx:id="Specification"
++    private TextField Specification; // Value injected by FXMLLoader
++
++    @FXML // fx:id="dateField"
++    private TextField dateField; // Value injected by FXMLLoader
++
++    @FXML // fx:id="secondaryButton"
++    private Button secondaryButton; // Value injected by FXMLLoader
++
++    @FXML // fx:id="submitButton"
++    private Button submitButton; // Value injected by FXMLLoader
++
++    @FXML // fx:id="taskNameField"
++    private TextField taskNameField; // Value injected by FXMLLoader
++
++    @FXML // fx:id="timeField"
++    private TextField timeField; // Value injected by FXMLLoader
++
++    @FXML // fx:id="tskDetails"
++    private Label tskDetails; // Value injected by FXMLLoader
++
++    @FXML // fx:id="volunteerField"
++    private TextField volunteerField; // Value injected by FXMLLoader
++
++    private Task task;
++    private String taskPicked= "";
+ 
+     @FXML
+-    private TextField statusField;
++    void otherTask(ActionEvent event) {
++            taskPicked= "Other";
++    }
+ 
+     @FXML
+-    private Button submitButton;
++    void pickTask1(ActionEvent event) {
++           taskPicked= "Walk The Dog";
++    }
+ 
+     @FXML
+-    private TextField taskNameField;
++    void picktask2(ActionEvent event) {
++        taskPicked= "Buying Medicine";
++    }
+ 
+     @FXML
+-    private TextField timeField;
+-
+-    @FXML
+-    private TextField volunteerField;
+-
+-    private Task task;
++    void picktask3(ActionEvent event) {
++        taskPicked= "Get a Ride";
++    }
++
+ 
+     @FXML
+     private void switchToPrimary() throws IOException {
+@@ -63,6 +97,12 @@
+         task.setVolunteer(SimpleClient.getCurrentUser());
+ 
+         task.setStatus("Pending for approval");
++
++        //details:
++        String str1= Specification.getText().isEmpty() ? "" : Specification.getText();
++        String details= taskPicked+str1;
++        task.setDetails(details);
++
+         Message message = new Message("#submitTask", task);
+         System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
+                 + task.getVolunteer().getUserName()
+Index: client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/primary.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/primary.fxml b/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/primary.fxml
+--- a/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/primary.fxml	
++++ b/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/primary.fxml	
+@@ -11,7 +11,7 @@
+ <?import javafx.scene.text.Font?>
+ <?import javafx.scene.text.Text?>
+ 
+-<VBox alignment="TOP_LEFT" prefHeight="603.0" prefWidth="788.0" spacing="20.0" style="-fx-background-color: F7EFE7;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
++<VBox alignment="TOP_LEFT" prefHeight="603.0" prefWidth="788.0" spacing="20.0" style="-fx-background-color: F7EFE7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
+    <padding>
+       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+@@ -51,6 +51,11 @@
+                      <MenuItem mnemonicParsing="false" onAction="#handleViewCompletedTasks" text="View Completed Tasks" />
+                   </items>
+                </MenuButton>
++               <Button fx:id="showPendingTasksButton" layoutX="49.0" layoutY="139.0" onAction="#handleShowPendingTasksButtonAction" prefHeight="32.0" prefWidth="146.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="Show Pending Tasks">
++                  <font>
++                     <Font name="System Italic" size="12.0" />
++                  </font>
++               </Button>
+ 
+             </children>
+          </AnchorPane>
+Index: client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PendingTasks.java
+===================================================================
+diff --git a/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PendingTasks.java b/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PendingTasks.java
+new file mode 100644
+--- /dev/null	
++++ b/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PendingTasks.java	
+@@ -0,0 +1,157 @@
++package il.cshaifasweng.OCSFMediatorExample.client;
++
++import il.cshaifasweng.OCSFMediatorExample.entities.Task;
++import il.cshaifasweng.OCSFMediatorExample.entities.User;
++import il.cshaifasweng.OCSFMediatorExample.entities.Message;
++
++import javafx.collections.FXCollections;
++import javafx.collections.ObservableList;
++import javafx.fxml.FXML;
++import javafx.scene.control.ButtonBar;
++import javafx.scene.control.ButtonType;
++import javafx.scene.control.Dialog;
++import javafx.scene.control.Label;
++import javafx.scene.control.TableColumn;
++import javafx.scene.control.TableView;
++import javafx.scene.control.TextField;
++import javafx.scene.control.cell.PropertyValueFactory;
++import javafx.scene.layout.GridPane;
++
++import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.message;
++
++import java.io.IOException;
++import java.util.List;
++
++public class PendingTasks {
++
++    @FXML
++    private TableView<Task> taskTable;
++
++    @FXML
++    private TableColumn<Task, Integer> taskId;
++
++    @FXML
++    private TableColumn<Task, String> taskName;
++
++    @FXML
++    private TableColumn<Task, String> date;
++
++    @FXML
++    private TableColumn<Task, Integer> time;
++
++    @FXML
++    private TableColumn<Task, User> volunteer;
++
++    @FXML
++    private TableColumn<Task, String> status;
++
++    @FXML
++    private void switchToPrimary() throws IOException {
++        App.setRoot("primary");
++    }
++
++    @FXML
++    public void initialize() {
++        taskId.setCellValueFactory(new PropertyValueFactory<Task, Integer>("taskId"));
++        taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("taskName"));
++        date.setCellValueFactory(new PropertyValueFactory<Task, String>("date"));
++        time.setCellValueFactory(new PropertyValueFactory<Task, Integer>("time"));
++        volunteer.setCellValueFactory(new PropertyValueFactory<Task, User>("volunteer"));
++        status.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
++
++        ObservableList<Task> observableTasks = FXCollections.observableArrayList((List<Task>) message.getObject());
++        taskTable.setItems(observableTasks);
++
++        taskTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
++            if (newSelection != null) {
++                showTaskDetails(newSelection);
++            }
++        });
++
++    }
++
++    public void showTaskDetails(Task task) {
++        Dialog<String> dialog = new Dialog<>();
++        dialog.setTitle("Task Details");
++        dialog.setHeaderText("Details of task: " + task.getTaskName());
++
++        // Create labels and fields
++        Label label1 = new Label("Task ID: ");
++        Label label2 = new Label("Task Name: ");
++        Label label3 = new Label("Date: ");
++        Label label4 = new Label("Time: ");
++        Label label5 = new Label("Volunteer: ");
++        Label label6 = new Label("Status: ");
++
++        TextField text1 = new TextField(String.valueOf(task.getTaskId()));
++        TextField text2 = new TextField(task.getTaskName());
++        TextField text3 = new TextField(task.getDate());
++        TextField text4 = new TextField(String.valueOf(task.getTime()));
++        TextField text5 = new TextField(task.getVolunteer().toString());
++        TextField text6 = new TextField(task.getStatus());
++
++        text1.setEditable(false);
++        text2.setEditable(true);
++        text3.setEditable(true);
++        text4.setEditable(true);
++        text5.setEditable(true);
++        text6.setEditable(true);
++
++        // Create layout and add items
++        GridPane grid = new GridPane();
++        grid.add(label1, 1, 1);
++        grid.add(text1, 2, 1);
++        grid.add(label2, 1, 2);
++        grid.add(text2, 2, 2);
++        grid.add(label3, 1, 3);
++        grid.add(text3, 2, 3);
++        grid.add(label4, 1, 4);
++        grid.add(text4, 2, 4);
++        grid.add(label5, 1, 5);
++        grid.add(text5, 2, 5);
++        grid.add(label6, 1, 6);
++        grid.add(text6, 2, 6);
++
++        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
++
++        dialog.getDialogPane().setContent(grid);
++
++        dialog.setResultConverter(dialogButton -> {
++            return null;
++        });
++
++        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
++        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
++
++        dialog.setResultConverter(dialogButton -> {
++            if (dialogButton == saveButtonType) {
++                task.setTaskId(Integer.parseInt(text1.getText()));
++                task.setTaskName(text2.getText());
++                task.setDate(text3.getText());
++                task.setTime(Integer.parseInt(text4.getText()));
++
++                // You might need to convert the text5.getText() to a User object
++                // task.setVolunteer(...);
++                task.setStatus(text6.getText());
++
++                // Create a new Message object with the updated task
++                Message message = new Message("#updateTask", task);
++
++                // Send the message to the server
++                try {
++                    SimpleClient.getClient().sendToServer(message);
++                    taskTable.refresh();
++                    return "Task updated";
++                } catch (IOException e) {
++                    e.printStackTrace();
++                }
++
++            }
++            return null;
++        });
++
++        // Show dialog
++        dialog.show();
++    }
++
++}
+\ No newline at end of file
+Index: entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/Message.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/Message.java b/entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/Message.java
+--- a/entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/Message.java	
++++ b/entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/Message.java	
+@@ -9,6 +9,7 @@
+     String message;
+     String data;
+     private Object object;
++    private Object additionalObject;
+ 
+     public Message(String message) {
+         this.message = message;
+@@ -19,6 +20,11 @@
+         this.object = object;
+     }
+ 
++    public Message(Object object1, Object object2) {
++        this.object = object1;
++        this.additionalObject = object2;
++    }
++
+     public Message(Object object) {
+         this.object = object;
+     }
+@@ -82,8 +88,15 @@
+     public Object getObject() {
+         return object;
+     }
+-
+     public void setObject(Object object) {
+         this.object = object;
+     }
++    public void setAdditionalObject(Object object) {
++        this.object = additionalObject;
++    }
++
++    public Object getAdditionalObject() {
++        return additionalObject;
++    }
++
+ }
+Index: client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/TaskForm.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/TaskForm.fxml b/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/TaskForm.fxml
+--- a/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/TaskForm.fxml	
++++ b/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/TaskForm.fxml	
+@@ -3,6 +3,8 @@
+ <?import javafx.geometry.Insets?>
+ <?import javafx.scene.control.Button?>
+ <?import javafx.scene.control.Label?>
++<?import javafx.scene.control.MenuButton?>
++<?import javafx.scene.control.MenuItem?>
+ <?import javafx.scene.control.TextField?>
+ <?import javafx.scene.layout.AnchorPane?>
+ <?import javafx.scene.layout.VBox?>
+@@ -34,10 +36,10 @@
+                 <Label layoutX="100.0" layoutY="206.0" style="-fx-font-size: 18px;" text="Volunteer:" />
+                 <TextField fx:id="volunteerField" layoutX="248.0" layoutY="206.0" />
+ 
+-                <Label layoutX="100.0" layoutY="246.0" style="-fx-font-size: 18px;" text="Status:" />
+-                <TextField fx:id="statusField" layoutX="248.0" layoutY="246.0" />
++                <Label layoutX="92.0" layoutY="283.0" style="-fx-font-size: 18px;" text="Specify More:" />
++                <TextField fx:id="Specification" layoutX="248.0" layoutY="284.0" />
+ 
+-                <Button fx:id="submitButton" layoutX="248.0" layoutY="286.0" onAction="#submitTask" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Submit">                    <font>
++                <Button fx:id="submitButton" layoutX="248.0" layoutY="337.0" onAction="#submitTask" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Submit">                    <font>
+                         <Font name="System Italic" size="18.0" />
+                     </font>
+                 </Button>
+@@ -45,6 +47,15 @@
+                         <Font name="System Italic" size="18.0" />
+                     </font>
+                 </Button>
++            <Label fx:id="tskDetails" layoutX="102.0" layoutY="248.0" style="-fx-font-size: 18px;" text="Task:" />
++            <MenuButton fx:id="MenuBtn" layoutX="292.0" layoutY="249.0" mnemonicParsing="false" text="Tasks">
++              <items>
++                <MenuItem fx:id="Task1" mnemonicParsing="false" onAction="#pickTask1" text="Walk The Dog" />
++                <MenuItem mnemonicParsing="false" onAction="#picktask2" text="Buy Medicine" />
++                  <MenuItem mnemonicParsing="false" onAction="#picktask3" text="Get a Ride" />
++                  <MenuItem mnemonicParsing="false" onAction="#otherTask" text="Other" />
++              </items>
++            </MenuButton>
+                 
+             </children>
+         </AnchorPane>
