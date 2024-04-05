@@ -280,8 +280,21 @@ public class SimpleClient extends AbstractClient {
 
 
 	}
+	// example how to use it
+	// receiver_id = -1 if its for all
+	// SimpleClient.sendNotification(SimpleClient.getCurrentUser(),receiver_id,"message");
+	public static void sendNotification(User sender,int receiverId,String notification) {
+		Notification sendNot = new Notification(sender,null,notification);
+		Message message = new Message("#addNotification",receiverId,sendNot);
+		try {
+			SimpleClient.getClient().sendToServer(message);
 
-	public static User getCurrentUser() { // retreive the current user
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static User getCurrentUser() { // retrieve the current user
 		return currentUser;
 	}
 
