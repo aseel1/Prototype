@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.Notification;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.event.ActionEvent;
@@ -119,9 +120,13 @@ public class TaskFormController {
         try {
             SimpleClient.getClient().sendToServer(message);
             System.out.println("(Task from client) sent task request");
+            //send to all users
         } catch (IOException e) {
             e.printStackTrace();
         }
+        //hello marry uncomment this one and use it
+        // receiver_id = -1 if its for all
+        // SimpleClient.sendNotification(SimpleClient.getCurrentUser(),receiver_id,"message");
 
     }
 

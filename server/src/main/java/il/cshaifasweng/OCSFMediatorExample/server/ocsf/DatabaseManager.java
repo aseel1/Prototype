@@ -1,9 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server.ocsf;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date; // this is for the date format
 import java.util.List;
@@ -134,7 +132,7 @@ public class DatabaseManager {
         Random random = new Random();
         List<User> user = getAllUsers(session);
         for (int i = 0; i < 10; i++) {
-            User sender = user.get(14); // Assuming there are 10 users
+            User sender = user.get(15); // Assuming there are 10 users
             User receiver = user.get(14);
             Notification notification = new Notification(sender,receiver,"hi");
             session.save(notification);
@@ -240,6 +238,16 @@ public class DatabaseManager {
             session.save(task);
         }
     }
+    public static void updateNotification(Session session, Notification notification) {
+        // Check if the task object has a primary key
+
+        if (notification != null) {
+            // The task object is in the detached state, update it
+            session.update(notification);
+            session.flush(); // Manually flush the session
+
+        }
+    }
 
     public static List<Task> getAllTasks(Session session) {
         List<Task> tasks = null;
@@ -272,26 +280,23 @@ public class DatabaseManager {
         }
         return tasks;
     }
-    public static List<Notification> getUsersNotifications(Session session,User user) {
-        List<Notification> allNotifications= new ArrayList<>();
-        List<Notification> notifications= new ArrayList<>();
+    public static List<Notification> getUsersNotifications(Session session, User user) {
+        List<Notification> notifications = new ArrayList<>();
 
         try {
-            // Get all tasks
-            allNotifications = session.createQuery("from Notification").list();
-            System.out.println("ALLNotifications list has : " + allNotifications.size() + " notifications.");
+            String hql = "SELECT n FROM Notification n WHERE (n.recipient = :user OR n.recipient IS NULL) AND n.sender <> :user";
+            Query<Notification> query = session.createQuery(hql, Notification.class);
+            query.setParameter("user", user);
+
+            notifications = query.list();
+            System.out.println("Notifications list has: " + notifications.size() + " notifications.");
 
         } catch (HibernateException e) {
             e.printStackTrace();
         }
-        for (Notification notification : allNotifications) {
-            if(notification.getRecipient().getId()==user.getId()){
-                notifications.add(notification);
-            }
-        }
-        System.out.println("Notifications list has : " + notifications.size() + " notifications.");
         return notifications;
     }
+
 
     public static List<User> getAllUsers(Session session) {
         List<User> users = null;
@@ -386,6 +391,7 @@ public class DatabaseManager {
 
         }
     }
+
     public void calculateTimeDiff() {
         List<Task> tasks = null;
         Session session = DatabaseManager.getSessionFactory().openSession();
@@ -403,6 +409,8 @@ public class DatabaseManager {
 //            System.out.println(now);
 //            long minutesPassed = ChronoUnit.MINUTES.between(specifiedDate, now);
 //            System.out.println("Minutes passed since the specified date: " + minutesPassed);
+
+            tx.commit();
         } catch (RuntimeException e) {
             if (tx != null)
                 tx.rollback();

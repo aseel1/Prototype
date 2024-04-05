@@ -37,7 +37,7 @@ public class NotificationsController {
     @FXML
     private void initialize() {
         // You can initialize your ListView or perform other setup here
-        System.out.println("Trying to initialize");
+        System.out.println("Trying to initialize Notifications");
         message.setCellValueFactory(new PropertyValueFactory<Notification, String>("message"));
         sender.setCellValueFactory(new PropertyValueFactory<Notification, User>("sender"));
 

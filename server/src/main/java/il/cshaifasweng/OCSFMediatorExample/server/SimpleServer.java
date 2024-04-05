@@ -27,6 +27,8 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 
+import static il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager.updateNotification;
+
 
 public class SimpleServer extends AbstractServer {
 
@@ -288,6 +290,20 @@ public class SimpleServer extends AbstractServer {
 				message.setMessage("#showNotificationsList");
 				client.sendToClient(message);
 
+			} else if (message.getMessage().equals("#addNotification")) {
+				List<User> users = DatabaseManager.getAllUsers(session);
+				int receiverId = (int) message.getObject();
+				User receiver=null;
+                for (User user : users) {
+                    if ((user != null) && user.getId() == receiverId ){
+                        receiver = user;
+                    }
+                }
+				Notification sendNot = (Notification) message.getSecondObject();
+				sendNot.setRecipient(receiver);
+				session.save(sendNot);
+				updateNotification(session,sendNot);
+				session.clear();
 			}
 
 			tx.commit();
