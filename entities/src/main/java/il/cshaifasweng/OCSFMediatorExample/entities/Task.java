@@ -31,7 +31,11 @@ public class Task implements Serializable {
     @ManyToOne
     @JoinColumn(name = "volunteer_id")
     private User volunteer;
+    private int volTime;
+    private String volDate;
     private String status;
+    private String taskDetails;
+    private int managerId;
 
     public Task() {}
 
@@ -44,6 +48,8 @@ public class Task implements Serializable {
         this.volunteer = volunteer;
         this.user=user;
         this.status = status;
+        this.taskDetails= "";
+        this.managerId=-1;
     }
 
     public int getTaskId() {
@@ -52,6 +58,14 @@ public class Task implements Serializable {
 
     public void setTaskId(int taskId) {
         this.taskId = taskId;
+    }
+
+    public String getDetails() {
+        return this.taskDetails;
+    }
+
+    public void setDetails(String details) {
+        this.taskDetails = details;
     }
 
     public String getTaskName() {
@@ -100,6 +114,18 @@ public class Task implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getVolTime() {return volTime;}
+
+    public void setVolTime(int volTime) {this.volTime = volTime;}
+
+    public int getmanagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(int id) {
+        this.managerId = id;
     }
 
     public void displayTaskForm(Task task) {
@@ -154,8 +180,6 @@ public class Task implements Serializable {
         // Save the task to the database
     }
 
-    public void setVolTime(int i) {
-    }
 
     public void setVolDate(String date) {
     }
