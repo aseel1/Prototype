@@ -260,7 +260,7 @@ public class DatabaseManager {
             // Adjust "user.community" to the correct path from User to the community attribute.
             String hql = "SELECT t FROM Task t WHERE t.status = :status AND not t.user = :thisUser";
             Query<Task> query = session.createQuery(hql, Task.class);
-            query.setParameter("status", "Idle");
+            query.setParameter("status", "idle");
             query.setParameter("thisUser", thisUser);
             tasks = query.list();
             System.out.println("Found " + tasks.size() + " tasks with status idle " + " and not with user " + thisUser + ".");
