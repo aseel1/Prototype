@@ -272,11 +272,11 @@ public class SimpleServer extends AbstractServer {
 				Task thisTask=(Task)message.getObject();
 				User taskVolunteer = (User)message.getSecondObject();
 				if(thisTask.getStatus().equals("idle")){
-					thisTask.setStatus("In Process");
-					LocalDateTime now = LocalDateTime.now();
+					thisTask.setStatus("in Process");
+					LocalDateTime now = LocalDateTime.now().withNano(0);
 					thisTask.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
-					String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-					thisTask.setVolDate(date);
+//					String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+					thisTask.setVolDate(now);
 					thisTask.setVolunteer(taskVolunteer);
 					DatabaseManager.updateTask(session,thisTask);
 					message.setObject("Done");

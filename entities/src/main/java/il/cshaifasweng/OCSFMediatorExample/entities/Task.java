@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
 
@@ -22,7 +23,8 @@ public class Task implements Serializable {
     @Column(name = "taskId", updatable = false)
     private int taskId;
     private String taskName;
-    private String date;
+//    private String date;
+    private LocalDateTime date;
     private int time;
 
     @ManyToOne
@@ -32,14 +34,14 @@ public class Task implements Serializable {
     @JoinColumn(name = "volunteer_id")
     private User volunteer;
     private int volTime;
-    private String volDate;
+    private LocalDateTime volDate;
     private String status;
     private String taskDetails;
     private int managerId;
 
     public Task() {}
 
-    public Task(int taskId, String taskName, String date, int time, User volunteer, String status,User user) {
+    public Task(int taskId, String taskName, LocalDateTime date, int time, User volunteer, String status,User user) {
         super();
         this.taskId = taskId;
         this.taskName = taskName;
@@ -76,11 +78,11 @@ public class Task implements Serializable {
         this.taskName = taskName;
     }
 
-    public String getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -128,6 +130,10 @@ public class Task implements Serializable {
         this.managerId = id;
     }
 
+    public LocalDateTime getVolDate() {return volDate;}
+
+    public void setVolDate(LocalDateTime date) {this.volDate=date;}
+
     public void displayTaskForm(Task task) {
         Stage stage = new Stage();
         GridPane grid = new GridPane();
@@ -139,9 +145,9 @@ public class Task implements Serializable {
         grid.add(new Label("Task Name:"), 0, 0);
         grid.add(taskNameField, 1, 0);
 
-        TextField dateField = new TextField();
-        grid.add(new Label("Date:"), 0, 1);
-        grid.add(dateField, 1, 1);
+//        TextField dateField = new TextField();
+//        grid.add(new Label("Date:"), 0, 1);
+//        grid.add(dateField, 1, 1);
 
         TextField timeField = new TextField();
         grid.add(new Label("Time:"), 0, 2);
@@ -158,7 +164,7 @@ public class Task implements Serializable {
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
             task.setTaskName(taskNameField.getText());
-            task.setDate(dateField.getText());
+//            task.setDate(dateField.getText());
             task.setTime(Integer.parseInt(timeField.getText()));
             // For the volunteer field, you would need to fetch the User object based on the
             // entered ID
@@ -178,9 +184,5 @@ public class Task implements Serializable {
 
     public void saveTaskToDatabase(Task task) {
         // Save the task to the database
-    }
-
-
-    public void setVolDate(String date) {
     }
 }

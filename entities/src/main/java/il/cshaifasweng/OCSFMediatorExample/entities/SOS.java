@@ -25,14 +25,14 @@ public class SOS implements Serializable {
     private User user;
 
     public SOS() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().withNano(0);
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.date = now.format(dateFormatter);
         this.time = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();
     }
 
     public SOS(User user) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now().withNano(0);
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.date = now.format(dateFormatter);
         this.time = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();

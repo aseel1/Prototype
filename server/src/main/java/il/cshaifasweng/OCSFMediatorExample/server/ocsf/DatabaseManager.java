@@ -2,6 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.server.ocsf;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date; // this is for the date format
 import java.util.List;
@@ -27,6 +28,8 @@ import java.util.concurrent.TimeUnit;
 
 
 public class DatabaseManager {
+    private final long HOW_LONG_WAIT_TASK =1;
+
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public DatabaseManager() {
@@ -110,13 +113,13 @@ public class DatabaseManager {
             }
             if(status.equals("done"))
                 volunteer = users.get(randomUser.nextInt(15));//session.get(User.class, random.nextInt(10)); // Assuming there are 10 users
-            String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-            LocalDateTime now = LocalDateTime.now();
+//            String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            LocalDateTime now = LocalDateTime.now().withNano(0);
             int time = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();//random.nextInt(24); // Assuming time is in hours
-            Task task = new Task(i, "Task" + i, date, time, volunteer, status,user);
+            Task task = new Task(i, "Task" + i, now, time, volunteer, status,user);
             if(status.equals("done")) {
                 task.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond() + randomUser.nextInt(15));
-                task.setVolDate(date);
+                task.setVolDate(now);
             }
             session.save(task);
         }
@@ -134,7 +137,8 @@ public class DatabaseManager {
         for (int i = 0; i < 10; i++) {
             User sender = user.get(15); // Assuming there are 10 users
             User receiver = user.get(14);
-            Notification notification = new Notification(sender,receiver,"hi");
+            Notification notification = new Notification(sender,receiver,"Notification"+i);
+            notification.setTimestamp(LocalDateTime.now().withNano(0).plusSeconds(i));
             session.save(notification);
         }
         session.clear();
@@ -249,6 +253,21 @@ public class DatabaseManager {
         }
     }
 
+    public static List<Notification> getAllNotifications(Session session) {
+        List<Notification> notifications = null;
+
+        try {
+            // Get all tasks
+            notifications = session.createQuery("from Notification ").list();
+            System.out.println("The notifications list has " + notifications.size() + " notification.");
+
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+
+        return notifications;
+    }
+
     public static List<Task> getAllTasks(Session session) {
         List<Task> tasks = null;
 
@@ -284,7 +303,8 @@ public class DatabaseManager {
         List<Notification> notifications = new ArrayList<>();
 
         try {
-            String hql = "SELECT n FROM Notification n WHERE (n.recipient = :user OR n.recipient IS NULL) AND n.sender <> :user";
+            String hql =
+            "SELECT n FROM Notification n WHERE (n.recipient = :user OR n.recipient IS NULL) AND n.sender <> :user ORDER BY ABS(n.timestamp - CURRENT_TIMESTAMP()) ";//DESC
             Query<Notification> query = session.createQuery(hql, Notification.class);
             query.setParameter("user", user);
 
@@ -387,13 +407,15 @@ public class DatabaseManager {
         } finally {
             session.close();
             //please do not change this two comments
-//            new DatabaseManager();
+            new DatabaseManager();
 
         }
     }
 
+    // to send another notification if the no one volunteered to do a task
     public void calculateTimeDiff() {
         List<Task> tasks = null;
+        List<Notification> notifications = null;
         Session session = DatabaseManager.getSessionFactory().openSession();
         System.out.println("opened session");
         Transaction tx = null;
@@ -402,40 +424,47 @@ public class DatabaseManager {
             tx = session.beginTransaction();
             System.err.println("its been a 6 seconds");
             tasks = getAllTasks(session);
-//            System.out.println(tasks.get(0).getTaskId());
-            // Your time difference calculation logic here
-//            LocalDateTime specifiedDate = LocalDateTime.parse(tasks.get(0).getDate());
-//            LocalDateTime now = LocalDateTime.now();
-//            System.out.println(now);
-//            long minutesPassed = ChronoUnit.MINUTES.between(specifiedDate, now);
-//            System.out.println("Minutes passed since the specified date: " + minutesPassed);
+            notifications = getAllNotifications(session);
+            String txt="A new help-request was opened! Come on, help us help them! TaskId=";
+            if (tasks != null) {
+                for (Task task : tasks) {
+                    if (task.getStatus().equals("idle") && task.getVolunteer() == null)
+                    {
+                        long minutesPassed = ChronoUnit.MINUTES.between(task.getDate(),
+                                LocalDateTime.now().withNano(0));
+//                        System.err.println(minutesPassed);
+                        if (minutesPassed >= HOW_LONG_WAIT_TASK) {
+                            for (Notification notification : notifications) {
+//                                System.out.println(notification.getMessage() + "******************" + txt+ task.getTaskId());
+                                if (notification.getRecipient() == null &&
+                                        notification.getMessage().equals(txt+ task.getTaskId())) {
+//                                    System.err.println("imin so i found the noti Id =" + notification.getId());
+                                    if (ChronoUnit.MINUTES.between(notification.getTimestamp(),
+                                            LocalDateTime.now().withNano(0)) >= HOW_LONG_WAIT_TASK) {
+                                        System.err.println("bring notification"+notification.getId()+ " up");
+                                        notification.setTimestamp(LocalDateTime.now().withNano(0));
+                                        updateNotification(session, notification);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else
+                System.err.println("there is no tasks");
 
             tx.commit();
         } catch (RuntimeException e) {
             if (tx != null)
                 tx.rollback();
-            throw e; // Or display error message
+            throw e;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             // Close the session
             if (session != null)
                 session.close();
-            System.out.println("closed session");
         }
-        if(tasks!=null) {
-            System.err.println(tasks.get(0).getTaskName());
-//            for (int i = 0; i < tasks.size(); i++) {
-//                if(tasks.get(i).getStatus().equals("idle")){
-//
-//                }
-//            }
-        }
-        else
-            System.err.println("there is no tasks");
     }
-//    public static void calculateTimeDiff(LocalDateTime specifiedDate){
-//        LocalDateTime now = LocalDateTime.now();
-//        long minutesPassed = ChronoUnit.MINUTES.between(specifiedDate, now);
-//    }
+
 }

@@ -41,7 +41,8 @@ public class NotificationsController {
         message.setCellValueFactory(new PropertyValueFactory<Notification, String>("message"));
         sender.setCellValueFactory(new PropertyValueFactory<Notification, User>("sender"));
 
-        ObservableList<Notification> observableNotification = FXCollections.observableArrayList((List<Notification>) tableMessage.getObject());
+        ObservableList<Notification> observableNotification =
+                FXCollections.observableArrayList((List<Notification>) tableMessage.getObject());
         System.out.println("Created ObservableList with " + observableNotification.size() + " notifications.");
         notificationTableView.setItems(observableNotification);
 //  idk if we want this

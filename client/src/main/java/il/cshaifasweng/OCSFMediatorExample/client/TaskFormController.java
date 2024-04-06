@@ -40,6 +40,8 @@ public class TaskFormController {
     @FXML
     private TextField dateField;
 
+    @FXML
+    private TextField statusField;
 
     @FXML
     private Button submitButton;
@@ -50,6 +52,8 @@ public class TaskFormController {
     @FXML
     private TextField timeField;
 
+    @FXML
+    private TextField volunteerField;
 
     private Task task;
     private String taskPicked= "";
@@ -91,12 +95,16 @@ public class TaskFormController {
         task = new Task();
         task.setTaskName(taskNameField.getText());
         // Set the date and time to now
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        task.setDate(dateField.getText().isEmpty() ? now.format(dateFormatter) : dateField.getText());
+        LocalDateTime now = LocalDateTime.now().withNano(0);
+//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
+//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+//        task.setDate(dateField.getText().isEmpty() ? now.format(dateFormatter) : dateField.getText());
+//        task.setTime(timeField.getText().isEmpty() ? now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond()
+//                : Integer.parseInt(timeField.getText()));
+        task.setDate(now);
         task.setTime(timeField.getText().isEmpty() ? now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond()
                 : Integer.parseInt(timeField.getText()));
+
         task.setUser(SimpleClient.getCurrentUser());
         task.setVolunteer(null); //no volunteer yet!
         task.setStatus("pending");
