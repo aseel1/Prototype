@@ -21,6 +21,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.*;
 
 public class TasksController {
@@ -86,7 +88,8 @@ public class TasksController {
         Label label3 = new Label("Date: ");
         Label label4 = new Label("Time: ");
         Label label5 = new Label("Status: ");
-        Label label6 = new Label("user: ");
+        Label label6 = new Label("User: ");
+        Label label7 = new Label("Details: ");
 //        Label label7 = new Label("Volunteer: ");
 
 
@@ -97,7 +100,10 @@ public class TasksController {
         TextField text4 = new TextField(String.valueOf(task.getTime()));
         TextField text5 = new TextField(task.getStatus());
         TextField text6 = new TextField(task.getUser().getUserName());
+        TextField text7 = new TextField(task.getDetails());
         Button changeStatusButton = new Button("I want to do this");
+        Button AcceptRequest = new Button("Accept Help Request");
+        Button DeclineRequest = new Button("Decline Help Request");
 //        TextField text7 = new TextField(task.getVolunteer().getUserName());
 
 
@@ -107,6 +113,7 @@ public class TasksController {
         text4.setEditable(false);
         text5.setEditable(false);
         text6.setEditable(false);
+        text7.setEditable(false);
 //        text7.setEditable(false);
 
 
@@ -124,7 +131,14 @@ public class TasksController {
         grid.add(text5, 2, 5);
         grid.add(label6, 1, 6);
         grid.add(text6, 2, 6);
-        grid.add(changeStatusButton,1,7);
+        grid.add(label7, 1, 7);
+        grid.add(text7, 2, 7);
+        //if we're in pending lists, then we don't need the volunteer button but rather the accept/decline
+        if(Objects.equals(task.getStatus(), "pending")){
+           grid.add(AcceptRequest,1,8);
+           grid.add(DeclineRequest,1,9);
+        }
+        else grid.add(changeStatusButton,1,8);
 //        grid.add(label7, 1, 8);
 //        grid.add(text7, 2, 8);
 
@@ -137,6 +151,7 @@ public class TasksController {
             return null;
         });
 
+        //in case of wanting to volunteer
         changeStatusButton.setOnAction(e -> {
             Message message = new Message("changeStatusToIP",task,getCurrentUser());
             try {
@@ -155,6 +170,34 @@ public class TasksController {
                 b.printStackTrace();
             }
         });
+
+        //in case of manager accepting help request
+        AcceptRequest.setOnAction(e -> {
+            System.out.println("(TaskController) clicked on accept request");
+            Message message = new Message("#managerApproved",task);
+            try {
+                SimpleClient.getClient().sendToServer(message);
+                task.setStatus("idle");
+                taskTable.refresh();
+            } catch (IOException b) {
+                b.printStackTrace();
+            }
+        });
+
+        //in case of manager accepting help request
+        DeclineRequest.setOnAction(e -> {
+            System.out.println("(TaskController) clicked on decline request");
+            Message message = new Message("#managerDeclined",task);
+            //grid.add(text6, 1, 11);
+            try {
+                SimpleClient.getClient().sendToServer(message);
+                task.setStatus("declined");
+                taskTable.refresh();
+            } catch (IOException b) {
+                b.printStackTrace();
+            }
+        });
+
 //        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
 //        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
 //

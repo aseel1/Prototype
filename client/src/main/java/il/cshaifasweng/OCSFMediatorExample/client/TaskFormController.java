@@ -105,25 +105,21 @@ public class TaskFormController {
         task.setTime(timeField.getText().isEmpty() ? now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond()
                 : Integer.parseInt(timeField.getText()));
 
-
         task.setUser(SimpleClient.getCurrentUser());
-//        task.setVolunteer(SimpleClient.getCurrentUser());
+        task.setVolunteer(null); //no volunteer yet!
         task.setStatus("pending");
         String str1= Specification.getText().isEmpty() ? "" : Specification.getText();
-        String details= taskPicked+str1;
+        String details= taskPicked+"-"+str1;
         task.setDetails(details);
         Message message = new Message("#submitTask", task);
         System.out.println("received");
-        System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " ");
-        if(task.getVolunteer()!=null){
-//        System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
-            System.err.println(
-                 task.getVolunteer().getUserName()
-                + task.getVolunteer().getAge()
-                + task.getVolunteer().getGender()
-                + task.getVolunteer().getCommunity()
-                + task.getVolunteer().getPassword()
-                + " " + task.getStatus());}
+        System.out.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
+                + task.getUser().getUserName()
+                + task.getUser().getAge()
+                + task.getUser().getGender()
+                + task.getUser().getCommunity()
+                + task.getUser().getPassword()
+                + " " + task.getStatus());
         try {
             SimpleClient.getClient().sendToServer(message);
             System.out.println("(Task from client) sent task request");
@@ -132,8 +128,13 @@ public class TaskFormController {
             e.printStackTrace();
         }
         //hello marry uncomment this one and use it
-//         int receiver_id = -1;  //if its for all
-//         SimpleClient.sendNotification(SimpleClient.getCurrentUser(),receiver_id,("Id="+task.getTaskId()));
+        // receiver_id = -1 if its for all
+        // SimpleClient.sendNotification(SimpleClient.getCurrentUser(),receiver_id,"message");
+        //empty the textfields:
+        dateField.setText("");
+        timeField.setText("");
+        Specification.setText("");
+        taskNameField.setText("");
 
     }
 
