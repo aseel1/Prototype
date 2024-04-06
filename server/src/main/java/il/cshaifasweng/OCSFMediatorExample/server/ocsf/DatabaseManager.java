@@ -28,6 +28,8 @@ import java.util.concurrent.TimeUnit;
 
 
 public class DatabaseManager {
+    private final long HOW_LONG_WAIT_TASK =1;
+
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public DatabaseManager() {
@@ -135,11 +137,10 @@ public class DatabaseManager {
         for (int i = 0; i < 10; i++) {
             User sender = user.get(15); // Assuming there are 10 users
             User receiver = user.get(14);
-            Notification notification = new Notification(sender,receiver,"hi");
+            Notification notification = new Notification(sender,receiver,"Notification"+i);
+            notification.setTimestamp(LocalDateTime.now().withNano(0).plusSeconds(i));
             session.save(notification);
         }
-        Notification notificationA = new Notification(user.get(5),user.get(6),"is it up?");
-        session.save(notificationA);
         session.clear();
     }
 
@@ -302,7 +303,8 @@ public class DatabaseManager {
         List<Notification> notifications = new ArrayList<>();
 
         try {
-            String hql = "SELECT n FROM Notification n WHERE (n.recipient = :user OR n.recipient IS NULL) AND n.sender <> :user";
+            String hql =
+            "SELECT n FROM Notification n WHERE (n.recipient = :user OR n.recipient IS NULL) AND n.sender <> :user ORDER BY ABS(n.timestamp - CURRENT_TIMESTAMP()) ";//DESC
             Query<Notification> query = session.createQuery(hql, Notification.class);
             query.setParameter("user", user);
 
@@ -410,6 +412,7 @@ public class DatabaseManager {
         }
     }
 
+    // to send another notification if the no one volunteered to do a task
     public void calculateTimeDiff() {
         List<Task> tasks = null;
         List<Notification> notifications = null;
@@ -422,12 +425,34 @@ public class DatabaseManager {
             System.err.println("its been a 6 seconds");
             tasks = getAllTasks(session);
             notifications = getAllNotifications(session);
-            // Your time difference calculation logic here
-//            LocalDateTime specifiedDate = LocalDateTime.parse(tasks.get(0).getDate());
-//            LocalDateTime now = LocalDateTime.now().withNano(0);
-//            System.out.println(now);
-//            long minutesPassed = ChronoUnit.MINUTES.between(specifiedDate, now);
-//            System.out.println("Minutes passed since the specified date: " + minutesPassed);
+            if (tasks != null) {
+                for (Task task : tasks) {
+                    if (task.getStatus().equals("idle") && task.getVolunteer() == null)
+//                    if (task.getStatus().equals("pending")) for testing
+                    {
+                        long minutesPassed = ChronoUnit.MINUTES.between(task.getDate(),
+                                LocalDateTime.now().withNano(0));
+                        System.out.println(minutesPassed);
+                        if (minutesPassed >= HOW_LONG_WAIT_TASK) {
+                            for (Notification notification : notifications) {
+                                if (notification.getRecipient() == null &&
+                                        notification.getSender().getId() == task.getUser().getId() &&
+//                                        (notification.getTimestamp().equals(task.getDate()))) {
+                                        //choose how to identify the notification...
+                                        notification.getMessage().equals("Id=0")) {
+                                    if (ChronoUnit.MINUTES.between(notification.getTimestamp(),
+                                            LocalDateTime.now().withNano(0)) >= HOW_LONG_WAIT_TASK) {
+                                        System.err.println("*******************************************bring it up");
+                                        notification.setTimestamp(LocalDateTime.now().withNano(0));
+                                        updateNotification(session, notification);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else
+                System.err.println("there is no tasks");
 
             tx.commit();
         } catch (RuntimeException e) {
@@ -440,46 +465,7 @@ public class DatabaseManager {
             // Close the session
             if (session != null)
                 session.close();
-//            System.out.println("closed session");
         }
-//        Notification notificationUp = null;
-        if(tasks!=null) {
-            System.err.println(tasks.get(0).getTaskName());
-            for (Task task : tasks) {
-//                if (task.getStatus().equals("idle") && task.getVolunteer()==null) {
-                if (task.getStatus().equals("pending")) {
-                    long minutesPassed = ChronoUnit.MINUTES.between(task.getDate(), LocalDateTime.now().withNano(0));
-                    System.out.println(minutesPassed);
-                    if(minutesPassed>=1) {
-                        System.err.println(minutesPassed);
-                        for (Notification notification : notifications) {
-//                            System.out.println(
-//                                    "Sender: " + notification.getSender().getId() + ", " +
-//                                            "User: " + task.getUser().getId() + ", " +
-//                                            "Timestamp: " + notification.getTimestamp() + ", " +
-//                                            "Date: " + task.getDate()
-//                            );
-                            if(notification.getRecipient()==null && notification.getSender().getId()==task.getUser().getId() &&
-                                    (notification.getTimestamp().equals(task.getDate()))) {
-//                            notification.getMessage().equals("Id="+task.getTaskId())){
-                                //choose how to idintify the notifivcation...
-                                //dont foreget to change back the pending-->idle
-                                System.err.println("*******************************************found ittt!!");
-//                                System.err.println(LocalDateTime.now().withNano(0));
-                                //this didnt update the table :/
-                                notification.setTimestamp(LocalDateTime.now().withNano(0));
-//                                updateNotification(session, notification);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        else
-            System.err.println("there is no tasks");
     }
-//    public static void calculateTimeDiff(LocalDateTime specifiedDate){
-//        LocalDateTime now = LocalDateTime.now().withNano(0);
-//        long minutesPassed = ChronoUnit.MINUTES.between(specifiedDate, now);
-//    }
+
 }
