@@ -40,8 +40,6 @@ public class TaskFormController {
     @FXML
     private TextField dateField;
 
-    @FXML
-    private TextField statusField;
 
     @FXML
     private Button submitButton;
@@ -52,8 +50,6 @@ public class TaskFormController {
     @FXML
     private TextField timeField;
 
-    @FXML
-    private TextField volunteerField;
 
     private Task task;
     private String taskPicked= "";
@@ -101,21 +97,20 @@ public class TaskFormController {
         task.setDate(dateField.getText().isEmpty() ? now.format(dateFormatter) : dateField.getText());
         task.setTime(timeField.getText().isEmpty() ? now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond()
                 : Integer.parseInt(timeField.getText()));
-
         task.setUser(SimpleClient.getCurrentUser());
-        task.setVolunteer(SimpleClient.getCurrentUser());
+        task.setVolunteer(null); //no volunteer yet!
         task.setStatus("pending");
         String str1= Specification.getText().isEmpty() ? "" : Specification.getText();
-        String details= taskPicked+str1;
+        String details= taskPicked+"-"+str1;
         task.setDetails(details);
         Message message = new Message("#submitTask", task);
         System.out.println("received");
-        System.err.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
-                + task.getVolunteer().getUserName()
-                + task.getVolunteer().getAge()
-                + task.getVolunteer().getGender()
-                + task.getVolunteer().getCommunity()
-                + task.getVolunteer().getPassword()
+        System.out.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
+                + task.getUser().getUserName()
+                + task.getUser().getAge()
+                + task.getUser().getGender()
+                + task.getUser().getCommunity()
+                + task.getUser().getPassword()
                 + " " + task.getStatus());
         try {
             SimpleClient.getClient().sendToServer(message);
@@ -127,6 +122,11 @@ public class TaskFormController {
         //hello marry uncomment this one and use it
         // receiver_id = -1 if its for all
         // SimpleClient.sendNotification(SimpleClient.getCurrentUser(),receiver_id,"message");
+        //empty the textfields:
+        dateField.setText("");
+        timeField.setText("");
+        Specification.setText("");
+        taskNameField.setText("");
 
     }
 
