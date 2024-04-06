@@ -425,24 +425,23 @@ public class DatabaseManager {
             System.err.println("its been a 6 seconds");
             tasks = getAllTasks(session);
             notifications = getAllNotifications(session);
+            String txt="A new help-request was opened! Come on, help us help them! TaskId=";
             if (tasks != null) {
                 for (Task task : tasks) {
                     if (task.getStatus().equals("idle") && task.getVolunteer() == null)
-//                    if (task.getStatus().equals("pending")) for testing
                     {
                         long minutesPassed = ChronoUnit.MINUTES.between(task.getDate(),
                                 LocalDateTime.now().withNano(0));
-                        System.out.println(minutesPassed);
+//                        System.err.println(minutesPassed);
                         if (minutesPassed >= HOW_LONG_WAIT_TASK) {
                             for (Notification notification : notifications) {
+//                                System.out.println(notification.getMessage() + "******************" + txt+ task.getTaskId());
                                 if (notification.getRecipient() == null &&
-                                        notification.getSender().getId() == task.getUser().getId() &&
-//                                        (notification.getTimestamp().equals(task.getDate()))) {
-                                        //choose how to identify the notification...
-                                        notification.getMessage().equals("Id=0")) {
+                                        notification.getMessage().equals(txt+ task.getTaskId())) {
+//                                    System.err.println("imin so i found the noti Id =" + notification.getId());
                                     if (ChronoUnit.MINUTES.between(notification.getTimestamp(),
                                             LocalDateTime.now().withNano(0)) >= HOW_LONG_WAIT_TASK) {
-                                        System.err.println("*******************************************bring it up");
+                                        System.err.println("bring notification"+notification.getId()+ " up");
                                         notification.setTimestamp(LocalDateTime.now().withNano(0));
                                         updateNotification(session, notification);
                                     }

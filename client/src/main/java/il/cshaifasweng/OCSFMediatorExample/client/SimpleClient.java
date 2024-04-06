@@ -141,7 +141,7 @@ public class SimpleClient extends AbstractClient {
 				showAlert("Approved!", "The request has been approved :)", Alert.AlertType.INFORMATION);
 				Task task = (Task) message.getObject();
 				//sending a notification to everyone
-				String txt="A new help-request was opened! Come on, help us help them!";
+				String txt="A new help-request was opened! Come on, help us help them! TaskId="+ task.getTaskId();
 				SimpleClient.sendNotification(SimpleClient.currentUser,-1,txt);
 			});
 		}
