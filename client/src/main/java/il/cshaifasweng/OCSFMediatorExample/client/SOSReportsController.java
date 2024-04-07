@@ -10,6 +10,8 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -42,6 +44,7 @@ public class SOSReportsController {
 
     @FXML
     private Button LoadDataButton;
+
 
     public static void onServerResponse(Message message) {
     }

@@ -82,6 +82,9 @@ public class DatabaseManager {
         User user5 = new User(1111, "mary", "female", "123", "20", "Cana", "manager","Cana");
 
         User user6 = new User(2222, "user1", "female", "123", "21", "Cana", "user"," ");
+        SOS sos1=new SOS(user1,"2024-03-03");
+        SOS sos2=new SOS(user2,"2024-03-28");
+        SOS sos3=new SOS(user3,"2024-04-03");
 
 
 
@@ -91,6 +94,10 @@ public class DatabaseManager {
         session.save(user4);
         session.save(user5);
         session.save(user6);
+        session.save(sos1);
+        session.save(sos2);
+        session.save(sos3);
+
         session.clear();
     }
 
