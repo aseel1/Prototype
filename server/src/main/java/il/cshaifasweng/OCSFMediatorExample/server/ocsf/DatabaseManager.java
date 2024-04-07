@@ -34,7 +34,7 @@ public class DatabaseManager {
 
     public DatabaseManager() {
         // Schedule calculateTimeDiff to run every 6 seconds
-        scheduler.scheduleAtFixedRate(this::calculateTimeDiff, 0, 6, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(this::checkTaskDone, 0, 6, TimeUnit.SECONDS);
     }
     private static SessionFactory sessionFactory;
 
@@ -63,8 +63,9 @@ public class DatabaseManager {
 
     public static void generateUsers(Session session) throws Exception {
         Random random = new Random();
-
-        for (int i = 0; i < 14; i++) {
+        User user0 = new User(-1, "boot", "boot", "1234", "20", "", "manager","");
+        session.save(user0);
+        for (int i = 1; i < 14; i++) {
            // String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
             String communityManager=null;
             String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
@@ -85,7 +86,6 @@ public class DatabaseManager {
         SOS sos1=new SOS(user1,"2024-03-03");
         SOS sos2=new SOS(user2,"2024-03-28");
         SOS sos3=new SOS(user3,"2024-04-03");
-
 
 
         session.save(user1);
@@ -420,7 +420,7 @@ public class DatabaseManager {
     }
 
     // to send another notification if the no one volunteered to do a task
-    public void calculateTimeDiff() {
+    public void checkTaskDone() {
         List<Task> tasks = null;
         List<Notification> notifications = null;
         Session session = DatabaseManager.getSessionFactory().openSession();
@@ -432,6 +432,7 @@ public class DatabaseManager {
             System.err.println("its been a 6 seconds");
             tasks = getAllTasks(session);
             notifications = getAllNotifications(session);
+            List<User> users = DatabaseManager.getAllUsers(session);
             String txt="A new help-request was opened! Come on, help us help them! TaskId=";
             if (tasks != null) {
                 for (Task task : tasks) {
@@ -450,10 +451,33 @@ public class DatabaseManager {
                                             LocalDateTime.now().withNano(0)) >= HOW_LONG_WAIT_TASK) {
                                         System.err.println("bring notification"+notification.getId()+ " up");
                                         notification.setTimestamp(LocalDateTime.now().withNano(0));
+                                        session.update(notification);
                                         updateNotification(session, notification);
                                     }
                                 }
                             }
+                        }
+                    } else if (task.getStatus().equalsIgnoreCase("in process")&&
+                    ChronoUnit.MINUTES.between(task.getVolDate(),
+                            LocalDateTime.now().withNano(0))>=HOW_LONG_WAIT_TASK) {
+                        // that means there is a task that took too long for the person to do it
+                        String txtB = "User = " + task.getUser().getUserName() +
+                                "is taking too long to complete Task = " + task.getTaskId();
+                        User receiver = null;
+                        for (User user : users) {
+                            if ((user != null) && user.getId() == task.getmanagerId()) {
+                                receiver = user;
+                            }
+                        }
+                        int j=0;
+                        for (Notification notification:notifications){
+                            if(notification.getMessage().equalsIgnoreCase(txtB))
+                                j=1;
+                        }
+                        if(j==0) {
+                            Notification sendNot = new Notification(users.get(0), receiver, txtB);
+                            session.save(sendNot);
+                            updateNotification(session, sendNot);
                         }
                     }
                 }
