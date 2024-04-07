@@ -47,6 +47,9 @@ public class PrimaryController {
 	private Button showTasksButton;
 
 	@FXML
+	private Button myTasksButton;
+
+	@FXML
 	private Label usernameLabel;
 
 	@FXML
@@ -220,5 +223,16 @@ public class PrimaryController {
 	}
 
 
-
+	public void handleMyTasksButtonAction(ActionEvent actionEvent) {
+		Message message = new Message("#showMyTasks", SimpleClient.getCurrentUser());
+		System.out.println(message);
+		try {
+			System.out.println(message.getMessage());
+			SimpleClient.getClient().sendToServer(message);
+			System.out.println("(Primary) Sending req showMyTasks message to server from .");
+		} catch (IOException e) {
+			System.out.println("Failed to connect to the server.");
+			e.printStackTrace();
+		}
+	}
 }
