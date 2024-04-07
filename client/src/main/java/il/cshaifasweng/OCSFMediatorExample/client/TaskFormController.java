@@ -49,8 +49,8 @@ public class TaskFormController {
     @FXML
     private TextField taskNameField;
 
-    @FXML
-    private TextField timeField;
+//    @FXML
+//    private TextField timeField;
 
     @FXML
     private TextField volunteerField;
@@ -102,8 +102,8 @@ public class TaskFormController {
 //        task.setTime(timeField.getText().isEmpty() ? now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond()
 //                : Integer.parseInt(timeField.getText()));
         task.setDate(now);
-        task.setTime(timeField.getText().isEmpty() ? now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond()
-                : Integer.parseInt(timeField.getText()));
+//        task.setTime(timeField.getText().isEmpty() ? now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond()
+//                : Integer.parseInt(timeField.getText()));
 
         task.setUser(SimpleClient.getCurrentUser());
         task.setVolunteer(null); //no volunteer yet!
@@ -113,7 +113,7 @@ public class TaskFormController {
         task.setDetails(details);
         Message message = new Message("#submitTask", task);
         System.out.println("received");
-        System.out.println(task.getTaskName() + " " + task.getDate() + " " + task.getTime() + " "
+        System.out.println(task.getTaskName() + " " + task.getDate() + " "
                 + task.getUser().getUserName()
                 + task.getUser().getAge()
                 + task.getUser().getGender()
@@ -132,7 +132,7 @@ public class TaskFormController {
         // SimpleClient.sendNotification(SimpleClient.getCurrentUser(),receiver_id,"message");
         //empty the textfields:
         dateField.setText("");
-        timeField.setText("");
+//        timeField.setText("");
         Specification.setText("");
         taskNameField.setText("");
 

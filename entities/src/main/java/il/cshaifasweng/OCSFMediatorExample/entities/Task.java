@@ -25,7 +25,7 @@ public class Task implements Serializable {
     private String taskName;
 //    private String date;
     private LocalDateTime date;
-    private int time;
+//    private int time;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -33,7 +33,7 @@ public class Task implements Serializable {
     @ManyToOne
     @JoinColumn(name = "volunteer_id")
     private User volunteer;
-    private int volTime;
+//    private int volTime;
     private LocalDateTime volDate;
     private String status;
     private String taskDetails;
@@ -41,12 +41,12 @@ public class Task implements Serializable {
 
     public Task() {}
 
-    public Task(int taskId, String taskName, LocalDateTime date, int time, User volunteer, String status,User user) {
+    public Task(int taskId, String taskName, LocalDateTime date, User volunteer, String status,User user) {
         super();
         this.taskId = taskId;
         this.taskName = taskName;
         this.date = date;
-        this.time = time;
+//        this.time = time;
         this.volunteer = volunteer;
         this.user=user;
         this.status = status;
@@ -86,13 +86,13 @@ public class Task implements Serializable {
         this.date = date;
     }
 
-    public int getTime() {
-        return time;
-    }
-
-    public void setTime(int time) {
-        this.time = time;
-    }
+//    public int getTime() {
+//        return time;
+//    }
+//
+//    public void setTime(int time) {
+//        this.time = time;
+//    }
 
     public User getVolunteer() {
         return volunteer;
@@ -118,9 +118,9 @@ public class Task implements Serializable {
         this.status = status;
     }
 
-    public int getVolTime() {return volTime;}
+//    public int getVolTime() {return volTime;}
 
-    public void setVolTime(int volTime) {this.volTime = volTime;}
+//    public void setVolTime(int volTime) {this.volTime = volTime;}
 
     public int getmanagerId() {
         return managerId;
@@ -149,23 +149,23 @@ public class Task implements Serializable {
 //        grid.add(new Label("Date:"), 0, 1);
 //        grid.add(dateField, 1, 1);
 
-        TextField timeField = new TextField();
-        grid.add(new Label("Time:"), 0, 2);
-        grid.add(timeField, 1, 2);
+//        TextField timeField = new TextField();
+//        grid.add(new Label("Time:"), 0, 2);
+//        grid.add(timeField, 1, 2);
 
         TextField volunteerField = new TextField();
-        grid.add(new Label("Volunteer:"), 0, 3);
-        grid.add(volunteerField, 1, 3);
+        grid.add(new Label("Volunteer:"), 0, 1);
+        grid.add(volunteerField, 1, 1);
 
         TextField statusField = new TextField();
-        grid.add(new Label("Status:"), 0, 4);
-        grid.add(statusField, 1, 4);
+        grid.add(new Label("Status:"), 0, 2);
+        grid.add(statusField, 1, 2);
 
         Button submitButton = new Button("Submit");
         submitButton.setOnAction(e -> {
             task.setTaskName(taskNameField.getText());
 //            task.setDate(dateField.getText());
-            task.setTime(Integer.parseInt(timeField.getText()));
+//            task.setTime(Integer.parseInt(timeField.getText()));
             // For the volunteer field, you would need to fetch the User object based on the
             // entered ID
             // This is a placeholder and might not work depending on your User class
@@ -175,7 +175,7 @@ public class Task implements Serializable {
 
             stage.close(); // close the form
         });
-        grid.add(submitButton, 1, 5);
+        grid.add(submitButton, 1, 3);
 
         Scene scene = new Scene(grid);
         stage.setScene(scene);

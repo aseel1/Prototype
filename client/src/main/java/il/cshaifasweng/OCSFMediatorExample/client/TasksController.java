@@ -42,8 +42,8 @@ public class TasksController {
     @FXML
     private TableColumn<Task, String> date;
 
-    @FXML
-    private TableColumn<Task, Integer> time;
+//    @FXML
+//    private TableColumn<Task, Integer> time;
 
 //    @FXML
 //    private TableColumn<Task, User> volunteer;
@@ -62,7 +62,7 @@ public class TasksController {
         taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("taskName"));
         user.setCellValueFactory(new PropertyValueFactory<Task, User>("user"));
         date.setCellValueFactory(new PropertyValueFactory<Task, String>("date"));
-        time.setCellValueFactory(new PropertyValueFactory<Task, Integer>("time"));
+//        time.setCellValueFactory(new PropertyValueFactory<Task, Integer>("time"));
 //        volunteer.setCellValueFactory(new PropertyValueFactory<Task, User>("volunteer"));
 //        status.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
 
@@ -86,7 +86,7 @@ public class TasksController {
         Label label1 = new Label("Task ID: ");
         Label label2 = new Label("Task Name: ");
         Label label3 = new Label("Date: ");
-        Label label4 = new Label("Time: ");
+//        Label label4 = new Label("Time: ");
         Label label5 = new Label("Status: ");
         Label label6 = new Label("User: ");
         Label label7 = new Label("Details: ");
@@ -97,7 +97,7 @@ public class TasksController {
         TextField text2 = new TextField(task.getTaskName());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         TextField text3 = new TextField(task.getDate().format(formatter));
-        TextField text4 = new TextField(String.valueOf(task.getTime()));
+//        TextField text4 = new TextField(String.valueOf(task.getTime()));
         TextField text5 = new TextField(task.getStatus());
         TextField text6 = new TextField(task.getUser().getUserName());
         TextField text7 = new TextField(task.getDetails());
@@ -110,7 +110,7 @@ public class TasksController {
         text1.setEditable(false);
         text2.setEditable(false);
         text3.setEditable(false);
-        text4.setEditable(false);
+//        text4.setEditable(false);
         text5.setEditable(false);
         text6.setEditable(false);
         text7.setEditable(false);
@@ -125,20 +125,20 @@ public class TasksController {
         grid.add(text2, 2, 2);
         grid.add(label3, 1, 3);
         grid.add(text3, 2, 3);
-        grid.add(label4, 1, 4);
-        grid.add(text4, 2, 4);
-        grid.add(label5, 1, 5);
-        grid.add(text5, 2, 5);
-        grid.add(label6, 1, 6);
-        grid.add(text6, 2, 6);
-        grid.add(label7, 1, 7);
-        grid.add(text7, 2, 7);
+//        grid.add(label4, 1, 4);
+//        grid.add(text4, 2, 4);
+        grid.add(label5, 1, 4);
+        grid.add(text5, 2, 4);
+        grid.add(label6, 1, 5);
+        grid.add(text6, 2, 5);
+        grid.add(label7, 1, 6);
+        grid.add(text7, 2, 6);
         //if we're in pending lists, then we don't need the volunteer button but rather the accept/decline
         if(Objects.equals(task.getStatus(), "pending")){
-           grid.add(AcceptRequest,1,8);
-           grid.add(DeclineRequest,1,9);
+           grid.add(AcceptRequest,1,7);
+           grid.add(DeclineRequest,1,8);
         }
-        else grid.add(changeStatusButton,1,8);
+        else grid.add(changeStatusButton,1,7);
 //        grid.add(label7, 1, 8);
 //        grid.add(text7, 2, 8);
 
@@ -161,7 +161,7 @@ public class TasksController {
                     task.setStatus("in process");
                     task.setVolunteer(getCurrentUser());
                     LocalDateTime now = LocalDateTime.now().withNano(0);
-                    task.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
+//                    task.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
 //                    String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
                     task.setVolDate(now);
                 }

@@ -115,10 +115,10 @@ public class DatabaseManager {
                 volunteer = users.get(randomUser.nextInt(15));//session.get(User.class, random.nextInt(10)); // Assuming there are 10 users
 //            String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             LocalDateTime now = LocalDateTime.now().withNano(0);
-            int time = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();//random.nextInt(24); // Assuming time is in hours
-            Task task = new Task(i, "Task" + i, now, time, volunteer, status,user);
+//            int time = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();//random.nextInt(24); // Assuming time is in hours
+            Task task = new Task(i, "Task" + i, now, volunteer, status,user);
             if(status.equals("done")) {
-                task.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond() + randomUser.nextInt(15));
+//                task.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond() + randomUser.nextInt(15));
                 task.setVolDate(now);
             }
             session.save(task);
@@ -177,7 +177,7 @@ public class DatabaseManager {
         return tasks;
     }
     public static List<SOS> getSOSBetweenDates(Session session, String startDate, String endDate) {
-        String hql = "FROM SOS s WHERE s.date BETWEEN :startDate AND :endDate";
+        String hql = "FROM SOS s WHERE s.date BETWEEN :startDate AND :endDate ORDER BY (s.date)";
         System.out.println(hql);
         return session.createQuery(hql, SOS.class)
                 .setParameter("startDate", startDate)
@@ -186,7 +186,7 @@ public class DatabaseManager {
     }
 
     public static List<SOS> getSOSByCommunityAndDates(Session session, String community, String startDate, String endDate) {
-        String hql = "FROM SOS s WHERE s.user.community = :community AND s.date BETWEEN :startDate AND :endDate";
+        String hql = "FROM SOS s WHERE s.user.community = :community AND s.date BETWEEN :startDate AND :endDate ORDER BY (s.date)";
         return session.createQuery(hql, SOS.class)
                 .setParameter("community", community)
                 .setParameter("startDate", startDate)

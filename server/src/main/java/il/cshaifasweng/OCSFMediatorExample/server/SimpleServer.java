@@ -274,7 +274,7 @@ public class SimpleServer extends AbstractServer {
 				if(thisTask.getStatus().equals("idle")){
 					thisTask.setStatus("in Process");
 					LocalDateTime now = LocalDateTime.now().withNano(0);
-					thisTask.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
+//					thisTask.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
 //					String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 					thisTask.setVolDate(now);
 					thisTask.setVolunteer(taskVolunteer);
