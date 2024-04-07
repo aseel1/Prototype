@@ -50,6 +50,7 @@
                </MenuButton>
                <Button fx:id="SOSReports" layoutX="49.0" layoutY="137.0" mnemonicParsing="false" onAction="#handleSOSReports" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS Reports" />
 
+
             </children>
          </AnchorPane>
       </AnchorPane>
