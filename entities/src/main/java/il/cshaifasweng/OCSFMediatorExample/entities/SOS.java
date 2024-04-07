@@ -38,6 +38,10 @@ public class SOS implements Serializable {
         this.time = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();
         this.user = user;
     }
+    public SOS(User user,String date) {
+        this.date = date;
+        this.user = user;
+    }
 
     public int getSOSid() {
         return SOSid;
