@@ -1,9 +1,11 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Notification;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,19 +39,11 @@ public class TasksController {
     private TableColumn<Task, String> taskName;
 
     @FXML
-    private TableColumn<Task,User> user;
+    private TableColumn<Task,String> user;
 
     @FXML
     private TableColumn<Task, String> date;
 
-//    @FXML
-//    private TableColumn<Task, Integer> time;
-
-//    @FXML
-//    private TableColumn<Task, User> volunteer;
-//
-//    @FXML
-//    private TableColumn<Task, String> status;
 
     @FXML
     private void switchToPrimary() throws IOException {
@@ -60,7 +54,7 @@ public class TasksController {
     public void initialize() {
         taskId.setCellValueFactory(new PropertyValueFactory<Task, Integer>("taskId"));
         taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("taskName"));
-        user.setCellValueFactory(new PropertyValueFactory<Task, User>("user"));
+        user.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getUserName()));
         date.setCellValueFactory(new PropertyValueFactory<Task, String>("date"));
 //        time.setCellValueFactory(new PropertyValueFactory<Task, Integer>("time"));
 //        volunteer.setCellValueFactory(new PropertyValueFactory<Task, User>("volunteer"));
@@ -101,7 +95,12 @@ public class TasksController {
         TextField text5 = new TextField(task.getStatus());
         TextField text6 = new TextField(task.getUser().getUserName());
         TextField text7 = new TextField(task.getDetails());
-        Button changeStatusButton = new Button("I want to do this");
+        Button changeStatusButton = new Button();
+        if (task.getVolunteer()!=null && SimpleClient.getCurrentUser().getId()==task.getVolunteer().getId()) {
+            changeStatusButton.setText("Done");
+        } else {
+            changeStatusButton.setText("I want to do this");
+        }
         Button AcceptRequest = new Button("Accept Help Request");
         Button DeclineRequest = new Button("Decline Help Request");
 //        TextField text7 = new TextField(task.getVolunteer().getUserName());
@@ -153,21 +152,35 @@ public class TasksController {
 
         //in case of wanting to volunteer
         changeStatusButton.setOnAction(e -> {
-            Message message = new Message("changeStatusToIP",task,getCurrentUser());
-            try {
-                SimpleClient.getClient().sendToServer(message);
-                if(task.getStatus().equals("idle"))
-                {
-                    task.setStatus("in process");
-                    task.setVolunteer(getCurrentUser());
-                    LocalDateTime now = LocalDateTime.now().withNano(0);
+            if(changeStatusButton.getText().equals("I want to do this")) {
+                Message message = new Message("changeStatusToIP", task, getCurrentUser());
+                try {
+                    SimpleClient.getClient().sendToServer(message);
+                    if (task.getStatus().equals("idle")) {
+                        task.setStatus("in process");
+                        task.setVolunteer(getCurrentUser());
+                        LocalDateTime now = LocalDateTime.now().withNano(0);
 //                    task.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
 //                    String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-                    task.setVolDate(now);
+                        task.setVolDate(now);
+                    }
+                    taskTable.refresh();
+                } catch (IOException b) {
+                    b.printStackTrace();
                 }
-                taskTable.refresh();
-            } catch (IOException b) {
-                b.printStackTrace();
+            }
+            else if(changeStatusButton.getText().equals("Done")) {
+                SimpleClient.sendNotification(SimpleClient.getCurrentUser(), task.getmanagerId(),"taskDone");
+                Message message = new Message("changeStatusToDone", task, getCurrentUser());
+                try {
+                    SimpleClient.getClient().sendToServer(message);
+                    if (task.getStatus().equals("in process")) {
+                        task.setStatus("Done");
+                    }
+                    taskTable.refresh();
+                } catch (IOException b) {
+                    b.printStackTrace();
+                }
             }
         });
 
@@ -230,6 +243,7 @@ public class TasksController {
 
         // Show dialog
         dialog.show();
+
     }
 
     public void handlePressingSOS(ActionEvent event) {

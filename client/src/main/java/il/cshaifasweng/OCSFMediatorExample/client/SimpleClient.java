@@ -125,6 +125,18 @@ public class SimpleClient extends AbstractClient {
 			try {
 				SimpleClient.getClient().sendToServer(message);
 
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else if(message.getMessage().equals("TheStatusChanged")) {
+			// to update the table again
+			Message message = new Message("#showMyTasksList",SimpleClient.getCurrentUser());
+			try {
+				SimpleClient.getClient().sendToServer(message);
+
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

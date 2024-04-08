@@ -308,6 +308,16 @@ public class SimpleServer extends AbstractServer {
 					message.setObject("Failed");
 				}
 				client.sendToClient(message);
+			} else if (request.startsWith("changeStatusToDone")) {
+				Task thisTask = (Task) message.getObject();
+				if (thisTask.getStatus().equals("in Process")) {
+					thisTask.setStatus("done");
+					DatabaseManager.updateTask(session, thisTask);
+					message.setMessage("TheStatusChanged");
+					client.sendToClient(message);
+				}
+
+
 			} else if (request.startsWith("#createUser")) {
 				User user = (User) message.getObject();
 				System.out.println("User created: " + user.getUserName() + " " + user.getPassword() + " "

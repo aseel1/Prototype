@@ -51,7 +51,7 @@ public class Task implements Serializable {
         this.user=user;
         this.status = status;
         this.taskDetails= "";
-        this.managerId=-1;
+        this.managerId= -1 ;
     }
 
     public int getTaskId() {

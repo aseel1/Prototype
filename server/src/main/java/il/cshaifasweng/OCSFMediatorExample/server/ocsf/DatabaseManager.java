@@ -124,6 +124,7 @@ public class DatabaseManager {
             LocalDateTime now = LocalDateTime.now().withNano(0);
 //            int time = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();//random.nextInt(24); // Assuming time is in hours
             Task task = new Task(i, "Task" + i, now, volunteer, status,user);
+            task.setManagerId(18);
             if(status.equals("done")) {
 //                task.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond() + randomUser.nextInt(15));
                 task.setVolDate(now);
