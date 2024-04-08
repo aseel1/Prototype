@@ -87,6 +87,14 @@ public class SimpleClient extends AbstractClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}else if (message.getMessage().equals("#showMyTasksList")) {
+			try {
+				System.out.println("(Client) User Tasks list received from server ");
+				tableMessage=message;
+				App.setRoot("Tasks"); // calling the fxml function will generate the initliaze of
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}else if (message.getMessage().equals("#updateTask")) {
 			System.out.println("Update request sent to server. Good job!");
 
@@ -116,6 +124,18 @@ public class SimpleClient extends AbstractClient {
 			Message message = new Message("#showTasksList",SimpleClient.getCurrentUser());
 			try {
 				SimpleClient.getClient().sendToServer(message);
+
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		else if(message.getMessage().equals("TheStatusChanged")) {
+			// to update the table again
+			Message message = new Message("#showMyTasksList",SimpleClient.getCurrentUser());
+			try {
+				SimpleClient.getClient().sendToServer(message);
+
 
 			} catch (IOException e) {
 				e.printStackTrace();

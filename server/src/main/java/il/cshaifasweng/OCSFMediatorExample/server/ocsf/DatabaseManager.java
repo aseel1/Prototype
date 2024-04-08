@@ -124,6 +124,7 @@ public class DatabaseManager {
             LocalDateTime now = LocalDateTime.now().withNano(0);
 //            int time = now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond();//random.nextInt(24); // Assuming time is in hours
             Task task = new Task(i, "Task" + i, now, volunteer, status,user);
+            task.setManagerId(18);
             if(status.equals("done")) {
 //                task.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond() + randomUser.nextInt(15));
                 task.setVolDate(now);
@@ -301,6 +302,20 @@ public class DatabaseManager {
             query.setParameter("thisUser", thisUser);
             tasks = query.list();
             System.out.println("Found " + tasks.size() + " tasks with status idle " + " and not with user " + thisUser + ".");
+        } catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return tasks;
+    }
+    public static List<Task> getTasksByVolunteer(Session session, User thisUser) {
+        List<Task> tasks = null;
+        try {
+            String hql = "SELECT t FROM Task t WHERE t.status = :status AND t.volunteer = :volunteer";
+            Query<Task> query = session.createQuery(hql, Task.class);
+            query.setParameter("status", "in Process");
+            query.setParameter("volunteer", thisUser);
+            tasks = query.list();
+            System.out.println("Found " + tasks.size() + " tasks with status process and volunteer " + thisUser + ".");
         } catch (HibernateException e) {
             e.printStackTrace();
         }

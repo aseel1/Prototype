@@ -125,6 +125,23 @@ public class SimpleServer extends AbstractServer {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			} else if (request.startsWith("#showMyTasks")) {
+				// This assumes the message object contains the User or enough information to
+				// fetch the User
+				User userFromClient = (User) message.getObject(); // Make sure this casting is valid based on your
+				// message structure
+				// community in your User entity
+				List<Task> tasks = DatabaseManager.getTasksByVolunteer(session,userFromClient);
+				System.out.println(tasks);
+				message.setObject(tasks);
+				message.setMessage("#showMyTasksList");
+				System.out.println(message.getMessage());
+
+				try {
+					client.sendToClient(message);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			} else if (request.startsWith("#showSOS")) {
 				// Split the message to extract parameters
 				String[] parts = message.getObject().toString().split(" ", 3);
@@ -291,6 +308,16 @@ public class SimpleServer extends AbstractServer {
 					message.setObject("Failed");
 				}
 				client.sendToClient(message);
+			} else if (request.startsWith("changeStatusToDone")) {
+				Task thisTask = (Task) message.getObject();
+				if (thisTask.getStatus().equals("in Process")) {
+					thisTask.setStatus("done");
+					DatabaseManager.updateTask(session, thisTask);
+					message.setMessage("TheStatusChanged");
+					client.sendToClient(message);
+				}
+
+
 			} else if (request.startsWith("#createUser")) {
 				User user = (User) message.getObject();
 				System.out.println("User created: " + user.getUserName() + " " + user.getPassword() + " "

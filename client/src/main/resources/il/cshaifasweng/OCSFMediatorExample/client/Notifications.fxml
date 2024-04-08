@@ -6,7 +6,7 @@
 <AnchorPane fx:id="NotificationsListView" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.NotificationsController">
    <children>
 
-      <Button fx:id="ReturnButton" layoutX="276.0" layoutY="312.0" mnemonicParsing="false" onAction="#switchToPrimary" text="return" />
+      <Button fx:id="ReturnButton" layoutX="276.0" layoutY="338.0" mnemonicParsing="false" onAction="#switchToPrimary" text="return" />
       <TableView fx:id="notificationTableView" layoutX="185.0" layoutY="39.0" prefHeight="247.0" prefWidth="230.0">
          <columns>
 
@@ -15,5 +15,6 @@
 
          </columns>
       </TableView>
+
    </children>
 </AnchorPane>

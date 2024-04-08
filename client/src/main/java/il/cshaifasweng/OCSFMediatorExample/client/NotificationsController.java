@@ -3,8 +3,10 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Notification;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -29,7 +31,7 @@ public class NotificationsController {
 //    private Button returnButton;
 
     @FXML
-    private TableColumn<Notification, User> sender;
+    private TableColumn<Notification, String> sender;
 
     @FXML
     private TableColumn<Notification, String> message;
@@ -39,7 +41,7 @@ public class NotificationsController {
         // You can initialize your ListView or perform other setup here
         System.out.println("Trying to initialize Notifications");
         message.setCellValueFactory(new PropertyValueFactory<Notification, String>("message"));
-        sender.setCellValueFactory(new PropertyValueFactory<Notification, User>("sender"));
+        sender.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSender().getUserName()));
 
         ObservableList<Notification> observableNotification =
                 FXCollections.observableArrayList((List<Notification>) tableMessage.getObject());
@@ -61,4 +63,5 @@ public class NotificationsController {
     private void switchToPrimary() throws IOException {
         App.setRoot("primary"); // Assuming App is your main application class
     }
+
 }
