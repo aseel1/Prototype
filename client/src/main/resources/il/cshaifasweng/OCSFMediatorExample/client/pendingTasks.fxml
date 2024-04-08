@@ -17,7 +17,6 @@
                         <TableColumn fx:id="taskId" prefWidth="75.0" text="Task ID" />
                         <TableColumn fx:id="taskName" prefWidth="75.0" text="Task Name" />
                         <TableColumn fx:id="date" prefWidth="89.5999755859375" text="Date" />
-                        <TableColumn fx:id="time" prefWidth="79.20001220703125" text="Time" />
                         <TableColumn fx:id="volunteer" prefWidth="83.199951171875" text="Volunteer" />
                         <TableColumn fx:id="status" prefWidth="128.800048828125" text="Status" />
                     </columns>
