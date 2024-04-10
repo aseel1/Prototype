@@ -66,6 +66,13 @@ public class PrimaryController {
 		instance = this;
 	}
 
+	@FXML
+	public void initialize() {
+		User currentUser = SimpleClient.getCurrentUser();
+
+		updateLabels(currentUser.getUserName(), currentUser.getStatus());
+	}
+
 	public static PrimaryController getInstance() {
 		return instance;
 	}
@@ -94,7 +101,7 @@ public class PrimaryController {
 
 	@FXML
 	protected void handleShowTasksButtonAction(ActionEvent event) {
-		Message message = new Message("#showTasksList",SimpleClient.getCurrentUser());
+		Message message = new Message("#showTasksList", SimpleClient.getCurrentUser());
 		try {
 			SimpleClient.getClient().sendToServer(message);
 			System.out.println("(Primary)Sending message to server: ");
@@ -121,7 +128,8 @@ public class PrimaryController {
 
 	@FXML
 	protected void logOutAction(ActionEvent event) {
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to log out?", ButtonType.YES, ButtonType.NO);
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to log out?", ButtonType.YES,
+				ButtonType.NO);
 		alert.showAndWait().ifPresent(response -> {
 			if (response == ButtonType.YES) {
 				sendLogoutRequest();
@@ -141,6 +149,7 @@ public class PrimaryController {
 			e.printStackTrace();
 		}
 	}
+
 	@FXML
 	protected void handleViewCommunityMembers(ActionEvent event) {
 		Message message = new Message("#showMembersList", SimpleClient.getCurrentUser());
@@ -153,16 +162,16 @@ public class PrimaryController {
 			e.printStackTrace();
 		}
 
-
-//		try {
-//			// Assume communityId is available and identifies the manager's community
-//			String communityId = SimpleClient.getCurrentUser().getCommunity(); // You need to implement this method
-//			Message requestMessage = new Message("#getCommunityMembers", communityId);
-//			SimpleClient.getClient().sendToServer(requestMessage);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			// Optionally, show an alert dialog to the user about the error
-//		}
+		// try {
+		// // Assume communityId is available and identifies the manager's community
+		// String communityId = SimpleClient.getCurrentUser().getCommunity(); // You
+		// need to implement this method
+		// Message requestMessage = new Message("#getCommunityMembers", communityId);
+		// SimpleClient.getClient().sendToServer(requestMessage);
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// // Optionally, show an alert dialog to the user about the error
+		// }
 	}
 
 	@FXML
@@ -208,8 +217,6 @@ public class PrimaryController {
 		}
 	}
 
-
-
 	@FXML
 	protected void handleSOSReports(ActionEvent event) {
 		System.out.println("aseelwashere");
@@ -221,7 +228,6 @@ public class PrimaryController {
 			e.printStackTrace();
 		}
 	}
-
 
 	public void handleMyTasksButtonAction(ActionEvent actionEvent) {
 		Message message = new Message("#showMyTasks", SimpleClient.getCurrentUser());

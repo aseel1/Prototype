@@ -1,4 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
+
 import com.sun.istack.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,16 +23,17 @@ public class User implements Serializable {
     private String communityManager;
 
     @NotNull
-    private boolean loggedIn=false;
+    private boolean loggedIn = false;
 
     @ElementCollection
-//    @Column(name = "notification")
+    // @Column(name = "notification")
     private List<String> notifications;
 
     public User() {
     }
 
-    public User(int id, String userName, String gender, String password, String age, String community, String status, String communityManager) {
+    public User(int id, String userName, String gender, String password, String age, String community, String status,
+            String communityManager) {
         super();
         this.id = id;
         this.status = status;
@@ -40,8 +42,8 @@ public class User implements Serializable {
         this.password = password;
         this.age = age;
         this.community = community;
-        this.communityManager=communityManager;
-        this.notifications=new ArrayList<>();
+        this.communityManager = communityManager;
+        this.notifications = new ArrayList<>();
     }
 
     public User(String userName, String password) {
@@ -106,6 +108,7 @@ public class User implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public boolean isLoggedIn() {
         return loggedIn;
     }
@@ -113,6 +116,7 @@ public class User implements Serializable {
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
+
     public String getCommunityManager() {
         return communityManager;
     }
@@ -120,6 +124,7 @@ public class User implements Serializable {
     public void setCommunityManager(String communityManager) {
         this.communityManager = communityManager;
     }
+
     public List<String> getNotifications() {
         return notifications;
     }
