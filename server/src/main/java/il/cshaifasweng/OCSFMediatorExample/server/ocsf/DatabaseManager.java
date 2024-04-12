@@ -70,15 +70,15 @@ public class DatabaseManager {
             String communityManager=null;
             String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
             if (role.equals("Manager")){
-                communityManager=selectRandomString("Haifa", "Nazareth");
+                communityManager=selectRandomString("Haifa");
             }
             User user = new User(i, "User" + i, "Male", "password" + random.nextInt(),
                     Integer.toString(20 + random.nextInt(60)), selectRandomString("Haifa", "Nazareth"), role,communityManager);
             session.save(user);
         }
-        User user1 = new User(212393532, "aseel", "male", "1234", "20", "Haifa", "manager","Nazareth");
+        User user1 = new User(212393532, "aseel", "male", "1234", "20", "Nazareth", "manager","Nazareth");
         User user2 = new User(2345, "nawal", "female", "1234", "20", "Haifa", "manager","Haifa");
-        User user3 = new User(76543, "maya", "female", "1234", "20", "Nazareth", "manager","Nazareth");
+        User user3 = new User(76543, "maya", "female", "1234", "20", "Nazareth", "manager","Haifa");
         User user4 = new User(1234567, "samih", "male", "123", "20", "Nazareth", "manager","Haifa");
         User user5 = new User(1111, "mary", "female", "123", "20", "Cana", "manager","Cana");
 
@@ -326,7 +326,7 @@ public class DatabaseManager {
 
         try {
             String hql =
-            "SELECT n FROM Notification n WHERE (n.recipient = :user OR n.recipient IS NULL) AND n.sender <> :user ORDER BY ABS(n.timestamp - CURRENT_TIMESTAMP()) ";//DESC
+                    "SELECT n FROM Notification n WHERE (n.recipient = :user OR n.recipient IS NULL) ORDER BY ABS(n.timestamp - CURRENT_TIMESTAMP())";
             Query<Notification> query = session.createQuery(hql, Notification.class);
             query.setParameter("user", user);
 

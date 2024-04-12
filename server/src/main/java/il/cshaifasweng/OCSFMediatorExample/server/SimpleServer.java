@@ -236,7 +236,8 @@ public class SimpleServer extends AbstractServer {
 
 			// manager declined the task.
 			else if (request.startsWith("#managerDeclined")) {
-				System.out.println("manager declined task");
+				System.out.println("manager declined task" + message.getMessage());
+
 				Task task = (Task) message.getObject(); // derefrence the object from the message
 				task.setStatus("declined");
 				DatabaseManager.updateTask(session, task);

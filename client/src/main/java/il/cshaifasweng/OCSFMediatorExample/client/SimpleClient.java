@@ -156,6 +156,15 @@ public class SimpleClient extends AbstractClient {
 			Platform.runLater(() -> {
 				showAlert("Approved!", "The request has been approved :)", Alert.AlertType.INFORMATION);
 				Task task = (Task) message.getObject();
+				Message message = new Message("#showPendingList", SimpleClient.getCurrentUser());
+				try {
+					SimpleClient.getClient().sendToServer(message);
+					System.out.println("(Primary) Sending req message to server from helpReequest.");
+				} catch (IOException e) {
+					System.out.println("Failed to connect to the server.");
+					e.printStackTrace();
+				}
+
 				// sending a notification to everyone
 				String txt = "A new help-request was opened! Come on, help us help them! TaskId=" + task.getTaskId();
 				SimpleClient.sendNotification(SimpleClient.currentUser, -1, txt);
@@ -178,6 +187,7 @@ public class SimpleClient extends AbstractClient {
 				if (result.isPresent()) {
 					// Process user input if available
 					String enteredText = result.get();
+					System.out.println(message.getMessage() + message.getObject());
 					Task task = (Task) message.getObject();
 					SimpleClient.sendNotification(SimpleClient.currentUser, task.getUser().getId(), enteredText);
 					System.out.println("(Simple Client) Sent a notification to user: " + enteredText);
@@ -192,6 +202,8 @@ public class SimpleClient extends AbstractClient {
 					}
 				}
 			});
+
+
 		}
 
 		else if (message.getMessage().equals("#openTask")) {
@@ -220,8 +232,8 @@ public class SimpleClient extends AbstractClient {
 				Platform.runLater(() -> {
 					Alert alert = new Alert(Alert.AlertType.ERROR);
 					alert.setTitle("Login Failed");
-					alert.setHeaderText("null");
-					alert.setContentText("Login failed. Please try again.");
+					alert.setHeaderText("The username and password you entered are incorrect.");
+					alert.setContentText("Please check your credentials and try again.");
 
 					alert.showAndWait();
 				});
@@ -287,6 +299,7 @@ public class SimpleClient extends AbstractClient {
 				}
 			});
 		} else if (message.getMessage().equals("#showNotificationsList")) {
+			System.out.println(message.getMessage() + "haayyhee");
 			tableMessage = message;
 			try {
 				System.out.println("(Client) Notification list received from server.");

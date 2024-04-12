@@ -71,6 +71,7 @@ public class PrimaryController {
 		User currentUser = SimpleClient.getCurrentUser();
 
 		updateLabels(currentUser.getUserName(), currentUser.getStatus());
+		showUsersButton.setVisible(false);
 	}
 
 	public static PrimaryController getInstance() {
@@ -81,8 +82,8 @@ public class PrimaryController {
 		usernameLabel.setText("Username: " + username);
 		statusLabel.setText("Status: " + status);
 
-		reportsButton.setVisible("manager".equals(status));
-		SOSReports.setVisible("manager".equals(status));
+		reportsButton.setVisible("manager".equals(status) || "Manager".equals(status));
+		SOSReports.setVisible("manager".equals(status) || "Manager".equals(status));
 	}
 
 	@FXML
