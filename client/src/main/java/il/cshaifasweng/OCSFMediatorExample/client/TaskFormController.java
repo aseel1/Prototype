@@ -37,8 +37,8 @@ public class TaskFormController {
     @FXML // fx:id="other"
     private MenuItem other; // Value injected by FXMLLoader
 
-    @FXML
-    private TextField dateField;
+
+
 
     @FXML
     private TextField statusField;
@@ -131,7 +131,6 @@ public class TaskFormController {
         // receiver_id = -1 if its for all
         // SimpleClient.sendNotification(SimpleClient.getCurrentUser(),receiver_id,"message");
         //empty the textfields:
-        dateField.setText("");
 //        timeField.setText("");
         Specification.setText("");
         taskNameField.setText("");

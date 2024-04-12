@@ -195,6 +195,7 @@ public class TasksController {
             } catch (IOException b) {
                 b.printStackTrace();
             }
+
         });
 
         //in case of manager accepting help request
@@ -209,6 +210,14 @@ public class TasksController {
             } catch (IOException b) {
                 b.printStackTrace();
             }
+//             message = new Message("#showPendingList", SimpleClient.getCurrentUser());
+//            try {
+//                SimpleClient.getClient().sendToServer(message);
+//                System.out.println("(Primary) Sending req message to server from helpReequest.");
+//            } catch (IOException c) {
+//                System.out.println("Failed to connect to the server.");
+//                c.printStackTrace();
+//            }
         });
 
 //        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);

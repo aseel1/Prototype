@@ -115,4 +115,9 @@ public class SOSReportsController {
     private void switchToPrimary() throws IOException {
         App.setRoot("primary");
     }
+
+
+    public void handlePressingSOS(javafx.event.ActionEvent actionEvent) {
+        SimpleClient.pressingSOS("SOSReports");
+    }
 }

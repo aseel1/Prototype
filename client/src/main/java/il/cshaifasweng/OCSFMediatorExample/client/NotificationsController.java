@@ -63,5 +63,8 @@ public class NotificationsController {
     private void switchToPrimary() throws IOException {
         App.setRoot("primary"); // Assuming App is your main application class
     }
+    public void handlePressingSOS(ActionEvent event) {
+        SimpleClient.pressingSOS("Notifications");
+    }
 
 }
