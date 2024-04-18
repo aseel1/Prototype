@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="603.0" prefWidth="788.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.TasksController">
+<VBox alignment="CENTER" prefHeight="603.0" prefWidth="788.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.TasksController" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css">
+  <padding>
+    <Insets bottom="20.0" left="20.0" right="20.0" top="40.0" />
+  </padding>
   <children>
     <AnchorPane prefHeight="568.0" prefWidth="748.0">
       <children>
-        <Button fx:id="SOSbutton" layoutX="96.0" layoutY="495.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS" />
-        <Button fx:id="secondaryButton" layoutX="320.0" layoutY="496.0" onAction="#switchToPrimary" text="Switch to Primary View" />
+        <Button fx:id="SOSbutton" layoutX="96.0" layoutY="495.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" styleClass="button" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;" text="SOS" />
+        <Button fx:id="secondaryButton" layoutX="320.0" layoutY="496.0" onAction="#switchToPrimary" styleClass="button" text="Switch to Primary View" />
         <TableView fx:id="taskTable" layoutX="164.0" layoutY="47.0" prefHeight="380.0" prefWidth="449.0">
           <columns>
             <TableColumn fx:id="taskId" prefWidth="75.0" text="Task ID" />
-            <TableColumn fx:id="taskName" prefWidth="100.20001220703125" text="Task Name" />
-            <TableColumn fx:id="user" prefWidth="104.5999755859375" text="user" />
-            <TableColumn fx:id="date" prefWidth="89.5999755859375" text="Date" />
-            <TableColumn fx:id="volunteer" prefWidth="83.199951171875" text="Volunteer" />
-            <TableColumn fx:id="status" prefWidth="128.800048828125" text="Status" />
+            <TableColumn fx:id="taskName" prefWidth="100.2" text="Task Name" />
+            <TableColumn fx:id="user" prefWidth="104.6" text="user" />
+            <TableColumn fx:id="date" prefWidth="89.6" text="Date" />
+            <TableColumn fx:id="volunteer" prefWidth="83.2" text="Volunteer" />
+            <TableColumn fx:id="status" prefWidth="128.8" text="Status" />
           </columns>
         </TableView>
       </children>
     </AnchorPane>
   </children>
-  <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="40.0" />
-  </padding>
 </VBox>
