@@ -261,7 +261,7 @@ public class SimpleServer extends AbstractServer {
 
 				if (userFromDB != null && userFromDB.getPassword().equals(userFromClient.getPassword())) {
 					if (userFromDB.isLoggedIn()) {
-						message.setMessage("User Already Signed In!");
+						message.setMessage("#User Already Signed In!");
 					} else {
 						userFromDB.setLoggedIn(true); // Set the user as logged in
 						session.update(userFromDB); // Make sure to update the user in the database
