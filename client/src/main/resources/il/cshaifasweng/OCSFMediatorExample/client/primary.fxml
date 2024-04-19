@@ -5,70 +5,54 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
 <StackPane alignment="TOP_LEFT" prefHeight="603.0" prefWidth="788.0" style="-fx-background-color: linear-gradient(to bottom, #f7f7f7, rgba(213,188,188,0.89));" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
-   <ImageView fitHeight="603" fitWidth="788">
-      <image>
-         <Image url="@/home.png" />
-      </image>
-   </ImageView>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
    <children>
-      <HBox spacing="10">
-         <Label fx:id="usernameLabel" prefHeight="50.0" prefWidth="207.0" style="-fx-font-size: 20px; -fx-text-fill: #644e4e; -fx-background-color: transparent; -fx-padding: 10px;" text="Username: " />
-         <Label fx:id="statusLabel" style="-fx-font-size: 20px; -fx-text-fill: #644e4e; -fx-background-color: transparent; -fx-padding: 10px;" text="Status: " />
-      </HBox>
       <AnchorPane prefHeight="516.0" prefWidth="696.0">
-         <AnchorPane layoutY="-18.0" prefHeight="516.0" prefWidth="696.0">
+         <AnchorPane layoutX="-14.0" layoutY="-18.0" prefHeight="516.0" prefWidth="696.0">
             <children>
-               <Text fill="#654933" layoutX="147.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="All Together Information System" textAlignment="CENTER" underline="false" wrappingWidth="488.2892761230469">
-                  <font>
-                     <Font name="Arial Bold" size="24.0" />
-                  </font>
-               </Text>
-               <Text fill="#654933" layoutX="231.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Together We Serve,Together We Thrive" textAlignment="CENTER" underline="false" wrappingWidth="315.6226501464844">
-                  <font>
-                     <Font name="Arial Bold" size="16.0" />
-                  </font>
-               </Text>
-               <Button fx:id="showUsersButton" layoutX="36.0" layoutY="248.0" onAction="#handleShowUsersButtonAction" prefHeight="32.0" prefWidth="102.0" style="-fx-background-color: #a88983; -fx-border-color: #f7efe7; -fx-text-fill: white;" text="Show Users">
+               <ImageView fitHeight="670.0" fitWidth="788" layoutX="-42.0" layoutY="-33.0">
+                  <image>
+                     <Image url="@/5.png" />
+                  </image>
+               </ImageView>
+               <Button fx:id="showUsersButton" layoutX="36.0" layoutY="323.0" onAction="#handleShowUsersButtonAction" prefHeight="32.0" prefWidth="102.0" style="-fx-background-color: #a88983; -fx-border-color: #f7efe7; -fx-text-fill: white;" text="Show Users">
                   <font>
                      <Font name="Arial Italic" size="14.0" />
                   </font>
                </Button>
-               <Button fx:id="showTasksButton" layoutX="326.0" layoutY="197.0" onAction="#handleShowTasksButtonAction" prefHeight="34.0" prefWidth="127.0" style="-fx-background-color: rgba(168,137,131,0.85); -fx-border-color: #f7efe7; -fx-text-fill: white;" text="Show Tasks">
+               <Button fx:id="showTasksButton" layoutX="310.0" layoutY="322.0" onAction="#handleShowTasksButtonAction" prefHeight="34.0" prefWidth="127.0" style="-fx-background-color: rgba(168,137,131,0.85); -fx-border-color: #f7efe7; -fx-text-fill: white;" text="Show Tasks">
                   <font>
                      <Font name="Arial Italic" size="16.0" />
                   </font>
                </Button>
-               <Button fx:id="openTaskButton" layoutX="328.0" layoutY="351.0" onAction="#openTaskButtonAction" prefHeight="34.0" prefWidth="121.0" style="-fx-background-color: rgba(168,137,131,0.53); -fx-border-color: #f7efe7; -fx-text-fill: white;" text="Open task">
+               <Button fx:id="openTaskButton" layoutX="313.0" layoutY="537.0" onAction="#openTaskButtonAction" prefHeight="34.0" prefWidth="121.0" style="-fx-background-color: rgba(168,137,131,0.53); -fx-border-color: #f7efe7; -fx-text-fill: white;" text="Open task">
                   <font>
                      <Font name="Arial Italic" size="16.0" />
                   </font>
                </Button>
-               <Button fx:id="notificationButton" graphicTextGap="0.0" layoutX="36.0" layoutY="11.0" onAction="#notificationButtonAction" prefHeight="33.0" prefWidth="37.0" style="-fx-background-color: #a88983; -fx-border-color: #a88983; -fx-text-fill: white;" text="🔔" textAlignment="CENTER">
+               <Button fx:id="notificationButton" graphicTextGap="0.0" layoutX="570.0" layoutY="72.0" onAction="#notificationButtonAction" prefHeight="33.0" prefWidth="37.0" style="-fx-background-color: #a88983; -fx-border-color: #a88983; -fx-text-fill: white;" text="🔔" textAlignment="CENTER">
                   <font>
-                     <Font name="System Bold" size="15.0" />
+                     <Font name="System Bold" size="14.0" />
                   </font></Button>
-               <Button fx:id="logOutButton" layoutX="550.0" layoutY="421.0" mnemonicParsing="false" onAction="#logOutAction" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: #a88983; -fx-border-color: #a88983; -fx-text-fill: white;" text="LogOut">
+               <Button fx:id="logOutButton" layoutX="598.0" layoutY="198.0" mnemonicParsing="false" onAction="#logOutAction" prefHeight="34.0" prefWidth="90.0" style="-fx-background-color: #a88983; -fx-border-color: #a88983; -fx-text-fill: white;" text="LogOut">
                   <font>
                      <Font size="16.0" />
                   </font></Button>
-               <Button fx:id="SOSbutton" layoutX="48.0" layoutY="448.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="102.0" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;" text="sos">
+               <Button fx:id="SOSbutton" layoutX="37.0" layoutY="504.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="102.0" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;" text="sos">
                   <font>
                      <Font size="18.0" />
                   </font></Button>
-               <MenuButton fx:id="reportsButton" layoutX="37.0" layoutY="100.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="102.0" style="-fx-background-color: #a88983; -fx-border-color: #a88983; -fx-text-fill: white;" text="Reports">
+               <MenuButton fx:id="reportsButton" layoutX="37.0" layoutY="175.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="102.0" style="-fx-background-color: #a88983; -fx-border-color: #a88983; -fx-text-fill: white;" text="Reports">
                   <items>
                      <MenuItem mnemonicParsing="false" onAction="#handleViewCommunityMembers" text="View Community Members" />
                      <MenuItem mnemonicParsing="false" onAction="#handleViewHelpRequests" text="View Help Requests" />
@@ -78,30 +62,18 @@
                      <Font size="14.0" />
                   </font>
                </MenuButton>
-               <Button fx:id="SOSReports" layoutX="36.0" layoutY="148.0" mnemonicParsing="false" onAction="#handleSOSReports" prefHeight="18.0" prefWidth="102.0" style="-fx-background-color: #a88983; -fx-border-color: #a88983; -fx-text-fill: white;" text="SOS Reports">
+               <Button fx:id="SOSReports" layoutX="36.0" layoutY="223.0" mnemonicParsing="false" onAction="#handleSOSReports" prefHeight="18.0" prefWidth="102.0" style="-fx-background-color: #a88983; -fx-border-color: #a88983; -fx-text-fill: white;" text="SOS Reports">
                   <font>
                      <Font size="14.0" />
                   </font></Button>
-               <Button fx:id="myTasksButton" layoutX="37.0" layoutY="199.0" onAction="#handleMyTasksButtonAction" prefHeight="27.0" prefWidth="102.0" style="-fx-background-color: #a88983; -fx-border-color: #a88983; -fx-text-fill: white;" text="My Tasks">
+               <Button fx:id="myTasksButton" layoutX="37.0" layoutY="274.0" onAction="#handleMyTasksButtonAction" prefHeight="27.0" prefWidth="102.0" style="-fx-background-color: #a88983; -fx-border-color: #a88983; -fx-text-fill: white;" text="My Tasks">
                   <font>
                      <Font name="Arial Italic" size="14.0" />
                   </font>
                </Button>
-               <Text fill="#654933" layoutX="375.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="🤝" wrappingWidth="46.33331298828125">
-                  <font>
-                     <Font size="25.0" />
-                  </font>
-               </Text>
-               <Text layoutX="279.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Think you can lend a hand? Tap here to see how you can make a difference!" textAlignment="CENTER" wrappingWidth="224.33819580078125">
-                  <font>
-                     <Font name="Arial" size="18.0" />
-                  </font>
-               </Text>
-               <Text layoutX="301.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Need assistance? Start your task here and find the help you need!" textAlignment="CENTER" wrappingWidth="175.988037109375">
-                  <font>
-                     <Font name="Arial" size="18.0" />
-                  </font>
-               </Text>
+               <HBox layoutX="159.0" layoutY="-102.0" spacing="10" />
+               <Label fx:id="usernameLabel" layoutX="558.0" layoutY="96.0" prefHeight="28.0" prefWidth="171.0" style="-fx-font-size: 20px; -fx-text-fill: #644e4e; -fx-background-color: transparent; -fx-padding: 10px;" text="Username: " />
+               <Label fx:id="statusLabel" layoutX="558.0" layoutY="134.0" style="-fx-font-size: 20px; -fx-text-fill: #644e4e; -fx-background-color: transparent; -fx-padding: 10px;" text="Status: " />
             </children>
          </AnchorPane>
       </AnchorPane>
