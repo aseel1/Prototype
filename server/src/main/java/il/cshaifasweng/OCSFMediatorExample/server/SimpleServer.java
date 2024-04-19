@@ -119,7 +119,6 @@ public class SimpleServer extends AbstractServer {
 				message.setObject(tasks);
 				message.setMessage("#showDoneList");
 				System.out.println(message.getMessage());
-
 				try {
 					client.sendToClient(message);
 				} catch (IOException e) {
