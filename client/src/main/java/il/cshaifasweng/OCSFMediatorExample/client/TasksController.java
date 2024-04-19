@@ -165,6 +165,7 @@ public class TasksController {
                         task.setVolDate(now);
                     }
                     taskTable.refresh();
+                    dialog.close();
                 } catch (IOException b) {
                     b.printStackTrace();
                 }
@@ -178,6 +179,7 @@ public class TasksController {
                         task.setStatus("Done");
                     }
                     taskTable.refresh();
+                    dialog.close();
                 } catch (IOException b) {
                     b.printStackTrace();
                 }
@@ -192,6 +194,7 @@ public class TasksController {
                 SimpleClient.getClient().sendToServer(message);
                 task.setStatus("idle");
                 taskTable.refresh();
+                dialog.close();
             } catch (IOException b) {
                 b.printStackTrace();
             }
@@ -207,6 +210,7 @@ public class TasksController {
                 SimpleClient.getClient().sendToServer(message);
                 task.setStatus("declined");
                 taskTable.refresh();
+                dialog.close();
             } catch (IOException b) {
                 b.printStackTrace();
             }

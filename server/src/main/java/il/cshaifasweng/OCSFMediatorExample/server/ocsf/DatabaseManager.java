@@ -401,6 +401,32 @@ public class DatabaseManager {
 
     }
 
+    public static Task authenticateTask(int taskId, Session session) {
+        Task taskFromDB = null;
+
+        try {
+            // Create a query to find the task with the provided ID
+            Query query = session.createQuery("FROM Task WHERE taskId = :taskId");
+            query.setParameter("taskId", taskId);
+
+            // Execute the query and get the result
+            taskFromDB = (Task) query.uniqueResult();
+
+            if (taskFromDB != null) {
+                System.out.println("Task found with ID: " + taskId);
+            } else {
+                System.out.println("No task found with ID: " + taskId);
+            }
+
+        } catch (HibernateException e) {
+            // Handle exception
+            e.printStackTrace();
+        }
+
+        return taskFromDB;
+    }
+
+
     public static void initialize() {
         Session session = null;
 

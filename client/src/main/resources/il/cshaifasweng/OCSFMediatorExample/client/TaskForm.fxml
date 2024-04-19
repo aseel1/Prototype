@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" prefHeight="603.0" prefWidth="788.0" spacing="20.0" style="-fx-background-color: #F7EFE7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.TaskFormController">
+<VBox alignment="CENTER" prefHeight="603.0" prefWidth="788.0" spacing="20.0" style="-fx-background-color: rgba(213,188,188,0.89);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.TaskFormController" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css">
  
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -33,7 +33,7 @@
                         <Font name="System Italic" size="18.0" />
                     </font>
                 </Button>
-                <Button fx:id="SOSbutton" layoutX="531.0" layoutY="179.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS" />
+                <Button fx:id="SOSbutton" layoutX="531.0" layoutY="179.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;" text="SOS" />
                 <Button fx:id="secondaryButton" layoutX="220.0" layoutY="481.0" onAction="#switchToPrimary" prefHeight="42.0" prefWidth="224.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Switch to Primary View">                    <font>
                         <Font name="System Italic" size="18.0" />
                     </font>

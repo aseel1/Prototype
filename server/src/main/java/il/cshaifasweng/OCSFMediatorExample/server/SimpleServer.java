@@ -119,7 +119,6 @@ public class SimpleServer extends AbstractServer {
 				message.setObject(tasks);
 				message.setMessage("#showDoneList");
 				System.out.println(message.getMessage());
-
 				try {
 					client.sendToClient(message);
 				} catch (IOException e) {
@@ -262,7 +261,7 @@ public class SimpleServer extends AbstractServer {
 
 				if (userFromDB != null && userFromDB.getPassword().equals(userFromClient.getPassword())) {
 					if (userFromDB.isLoggedIn()) {
-						message.setMessage("User Already Signed In!");
+						message.setMessage("#User Already Signed In!");
 					} else {
 						userFromDB.setLoggedIn(true); // Set the user as logged in
 						session.update(userFromDB); // Make sure to update the user in the database
@@ -295,15 +294,19 @@ public class SimpleServer extends AbstractServer {
 				tx.commit(); // This line commits the transaction including the loggedIn status update
 			} else if (request.startsWith("changeStatusToIP")) {
 				Task thisTask = (Task) message.getObject();
+				System.out.println(thisTask.getTaskId());
+				Task task=DatabaseManager.authenticateTask(thisTask.getTaskId(),session);
+				System.out.println(task.getStatus());
 				User taskVolunteer = (User) message.getSecondObject();
-				if (thisTask.getStatus().equals("idle")) {
-					thisTask.setStatus("in Process");
+				if (task.getStatus().equals("idle")) {
+					System.out.println("innnnnnn");
+					task.setStatus("in Process");
 					LocalDateTime now = LocalDateTime.now().withNano(0);
 //					thisTask.setVolTime(now.getHour() * 3600 + now.getMinute() * 60 + now.getSecond());
 //					String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-					thisTask.setVolDate(now);
-					thisTask.setVolunteer(taskVolunteer);
-					DatabaseManager.updateTask(session, thisTask);
+					task.setVolDate(now);
+					task.setVolunteer(taskVolunteer);
+					// DatabaseManager.updateTask(session, thisTask);
 					message.setObject("Done");
 				} else {
 					message.setObject("Failed");

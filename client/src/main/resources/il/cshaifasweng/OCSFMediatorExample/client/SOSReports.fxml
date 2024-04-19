@@ -21,7 +21,7 @@
                         <Label text="Community:" />
                         <ComboBox fx:id="communityComboBox" minWidth="150" prefWidth="200.0" />
                         <Button fx:id="LoadDataButton" onAction="#handleloadDataButton" text="Load Data" />
-                    <Button fx:id="SOSbutton" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="33.0" prefWidth="75.0" style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS" />
+                    <Button fx:id="SOSbutton" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="33.0" prefWidth="75.0" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;"  text="SOS" />
                     </children>
                 </HBox>
 

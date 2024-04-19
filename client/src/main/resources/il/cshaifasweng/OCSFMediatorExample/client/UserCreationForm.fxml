@@ -1,66 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
-<VBox alignment="CENTER" prefHeight="603.0" prefWidth="788.0" spacing="20.0"
-    style="-fx-background-color: #F7EFE7;" xmlns="http://javafx.com/javafx/17.0.2-ea"
-    xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="il.cshaifasweng.OCSFMediatorExample.client.UserCreationFormController">
+<StackPane alignment="CENTER" prefHeight="603.0" prefWidth="788.0" style="-fx-background-color: #F7EFE7;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.UserCreationFormController">
+    <ImageView fitHeight="603" fitWidth="788">
+        <image>
+            <Image url="@/2.png" />
+        </image>
+    </ImageView>
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <children>
         <AnchorPane prefHeight="516.0" prefWidth="696.0">
             <children>
-                <Text fill="#c41212c7" layoutX="153.0" layoutY="46.0" strokeType="OUTSIDE"
-                    strokeWidth="0.0" text="Enter User Details" textAlignment="CENTER"
-                    underline="true" wrappingWidth="488.2892761230469">
+                <Text fill="#c41212c7" layoutX="20.0" layoutY="46.0" strokeType="OUTSIDE"
+                      strokeWidth="0.0" text="Enter User Details" textAlignment="LEFT"
+                      underline="true" wrappingWidth="488.2892761230469">
                     <font>
                         <Font name="System Bold Italic" size="30.0" />
                     </font>
                 </Text>
 
-                <Label layoutX="100.0" layoutY="86.0" style="-fx-font-size: 18px;" text="ID:" />
-                <TextField fx:id="idField" layoutX="285.0" layoutY="87.0" />
+                <Label layoutX="20.0" layoutY="86.0" style="-fx-font-size: 18px;" text="ID:" />
+                <TextField fx:id="idField" layoutX="160.0" layoutY="87.0" />
 
-                <Label layoutX="100.0" layoutY="126.0" style="-fx-font-size: 18px;" text="Username:" />
-                <TextField fx:id="usernameField" layoutX="285.0" layoutY="127.0" />
+                <Label layoutX="20.0" layoutY="126.0" style="-fx-font-size: 18px;" text="Username:" />
+                <TextField fx:id="usernameField" layoutX="160.0" layoutY="127.0" />
 
-                <Label layoutX="100.0" layoutY="166.0" style="-fx-font-size: 18px;" text="Password:" />
-                <PasswordField fx:id="passwordField" layoutX="285.0" layoutY="167.0" />
+                <Label layoutX="20.0" layoutY="166.0" style="-fx-font-size: 18px;" text="Password:" />
+                <PasswordField fx:id="passwordField" layoutX="160.0" layoutY="167.0" />
 
-                <Label layoutX="100.0" layoutY="206.0" style="-fx-font-size: 18px;" text="Gender:" />
-                <TextField fx:id="genderField" layoutX="285.0" layoutY="207.0" />
+                <Label layoutX="20.0" layoutY="206.0" style="-fx-font-size: 18px;" text="Gender:" />
+                <TextField fx:id="genderField" layoutX="160.0" layoutY="207.0" />
 
-                <Label layoutX="100.0" layoutY="246.0" style="-fx-font-size: 18px;" text="Age:" />
-                <TextField fx:id="ageField" layoutX="285.0" layoutY="246.0" />
+                <Label layoutX="20.0" layoutY="246.0" style="-fx-font-size: 18px;" text="Age:" />
+                <TextField fx:id="ageField" layoutX="160.0" layoutY="246.0" />
 
-                <Label layoutX="100.0" layoutY="286.0" style="-fx-font-size: 18px;"
-                    text="Community:" />
-                <TextField fx:id="communityField" layoutX="285.0" layoutY="287.0" />
+                <Label layoutX="20.0" layoutY="286.0" style="-fx-font-size: 18px;"
+                       text="Community:" />
+                <TextField fx:id="communityField" layoutX="160.0" layoutY="287.0" />
 
-                <Label layoutX="100.0" layoutY="326.0" style="-fx-font-size: 18px;" text="Status:" />
-                <TextField fx:id="statusField" layoutX="285.0" layoutY="327.0" />
+                <Label layoutX="20.0" layoutY="326.0" style="-fx-font-size: 18px;" text="Status:" />
+                <TextField fx:id="statusField" layoutX="160.0" layoutY="327.0" />
 
-                <Button fx:id="SOSbutton" layoutX="95.0" layoutY="424.0" mnemonicParsing="false"
-                    onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0"
-                    style="-fx-background-color: F7EFE7; -fx-border-color: D30F0F;" text="SOS" />
-                <Button fx:id="createUserButton" layoutX="338.0" layoutY="430.0"
-                    onAction="#handleCreateUser" prefHeight="40.0" prefWidth="120.0"
-                    style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;"
-                    text="Create User">
-
+                <Button fx:id="SOSbutton" layoutX="20.0" layoutY="424.0" mnemonicParsing="false"
+                        onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0"
+                        style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;" text="SOS" />
+                <Button fx:id="createUserButton" layoutX="110.0" layoutY="424.0"
+                        onAction="#handleCreateUser" prefHeight="40.0" prefWidth="120.0"
+                        style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;"
+                        text="Create User">
                     <font>
                         <Font name="System Italic" size="18.0" />
                     </font>
                 </Button>
-                <Label layoutX="100.0" layoutY="371.0" style="-fx-font-size: 18px;"
-                    text="Community manager:" />
-                <TextField fx:id="communityManagerField" layoutX="285.0" layoutY="372.0" />
+                <Label layoutX="20.0" layoutY="371.0" style="-fx-font-size: 18px;"
+                       text="Community manager:" />
+                <TextField fx:id="communityManagerField" layoutX="210.0" layoutY="372.0" />
             </children>
         </AnchorPane>
     </children>
-</VBox>
+</StackPane>

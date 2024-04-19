@@ -239,7 +239,17 @@ public class SimpleClient extends AbstractClient {
 				});
 			} catch (Exception e) {
 			}
-		} else if (message.getMessage().equals("#LoggedOut")) {
+		} else if (message.getMessage().equals("#User Already Signed In!")) {
+			try {
+				Platform.runLater(() -> {
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.setTitle("Login Failed");
+					alert.setHeaderText("User Already Signed In!");
+					alert.showAndWait();
+				});
+			} catch (Exception e) {
+			}
+		}else if (message.getMessage().equals("#LoggedOut")) {
 			Platform.runLater(() -> {
 				try {
 					App.setRoot("Login"); // Navigate back to the login screen
