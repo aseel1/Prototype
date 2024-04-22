@@ -118,7 +118,7 @@ public class TaskFormController {
                 + task.getUser().getAge()
                 + task.getUser().getGender()
                 + task.getUser().getCommunity()
-                + task.getUser().getPassword()
+                + task.getUser().getPasswordHash()
                 + " " + task.getStatus());
         try {
             SimpleClient.getClient().sendToServer(message);

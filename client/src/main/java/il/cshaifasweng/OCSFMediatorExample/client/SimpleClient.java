@@ -120,7 +120,7 @@ public class SimpleClient extends AbstractClient {
 				});
 			}
 			// to update the table again
-			Message message = new Message("#showTasksList", SimpleClient.getCurrentUser());
+			Message message = new Message("#refreshTable", SimpleClient.getCurrentUser());
 			try {
 				SimpleClient.getClient().sendToServer(message);
 
@@ -174,7 +174,16 @@ public class SimpleClient extends AbstractClient {
 		else if (message.getMessage().equals("#managerDeclined")) {
 			Platform.runLater(() -> {
 				System.out.println("(Simple Client) manager declined");
+				Message savedMessage = message;
 				// Create a TextInputDialog instead of CustomAlert
+				Message message = new Message("#showPendingList", SimpleClient.getCurrentUser());
+				try {
+					SimpleClient.getClient().sendToServer(message);
+					System.out.println("(Primary) Sending req message to server from helpReequest.");
+				} catch (IOException e) {
+					System.out.println("Failed to connect to the server.");
+					e.printStackTrace();
+				}
 				TextInputDialog textInputDialog = new TextInputDialog();
 				textInputDialog.setTitle("Explanation");
 				textInputDialog
@@ -187,16 +196,16 @@ public class SimpleClient extends AbstractClient {
 				if (result.isPresent()) {
 					// Process user input if available
 					String enteredText = result.get();
-					System.out.println(message.getMessage() + message.getObject());
-					Task task = (Task) message.getObject();
+					System.out.println(savedMessage.getMessage() + savedMessage.getObject());
+					Task task = (Task) savedMessage.getObject();
 					SimpleClient.sendNotification(SimpleClient.currentUser, task.getUser().getId(), enteredText);
 					System.out.println("(Simple Client) Sent a notification to user: " + enteredText);
 				} else {
 					// Handle cancel action or dialog closure
 					System.out.println("(Simple Client) User canceled or closed the dialog");
-					message.setMessage("#cancelDecline");
+					savedMessage.setMessage("#cancelDecline");
 					try {
-						getClient().sendToServer(message);
+						getClient().sendToServer(savedMessage);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -219,7 +228,7 @@ public class SimpleClient extends AbstractClient {
 			try {
 				currentUser = (User) message.getObject();
 				System.err.println("Login success. Welcome, " + currentUser.getUserName() + " "
-						+ currentUser.getPassword() + " " + currentUser.getAge() + " " + currentUser.getGender() + " "
+						+ currentUser.getPasswordHash() + " " + currentUser.getAge() + " " + currentUser.getGender() + " "
 						+ currentUser.getCommunity() + currentUser.getCommunityManager());
 				App.setRoot("primary");
 
