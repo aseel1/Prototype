@@ -321,6 +321,7 @@ public class DatabaseManager {
         }
         return tasks;
     }
+
     public static List<Notification> getUsersNotifications(Session session, User user) {
         List<Notification> notifications = new ArrayList<>();
 
@@ -382,23 +383,35 @@ public class DatabaseManager {
 
     public static void addSOS(Session session, SOS sos) {session.save(sos); }
 
-    public static User authenticateUser(User user, Session session) {
-        User userFromDB = null;
+    public static List<User> authenticateUser(String username, Session session) {
+        List<User> usersFromDB = null;
 
         try {
-            // Create a query to find the user with the provided username and password
-            Query query = session.createQuery("FROM User WHERE userName = :username AND password = :password");
-            query.setParameter("username", user.getUserName());
-            query.setParameter("password", user.getPassword());
+            // Create a query to find the user(s) with the provided username
+            Query query = session.createQuery("FROM User WHERE userName = :username");
+            query.setParameter("username", username);
 
             // Execute the query and get the result
-            userFromDB = (User) query.uniqueResult();
+            usersFromDB = query.list();
+
         } catch (HibernateException e) {
             // handle exception
         }
 
-        return userFromDB;
+        return usersFromDB;
+    }
 
+    public static User getUserById(int userId, Session session) {
+        User userFromDB = null;
+
+        try {
+            // Retrieve the user with the provided ID
+            userFromDB = (User) session.get(User.class, userId);
+        } catch (HibernateException e) {
+            // Handle exception
+        }
+
+        return userFromDB;
     }
 
     public static Task authenticateTask(int taskId, Session session) {

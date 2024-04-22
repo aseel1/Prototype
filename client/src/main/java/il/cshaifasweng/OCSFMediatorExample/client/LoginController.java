@@ -49,10 +49,10 @@ public class LoginController {
         String password = passwordField.getText();
 
         // Create a new User with the provided username and password
-        User user = new User(username, password);
+      //  User user = new User(username, password);
 
         // Create a new Message with the User
-        Message message = new Message("#Login", user);
+        Message message = new Message("#Login" + username , password);
         // Send the message to the server
         try {
             SimpleClient.getClient().sendToServer(message);
