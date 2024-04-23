@@ -64,7 +64,7 @@ public class SecondaryController {
         user_id.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
         user_userName.setCellValueFactory(new PropertyValueFactory<User, String>("userName"));
         user_gender.setCellValueFactory(new PropertyValueFactory<User, String>("gender"));
-        user_password.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
+       // user_password.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
         user_age.setCellValueFactory(new PropertyValueFactory<User, String>("age"));
         user_community.setCellValueFactory(new PropertyValueFactory<User, String>("community"));
 

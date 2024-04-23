@@ -43,11 +43,27 @@ public class TasksController {
 
     @FXML
     private TableColumn<Task, String> date;
+    private boolean pageOpened = false;
 
 
     @FXML
     private void switchToPrimary() throws IOException {
         App.setRoot("primary");
+        pageOpened = false;
+        sendPageStatusToServer(pageOpened);
+    }
+    private void sendPageStatusToServer(boolean pageOpened) {
+        Message message;
+        if (pageOpened) {
+            message = new Message("#tasksControllerPageOpened", getCurrentUser());
+        } else {
+            message = new Message("#tasksControllerPageClosed", getCurrentUser());
+        }
+        try {
+            SimpleClient.getClient().sendToServer(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -68,6 +84,9 @@ public class TasksController {
                 showTaskDetails(newSelection);
             }
         });
+
+        pageOpened = true;
+        sendPageStatusToServer(pageOpened);
 
     }
 
@@ -142,13 +161,18 @@ public class TasksController {
 //        grid.add(text7, 2, 8);
 
 
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL);
 
         dialog.getDialogPane().setContent(grid);
 
         dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.CANCEL) {
+                taskTable.getSelectionModel().clearSelection();
+                dialog.close();
+            }
             return null;
         });
+
 
         //in case of wanting to volunteer
         changeStatusButton.setOnAction(e -> {
@@ -258,6 +282,7 @@ public class TasksController {
         dialog.show();
 
     }
+
 
     public void handlePressingSOS(ActionEvent event) {
         SimpleClient.pressingSOS("Tasks");

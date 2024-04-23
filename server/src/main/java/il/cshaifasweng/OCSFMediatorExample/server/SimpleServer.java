@@ -8,6 +8,7 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +32,7 @@ import static il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager.up
 
 
 public class SimpleServer extends AbstractServer {
+	private static List<ConnectionToClient> clientsWithTasksControllerPageOpen = new ArrayList<>();
 
 	public SimpleServer(int port) {
 		super(port);
@@ -93,10 +95,24 @@ public class SimpleServer extends AbstractServer {
 				List<Task> tasks = DatabaseManager.getTasksByStatusAndUser(session, thisUser);
 				message.setObject(tasks);
 				message.setMessage("#showTasksList");
-				System.out.println("(SimpleServer)message got from primary and now sending to client");
+				System.out.println("(SimpleServer) message got from primary and now sending to client");
+				for (ConnectionToClient c : clientsWithTasksControllerPageOpen) {
+					try {
+						c.sendToClient(message);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}else if (request.startsWith("#tasksControllerPageOpened")) {
+				User thisUser = (User) message.getObject();
+				System.out.println("Tasks Controller Page Opened for user: " + thisUser.getUserName());
+				clientsWithTasksControllerPageOpen.add(client);
 
-				sendToAllClients(message);
-				//.broadcast(message);
+
+			} else if (request.startsWith("#tasksControllerPageClosed")) {
+				User thisUser = (User) message.getObject();
+				System.out.println("Tasks Controller Page Closed for user: " + thisUser.getUserName());
+				clientsWithTasksControllerPageOpen.remove(client);
 
 
 			}else if (request.startsWith("#showPendingList")) {

@@ -165,6 +165,7 @@ public class SimpleClient extends AbstractClient {
 					e.printStackTrace();
 				}
 
+
 				// sending a notification to everyone
 				String txt = "A new help-request was opened! Come on, help us help them! TaskId=" + task.getTaskId();
 				SimpleClient.sendNotification(SimpleClient.currentUser, -1, txt);
