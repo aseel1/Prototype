@@ -120,14 +120,24 @@ public class SimpleClient extends AbstractClient {
 				});
 			}
 			// to update the table again
-			Message message = new Message("#refreshTable", SimpleClient.getCurrentUser());
+//			Message message = new Message("#refreshTable", SimpleClient.getCurrentUser());
+//			try {
+//				SimpleClient.getClient().sendToServer(message);
+//
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+		} else if (message.getMessage().equals("#refreshTable")) {
+			// to update the table again
+			Message message = new Message("#refreshMyTable", SimpleClient.getCurrentUser());
 			try {
 				SimpleClient.getClient().sendToServer(message);
+				System.out.println("(client)refreshMytale");
 
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		} else if (message.getMessage().equals("TheStatusChanged")) {
+		}else if (message.getMessage().equals("TheStatusChanged")) {
 			// to update the table again
 			Message message = new Message("#showMyTasksList", SimpleClient.getCurrentUser());
 			try {
@@ -153,9 +163,13 @@ public class SimpleClient extends AbstractClient {
 		}
 
 		else if (message.getMessage().equals("#managerApproved")) {
+			Task task = (Task) message.getObject();
 			Platform.runLater(() -> {
 				showAlert("Approved!", "The request has been approved :)", Alert.AlertType.INFORMATION);
-				Task task = (Task) message.getObject();
+
+				// sending a notification to everyone
+				String txt = "A new help-request was opened! Come on, help us help them! TaskId=" + task.getTaskId();
+				SimpleClient.sendNotification(SimpleClient.currentUser, -1, txt);
 				Message message = new Message("#showPendingList", SimpleClient.getCurrentUser());
 				try {
 					SimpleClient.getClient().sendToServer(message);
@@ -164,10 +178,6 @@ public class SimpleClient extends AbstractClient {
 					System.out.println("Failed to connect to the server.");
 					e.printStackTrace();
 				}
-
-				// sending a notification to everyone
-				String txt = "A new help-request was opened! Come on, help us help them! TaskId=" + task.getTaskId();
-				SimpleClient.sendNotification(SimpleClient.currentUser, -1, txt);
 			});
 		}
 

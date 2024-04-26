@@ -27,6 +27,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 
+import static il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager.getUserById;
 import static il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager.updateNotification;
 
 
@@ -80,32 +81,24 @@ public class SimpleServer extends AbstractServer {
 			} else if (request.startsWith("#showTasksList")) {
 				User thisUser = (User) message.getObject();
 				List<Task> tasks = DatabaseManager.getTasksByStatusAndUser(session, thisUser);
+				User userfromDB= DatabaseManager.getUserById(thisUser.getId(),session);
+				userfromDB.setTaskListOpen(true);
 				message.setObject(tasks);
 				message.setMessage("#showTasksList");
 				System.out.println("(SimpleServer)message got from primary and now sending to client");
 
 				client.sendToClient(message);
+				//sendToAllClients("#refreshTable");
 					//.broadcast(message);
 
 
-			} else if (request.startsWith("#refreshTable")) {
-				User thisUser = (User) message.getObject();
-				List<Task> tasks = DatabaseManager.getTasksByStatusAndUser(session, thisUser);
-				message.setObject(tasks);
-				message.setMessage("#showTasksList");
-				System.out.println("(SimpleServer)message got from primary and now sending to client");
-
-				sendToAllClients(message);
-				//.broadcast(message);
-
-
-			}else if (request.startsWith("#showPendingList")) {
+			} else if (request.startsWith("#showPendingList")) {
 				// This assumes the message object contains the User or enough information to
 				// fetch the User
 				User userFromClient = (User) message.getObject(); // Make sure this casting is valid based on your
-																	// message structure
-				String community = userFromClient.getCommunity(); // Adjust according to how you access the community in
-																	// your User entity
+				// message structure
+				String community = userFromClient.getCommunityManager(); // Adjust according to how you access the community in
+				// your User entity
 				List<Task> tasks = DatabaseManager.getTasksByStatusAndCommunity(session, "pending", community);
 				System.out.println(tasks);
 				message.setObject(tasks);
@@ -117,6 +110,27 @@ public class SimpleServer extends AbstractServer {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}else if (request.startsWith("#refreshMyTable")) {
+
+				User thisUser = (User) message.getObject();
+				User userFromDB = DatabaseManager.getUserById(thisUser.getId(),session);
+				if(userFromDB.isTaskListOpen()) {
+					List<Task> tasks = DatabaseManager.getTasksByStatusAndUser(session, thisUser);
+					message.setObject(tasks);
+					message.setMessage("#showTasksList");
+					client.sendToClient(message);
+					System.out.println("(SimpleServer)message got from primary and now sending to client");
+
+					//sendToAllClients(message);
+				}
+				//.broadcast(message);
+
+
+			}else if (request.startsWith("#closeTaskList")) {
+                User userFromClient=(User) message.getObject();
+				User userFromDB=getUserById(userFromClient.getId(),session);
+				userFromDB.setTaskListOpen(false);
+
 			} else if (request.startsWith("#showDoneTasks")) {
 				// This assumes the message object contains the User or enough information to
 				// fetch the User
@@ -240,8 +254,11 @@ public class SimpleServer extends AbstractServer {
 				Task task = (Task) message.getObject(); // derefrence the object from the message
 				task.setStatus("idle");
 				DatabaseManager.updateTask(session, task);
-				System.out.println("task status updated to idle");
+				System.out.println("task status updated to idle \n" + task.getTaskId());
+				message = new Message("#managerApproved",task);
 				client.sendToClient(message);
+				message= new Message("#refreshTable");
+				sendToAllClients(message);
 			}
 
 			// manager declined the task.
@@ -330,6 +347,8 @@ public class SimpleServer extends AbstractServer {
 					message.setObject("Failed");
 				}
 				client.sendToClient(message);
+				message = new Message("#refreshTable");
+				sendToAllClients(message);
 			} else if (request.startsWith("changeStatusToDone")) {
 				Task thisTask = (Task) message.getObject();
 				if (thisTask.getStatus().equals("in Process")) {
