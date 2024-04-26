@@ -178,6 +178,8 @@ public class SimpleClient extends AbstractClient {
 					System.out.println("Failed to connect to the server.");
 					e.printStackTrace();
 
+
+
 				}
 			});
 		}
