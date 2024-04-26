@@ -177,6 +177,7 @@ public class SimpleClient extends AbstractClient {
 				} catch (IOException e) {
 					System.out.println("Failed to connect to the server.");
 					e.printStackTrace();
+
 				}
 			});
 		}
