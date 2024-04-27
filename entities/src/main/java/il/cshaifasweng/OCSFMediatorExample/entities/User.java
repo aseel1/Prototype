@@ -31,6 +31,16 @@ public class User implements Serializable {
     @NotNull
     private boolean loggedIn = false;
 
+    public boolean isTaskListOpen() {
+        return taskListOpen;
+    }
+
+    public void setTaskListOpen(boolean taskListOpen) {
+        this.taskListOpen = taskListOpen;
+    }
+
+    private boolean taskListOpen = false;
+
     @ElementCollection
     // @Column(name = "notification")
     private List<String> notifications;

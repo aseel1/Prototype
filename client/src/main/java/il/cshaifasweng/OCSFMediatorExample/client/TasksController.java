@@ -48,6 +48,13 @@ public class TasksController {
     @FXML
     private void switchToPrimary() throws IOException {
         App.setRoot("primary");
+        SimpleClient.getCurrentUser().setTaskListOpen(false);
+        Message message = new Message ("#closeTaskList",SimpleClient.getCurrentUser());
+        try{
+            SimpleClient.getClient().sendToServer(message);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @FXML
@@ -68,6 +75,7 @@ public class TasksController {
                 showTaskDetails(newSelection);
             }
         });
+       // SimpleClient.getCurrentUser().setTaskListOpen(true);
 
     }
 
@@ -142,11 +150,15 @@ public class TasksController {
 //        grid.add(text7, 2, 8);
 
 
-        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL);
 
         dialog.getDialogPane().setContent(grid);
 
         dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.CANCEL) {
+                taskTable.getSelectionModel().clearSelection();
+                dialog.close();
+            }
             return null;
         });
 
