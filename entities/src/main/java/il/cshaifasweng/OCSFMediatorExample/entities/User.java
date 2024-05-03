@@ -1,6 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import com.sun.istack.NotNull;
+
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,8 @@ public class User implements Serializable {
     private String age;
     private String community;
     private String communityManager;
+
+    private File imageFile;
 
     @NotNull
     private boolean loggedIn = false;
@@ -44,6 +48,7 @@ public class User implements Serializable {
         this.community = community;
         this.communityManager = communityManager;
         this.notifications = new ArrayList<>();
+        this.imageFile= new File("C:\\Users\\USER1\\Documents\\new\\entities\\src\\main\\resources\\1077114.png");
     }
 
     public User(String userName, String password) {
@@ -146,5 +151,13 @@ public class User implements Serializable {
         if (this.notifications != null) {
             this.notifications.remove(notification);
         }
+    }
+
+    public File getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(File imageFile) {
+        this.imageFile = imageFile;
     }
 }

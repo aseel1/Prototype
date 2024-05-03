@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane alignment="TOP_LEFT" prefHeight="603.0" prefWidth="788.0" style="-fx-background-color: linear-gradient(to bottom, #f7f7f7, rgba(213,188,188,0.89));" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
+<StackPane alignment="TOP_LEFT" prefHeight="603.0" prefWidth="788.0" style="-fx-background-color: linear-gradient(to bottom, #f7f7f7, rgba(213,188,188,0.89));" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
@@ -74,6 +74,8 @@
                <HBox layoutX="159.0" layoutY="-102.0" spacing="10" />
                <Label fx:id="usernameLabel" layoutX="558.0" layoutY="96.0" prefHeight="28.0" prefWidth="171.0" style="-fx-font-size: 20px; -fx-text-fill: #644e4e; -fx-background-color: transparent; -fx-padding: 10px;" text="Username: " />
                <Label fx:id="statusLabel" layoutX="558.0" layoutY="134.0" style="-fx-font-size: 20px; -fx-text-fill: #644e4e; -fx-background-color: transparent; -fx-padding: 10px;" text="Status: " />
+               <ImageView fx:id="userPic" fitHeight="134.0" fitWidth="146.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+               <Button fx:id="chngPic" layoutX="76.0" layoutY="14.0" mnemonicParsing="false" onAction="#changePic" text="+" />
             </children>
          </AnchorPane>
       </AnchorPane>

@@ -260,6 +260,16 @@ public class DatabaseManager {
 
         }
     }
+    public static void updateUser(Session session, User user) {
+        // Check if the task object has a primary key
+
+        if (user != null) {
+            // The task object is in the detached state, update it
+            session.update(user);
+          //  session.flush(); // Manually flush the session
+
+        }
+    }
 
     public static List<Notification> getAllNotifications(Session session) {
         List<Notification> notifications = null;

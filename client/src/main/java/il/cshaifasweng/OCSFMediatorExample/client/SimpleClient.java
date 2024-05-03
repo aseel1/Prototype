@@ -227,6 +227,16 @@ public class SimpleClient extends AbstractClient {
 				e.printStackTrace();
 			}
 
+		} else if (message.getMessage().equals("#updatePic")) {
+			try {
+				currentUser = (User) message.getObject();
+				System.err.println("pic updated successfully");
+				App.setRoot("primary");
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		} else if (message.getMessage().equals("#loginFailed")) {
 			try {
 				Platform.runLater(() -> {

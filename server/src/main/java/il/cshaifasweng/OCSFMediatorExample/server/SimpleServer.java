@@ -5,6 +5,7 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -14,6 +15,8 @@ import java.util.Objects;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+
+import javafx.scene.image.Image;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -27,6 +30,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 
+import static il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager.addTask;
 import static il.cshaifasweng.OCSFMediatorExample.server.ocsf.DatabaseManager.updateNotification;
 
 
@@ -77,7 +81,21 @@ public class SimpleServer extends AbstractServer {
 				message.setMessage("#showMembersList");
 				client.sendToClient(message);
 
-			} else if (request.startsWith("#showTasksList")) {
+			} else if (request.startsWith("#updatePic")) {
+
+			User user = (User) message.getObject();
+			File selectedFile= (File)message.getSecondObject();
+			user.setImageFile(selectedFile);
+			DatabaseManager.updateUser(session, user);
+			message.setObject(user);
+			System.out.println("(SimpleServer)message got from primary and now updating pic");
+				try {
+					client.sendToClient(message);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+		} else if (request.startsWith("#showTasksList")) {
 				User thisUser = (User) message.getObject();
 				List<Task> tasks = DatabaseManager.getTasksByStatusAndUser(session, thisUser);
 				message.setObject(tasks);
