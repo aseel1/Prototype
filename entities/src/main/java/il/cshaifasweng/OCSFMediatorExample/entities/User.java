@@ -4,7 +4,11 @@ import com.sun.istack.NotNull;
 
 import java.io.File;
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import javax.persistence.*;
@@ -19,15 +23,27 @@ public class User implements Serializable {
     private String userName;
     private String status;
     private String gender;
-    private String password;
+   // private String password;
     private String age;
     private String community;
     private String communityManager;
+    private String passwordHash;
+    private String passwordSalt;
 
     private File imageFile;
 
     @NotNull
     private boolean loggedIn = false;
+
+    public boolean isTaskListOpen() {
+        return taskListOpen;
+    }
+
+    public void setTaskListOpen(boolean taskListOpen) {
+        this.taskListOpen = taskListOpen;
+    }
+
+    private boolean taskListOpen = false;
 
     @ElementCollection
     // @Column(name = "notification")
@@ -43,7 +59,7 @@ public class User implements Serializable {
         this.status = status;
         this.userName = userName;
         this.gender = gender;
-        this.password = password;
+        setPassword(password);
         this.age = age;
         this.community = community;
         this.communityManager = communityManager;
@@ -51,13 +67,51 @@ public class User implements Serializable {
         this.imageFile= new File("C:\\Users\\USER1\\Documents\\new\\entities\\src\\main\\resources\\1077114.png");
     }
 
-    public User(String userName, String password) {
+//    public User(String userName, String password) {
+//
+//        this.userName = userName;
+//        this.password = password;
+//
+//    }
+    public void setPassword(String password) {
+        // Generate a random salt
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
 
-        this.userName = userName;
-        this.password = password;
+        // Store the salt as a Base64 encoded string
+        this.passwordSalt = Base64.getEncoder().encodeToString(salt);
 
+        // Hash the password with the salt
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(salt);
+            byte[] hashedPassword = md.digest(password.getBytes());
+
+            // Store the hashed password as a Base64 encoded string
+            this.passwordHash = Base64.getEncoder().encodeToString(hashedPassword);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace(); // Handle error appropriately
+        }
     }
+    public boolean verifyPassword(String password) {
+        try {
+            // Decode the stored salt
+            byte[] salt = Base64.getDecoder().decode(this.passwordSalt);
 
+            // Hash the input password with the stored salt
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            md.update(salt);
+            byte[] hashedPassword = md.digest(password.getBytes());
+
+            // Compare the hashed passwords
+            String inputHash = Base64.getEncoder().encodeToString(hashedPassword);
+            return inputHash.equals(this.passwordHash);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace(); // Handle error appropriately
+            return false;
+        }
+    }
     public String getUserName() {
         return userName;
     }
@@ -74,13 +128,10 @@ public class User implements Serializable {
         this.gender = gender;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getAge() {
         return age;

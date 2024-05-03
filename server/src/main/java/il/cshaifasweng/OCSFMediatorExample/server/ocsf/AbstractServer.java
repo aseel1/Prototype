@@ -243,7 +243,7 @@ public abstract class AbstractServer implements Runnable
    *
    * @param msg   Object The message to be sent
    */
-  public void sendToAllClients(Object msg)
+  public  void sendToAllClients(Object msg)
   {
     Thread[] clientThreadList = getClientConnections();
 
