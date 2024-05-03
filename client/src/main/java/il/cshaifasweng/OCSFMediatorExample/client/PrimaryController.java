@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -8,6 +9,9 @@ import javafx.scene.control.MenuItem;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import org.greenrobot.eventbus.EventBus;
 
 import com.mysql.cj.xdevapi.Client;
@@ -37,6 +41,13 @@ public class PrimaryController {
 		}
 	}
 
+	@FXML // fx:id="chngPic"
+	private Button chngPic; // Value injected by FXMLLoader
+
+	@FXML // fx:id="userPic"
+	private ImageView userPic; // Value injected by FXMLLoader
+
+
 	@FXML
 	private Button showUsersButton;
 
@@ -60,6 +71,7 @@ public class PrimaryController {
 
 	@FXML
 	private MenuButton reportsButton;
+
 	private static PrimaryController instance;
 
 	public PrimaryController() {
@@ -69,7 +81,6 @@ public class PrimaryController {
 	@FXML
 	public void initialize() {
 		User currentUser = SimpleClient.getCurrentUser();
-
 		updateLabels(currentUser.getUserName(), currentUser.getStatus());
 		showUsersButton.setVisible(false);
 	}
@@ -81,10 +92,38 @@ public class PrimaryController {
 	public void updateLabels(String username, String status) {
 		usernameLabel.setText("Username: " + username);
 		statusLabel.setText("Status: " + status);
+		//setting image:
+		File file= SimpleClient.getCurrentUser().getImageFile();
+		Image image = new Image(file.toURI().toString());
+		userPic.setImage(image);
 
 		reportsButton.setVisible("manager".equals(status) || "Manager".equals(status));
 		SOSReports.setVisible("manager".equals(status) || "Manager".equals(status));
 	}
+
+	@FXML
+	void changePic(ActionEvent event) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Select Profile Picture");
+		File selectedFile = fileChooser.showOpenDialog(null);
+
+		if (selectedFile != null) {
+			Image image = new Image(selectedFile.toURI().toString());
+			userPic.setImage(image);
+			//set userPic in database too
+			Message message = new Message("#updatePic", SimpleClient.getCurrentUser(), selectedFile);
+			System.out.println(message);
+			try {
+				System.out.println(message.getMessage());
+				SimpleClient.getClient().sendToServer(message);
+				System.out.println("(Primary) Sending req message to server.");
+			} catch (IOException e) {
+				System.out.println("Failed to connect to the server.");
+				e.printStackTrace();
+			}
+		}
+	}
+
 
 	@FXML
 	protected void handleShowUsersButtonAction(ActionEvent event) {

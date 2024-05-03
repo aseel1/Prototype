@@ -12,11 +12,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.message;
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.tableMessage;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -59,6 +62,7 @@ public class TasksController {
 
     @FXML
     public void initialize() {
+
         taskId.setCellValueFactory(new PropertyValueFactory<Task, Integer>("taskId"));
         taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("taskName"));
         user.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getUserName()));
@@ -140,6 +144,7 @@ public class TasksController {
         grid.add(text6, 2, 5);
         grid.add(label7, 1, 6);
         grid.add(text7, 2, 6);
+
         //if we're in pending lists, then we don't need the volunteer button but rather the accept/decline
         if(Objects.equals(task.getStatus(), "pending")){
            grid.add(AcceptRequest,1,7);
