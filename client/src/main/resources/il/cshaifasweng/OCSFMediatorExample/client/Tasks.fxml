@@ -16,7 +16,7 @@
       <children>
         <Button fx:id="SOSbutton" layoutX="96.0" layoutY="495.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;" styleClass="button" text="SOS" />
         <Button fx:id="secondaryButton" layoutX="320.0" layoutY="496.0" onAction="#switchToPrimary" styleClass="button" text="Switch to Primary View" />
-        <TableView fx:id="taskTable" layoutX="164.0" layoutY="47.0" prefHeight="380.0" prefWidth="449.0">
+        <TableView fx:id="taskTable" layoutX="6.0" layoutY="47.0" prefHeight="380.0" prefWidth="740.0">
           <columns>
             <TableColumn fx:id="taskId" prefWidth="75.0" text="Task ID" />
             <TableColumn fx:id="taskName" prefWidth="100.2" text="Task Name" />
@@ -24,6 +24,7 @@
             <TableColumn fx:id="date" prefWidth="89.6" text="Date" />
             <TableColumn fx:id="volunteer" prefWidth="83.2" text="Volunteer" />
             <TableColumn fx:id="status" prefWidth="128.8" text="Status" />
+                  <TableColumn fx:id="userPic" prefWidth="128.8" text="userPic" />
           </columns>
         </TableView>
       </children>
