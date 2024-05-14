@@ -223,6 +223,11 @@ public class SimpleClient extends AbstractClient {
 			});
 
 		}
+		else if (message.getMessage().equals("#boxNotChecked")) {
+			Platform.runLater(() -> {
+				showAlert("Declaration and Task Selection Required", "Please ensure that you have checked the declaration and selected a task before proceeding.)", Alert.AlertType.INFORMATION);
+			});
+		}
 
 		else if (message.getMessage().equals("#openTask")) {
 			try {

@@ -5,6 +5,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.*;
 
 public class TasksController {
@@ -50,6 +52,10 @@ public class TasksController {
     @FXML
     private TableColumn<Task, String> volunteer;
 
+    @FXML // fx:id="userPic"
+    private TableColumn<Task, Image> userPic; // Value injected by FXMLLoader
+
+
 
     @FXML
     private void switchToPrimary() throws IOException {
@@ -70,7 +76,8 @@ public class TasksController {
         taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("taskName"));
         user.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getUserName()));
         date.setCellValueFactory(new PropertyValueFactory<Task, String>("date"));
-//        time.setCellValueFactory(new PropertyValueFactory<Task, Integer>("time"));
+
+       time.setCellValueFactory(new PropertyValueFactory<Task, Integer>("time"));
 
         volunteer.setCellValueFactory(cellData -> {
             if (cellData.getValue().getVolunteer() != null) {
@@ -79,7 +86,35 @@ public class TasksController {
                 return new SimpleStringProperty("");
             }
         });
-//        status.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
+
+        // Define a custom cell factory for the userPic column
+        userPic.setCellFactory(col -> new TableCell<Task, Image>() {
+            private final ImageView imageView = new ImageView();
+
+            @Override
+            protected void updateItem(Image image, boolean empty) {
+                super.updateItem(image, empty);
+
+                if (empty || image == null) {
+                    setGraphic(null);
+                } else {
+                    imageView.setImage(image);
+                    imageView.setFitWidth(40); // Set desired width
+                    imageView.setPreserveRatio(true);
+                    setGraphic(imageView);
+                }
+            }
+        });
+
+        // Set cell value factory for userPic column
+        userPic.setCellValueFactory(cellData -> {
+            Task task = cellData.getValue();
+            if (task != null && task.getUser() != null && task.getUser().getImageFile() != null) {
+                return new SimpleObjectProperty<>(new Image(task.getUser().getImageFile().toURI().toString()));
+            } else {
+                return null;
+            }
+        });
 
         ObservableList<Task> observableTasks = FXCollections.observableArrayList((List<Task>) tableMessage.getObject());
         taskTable.setItems(observableTasks);
