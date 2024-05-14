@@ -22,19 +22,30 @@ public class App extends Application {
     private static Scene scene;
     private SimpleClient client;
 
+    // @Override
+    // public void start(Stage stage) throws IOException {
+    // EventBus.getDefault().register(this);
+
+    // //!here
+    // client = SimpleClient.getClient();
+    // client.openConnection();
+
+    // if (client.isConnected()) {
+    // System.out.println("Client is connected to the server.");
+    // } else {
+    // System.out.println("Client failed to connect to the server.");
+    // }
+
+    // scene = new Scene(loadFXML("Login"), 788, 603);
+    // stage.setScene(scene);
+    // stage.show();
+    // }
+
     @Override
     public void start(Stage stage) throws IOException {
         EventBus.getDefault().register(this);
-        client = SimpleClient.getClient();
-        client.openConnection();
 
-        if (client.isConnected()) {
-            System.out.println("Client is connected to the server.");
-        } else {
-            System.out.println("Client failed to connect to the server.");
-        }
-
-        scene = new Scene(loadFXML("Login"), 788, 603);
+        scene = new Scene(loadFXML("Connect"), 788, 603);
         stage.setScene(scene);
         stage.show();
     }

@@ -1,6 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import com.sun.istack.NotNull;
+
+import java.io.File;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,8 +30,20 @@ public class User implements Serializable {
     private String passwordHash;
     private String passwordSalt;
 
+    private File imageFile;
+
     @NotNull
     private boolean loggedIn = false;
+
+    public boolean isTaskListOpen() {
+        return taskListOpen;
+    }
+
+    public void setTaskListOpen(boolean taskListOpen) {
+        this.taskListOpen = taskListOpen;
+    }
+
+    private boolean taskListOpen = false;
 
     @ElementCollection
     // @Column(name = "notification")
@@ -50,6 +64,7 @@ public class User implements Serializable {
         this.community = community;
         this.communityManager = communityManager;
         this.notifications = new ArrayList<>();
+        this.imageFile= new File("C:\\Users\\USER1\\Documents\\new\\entities\\src\\main\\resources\\1077114.png");
     }
 
 //    public User(String userName, String password) {
@@ -187,5 +202,13 @@ public class User implements Serializable {
         if (this.notifications != null) {
             this.notifications.remove(notification);
         }
+    }
+
+    public File getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(File imageFile) {
+        this.imageFile = imageFile;
     }
 }

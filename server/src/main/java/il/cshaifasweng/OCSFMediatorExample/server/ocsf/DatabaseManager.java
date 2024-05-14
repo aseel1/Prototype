@@ -76,8 +76,8 @@ public class DatabaseManager {
                     Integer.toString(20 + random.nextInt(60)), selectRandomString("Haifa", "Nazareth"), role,communityManager);
             session.save(user);
         }
-        User user1 = new User(212393532, "aseel", "male", "1234", "20", "Nazareth", "manager","Nazareth");
-        User user2 = new User(2345, "nawal", "female", "1234", "20", "Haifa", "manager","Haifa");
+        User user1 = new User(212393532, "aseel", "male", "1234", "20", "Haifa", "manager","Nazareth");
+        User user2 = new User(2345, "nawal", "female", "1234", "20", "Nazareth", "manager","Haifa");
         User user3 = new User(76543, "maya", "female", "1234", "20", "Nazareth", "manager","Haifa");
         User user4 = new User(1234567, "samih", "male", "123", "20", "Nazareth", "manager","Haifa");
         User user5 = new User(1111, "mary", "female", "123", "20", "Cana", "manager","Cana");
@@ -257,6 +257,16 @@ public class DatabaseManager {
             // The task object is in the detached state, update it
             session.update(notification);
             session.flush(); // Manually flush the session
+
+        }
+    }
+    public static void updateUser(Session session, User user) {
+        // Check if the task object has a primary key
+
+        if (user != null) {
+            // The task object is in the detached state, update it
+            session.update(user);
+          //  session.flush(); // Manually flush the session
 
         }
     }

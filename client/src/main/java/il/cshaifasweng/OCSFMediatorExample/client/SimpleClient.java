@@ -120,9 +120,20 @@ public class SimpleClient extends AbstractClient {
 				});
 			}
 			// to update the table again
-			Message message = new Message("#refreshTable", SimpleClient.getCurrentUser());
+			// Message message = new Message("#refreshTable",
+			// SimpleClient.getCurrentUser());
+			// try {
+			// SimpleClient.getClient().sendToServer(message);
+			//
+			// } catch (IOException e) {
+			// e.printStackTrace();
+			// }
+		} else if (message.getMessage().equals("#refreshTable")) {
+			// to update the table again
+			Message message = new Message("#refreshMyTable", SimpleClient.getCurrentUser());
 			try {
 				SimpleClient.getClient().sendToServer(message);
+				System.out.println("(client)refreshMytale");
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -150,12 +161,14 @@ public class SimpleClient extends AbstractClient {
 					SimpleClient.sendNotification(SimpleClient.currentUser, manager.getId(), notification);
 				}
 			});
-		}
-
-		else if (message.getMessage().equals("#managerApproved")) {
+		} else if (message.getMessage().equals("#managerApproved")) {
+			Task task = (Task) message.getObject();
 			Platform.runLater(() -> {
 				showAlert("Approved!", "The request has been approved :)", Alert.AlertType.INFORMATION);
-				Task task = (Task) message.getObject();
+
+				// sending a notification to everyone
+				String txt = "A new help-request was opened! Come on, help us help them! TaskId=" + task.getTaskId();
+				SimpleClient.sendNotification(SimpleClient.currentUser, -1, txt);
 				Message message = new Message("#showPendingList", SimpleClient.getCurrentUser());
 				try {
 					SimpleClient.getClient().sendToServer(message);
@@ -163,11 +176,8 @@ public class SimpleClient extends AbstractClient {
 				} catch (IOException e) {
 					System.out.println("Failed to connect to the server.");
 					e.printStackTrace();
-				}
 
-				// sending a notification to everyone
-				String txt = "A new help-request was opened! Come on, help us help them! TaskId=" + task.getTaskId();
-				SimpleClient.sendNotification(SimpleClient.currentUser, -1, txt);
+				}
 			});
 		}
 
@@ -212,7 +222,6 @@ public class SimpleClient extends AbstractClient {
 				}
 			});
 
-
 		}
 
 		else if (message.getMessage().equals("#openTask")) {
@@ -228,8 +237,19 @@ public class SimpleClient extends AbstractClient {
 			try {
 				currentUser = (User) message.getObject();
 				System.err.println("Login success. Welcome, " + currentUser.getUserName() + " "
-						+ currentUser.getPasswordHash() + " " + currentUser.getAge() + " " + currentUser.getGender() + " "
+						+ currentUser.getPasswordHash() + " " + currentUser.getAge() + " " + currentUser.getGender()
+						+ " "
 						+ currentUser.getCommunity() + currentUser.getCommunityManager());
+				App.setRoot("primary");
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		} else if (message.getMessage().equals("#updatePic")) {
+			try {
+				currentUser = (User) message.getObject();
+				System.err.println("pic updated successfully");
 				App.setRoot("primary");
 
 			} catch (IOException e) {
@@ -258,7 +278,7 @@ public class SimpleClient extends AbstractClient {
 				});
 			} catch (Exception e) {
 			}
-		}else if (message.getMessage().equals("#LoggedOut")) {
+		} else if (message.getMessage().equals("#LoggedOut")) {
 			Platform.runLater(() -> {
 				try {
 					App.setRoot("Login"); // Navigate back to the login screen
