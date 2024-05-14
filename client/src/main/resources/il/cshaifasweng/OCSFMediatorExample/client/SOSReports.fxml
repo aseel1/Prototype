@@ -4,9 +4,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="365.0" prefWidth="584.0" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/SOSReportsStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SOSReportsController">
+<BorderPane prefHeight="365.0" prefWidth="584.0" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SOSReportsController">
     <top>
-        <VBox prefHeight="72.0" prefWidth="747.0" spacing="20" style="-fx-background-color: #ECEFF1; -fx-padding: 10;">
+        <VBox prefHeight="72.0" prefWidth="747.0" spacing="20">
             <children>
                 <HBox alignment="CENTER_LEFT" spacing="10">
                     <children>
@@ -20,24 +20,27 @@
                     <children>
                         <Label text="Community:" />
                         <ComboBox fx:id="communityComboBox" minWidth="150" prefWidth="200.0" />
-                        <Button fx:id="LoadDataButton" onAction="#handleloadDataButton" text="Load Data" />
-                    <Button fx:id="SOSbutton" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="33.0" prefWidth="75.0" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;"  text="SOS" />
+                        <Button fx:id="SOSbutton" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="33.0" prefWidth="75.0" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;" text="SOS" />
+
+                      <Button fx:id="secondaryButton" minWidth="58.0" onAction="#switchToPrimary" prefHeight="31.0" prefWidth="58.0" style="-fx-background-color: rgba(210,199,199,0.8); -fx-border-color: #f7efe7; -fx-text-fill: #01171c; -fx-font-size: 15px;" text="◀HOME" />
                     </children>
                 </HBox>
-
-                <Button fx:id="secondaryButton" layoutX="320.0" layoutY="496.0" onAction="#switchToPrimary" text="Switch to Primary View" />
+                  <Button fx:id="LoadDataButton" onAction="#handleloadDataButton" text="Load Data" />
             </children>
         </VBox>
     </top>
     <center>
-        <BarChart fx:id="sosHistogram" animated="false" barGap="0.5" categoryGap="12.0" legendVisible="false" prefHeight="301.0" prefWidth="533.0" style="-fx-background-color: #ECEFF1;">
-            <xAxis>
-                <CategoryAxis label="Date" fx:id="xAxis" />
-            </xAxis>
-            <yAxis>
-                <NumberAxis fx:id="yAxis" label="Number of Calls" />
-            </yAxis>
-        </BarChart>
+        <HBox alignment="CENTER">
+            <children>
+                <BarChart fx:id="sosHistogram" animated="false" barGap="0.5" categoryGap="12.0" legendVisible="false" prefHeight="240.0" prefWidth="400.0" style="-fx-background-color: #ECEFF1;">
+                    <xAxis>
+                        <CategoryAxis label="Date" fx:id="xAxis" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="yAxis" label="Number of Calls" />
+                    </yAxis>
+                </BarChart>
+            </children>
+        </HBox>
     </center>
-
 </BorderPane>
