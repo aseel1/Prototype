@@ -311,7 +311,10 @@ public class SimpleClient extends AbstractClient {
 					String currentFXMLPage = (String) message.getObject(); // Implement this method to get the current
 																			// FXML page
 					App.setRoot(currentFXMLPage); // Navigate back to the current page
-					showAlert("your request have received", "Help on the way!", Alert.AlertType.INFORMATION);
+					if(currentFXMLPage.equals("Login"))
+						showAlert("your request have received", "Help on the way!.\n Please sign in or create an account!", Alert.AlertType.INFORMATION);
+					else
+						showAlert("your request have received", "Help on the way!", Alert.AlertType.INFORMATION);
 				} catch (IOException e) {
 					e.printStackTrace();
 					showAlert("Error", "Failed to contact help.", Alert.AlertType.ERROR);
