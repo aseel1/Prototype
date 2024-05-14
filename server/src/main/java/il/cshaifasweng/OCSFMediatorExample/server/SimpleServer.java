@@ -300,6 +300,10 @@ public class SimpleServer extends AbstractServer {
 				// we need to send a notification!
 				client.sendToClient(message);
 			}
+			else if (request.startsWith("#boxNotChecked")) {
+				System.out.println("(SimpleSever) sent to client to show a warning");
+				client.sendToClient(message);
+			}
 
 			else if (request.startsWith("#Login")) {
 			//	User userFromClient = (User) message.getObject(); // User info from the client
