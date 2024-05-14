@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ConnectController">
+    <!-- Background Image -->
+    <ImageView fitHeight="603" fitWidth="788">
+        <Image url="@/1.png" />
+    </ImageView>
+
+    <!-- Dynamic components container using AnchorPane -->
+    <AnchorPane prefHeight="603.0" prefWidth="788.0">
+        <VBox layoutX="457.0" layoutY="138.0" prefHeight="205.0" prefWidth="247.0" spacing="15" AnchorPane.bottomAnchor="260.0" AnchorPane.rightAnchor="84.0">
+            <TextField fx:id="ipField" maxWidth="250" promptText="Enter IP Address" style="-fx-font-size: 12px; -fx-background-color: #EEEEEE; -fx-background-radius: 15; -fx-text-fill: #333; -fx-prompt-text-fill: #888888;" />
+            <Button fx:id="connectButton" maxWidth="250" onAction="#connect" style="-fx-background-color: rgb(247,239,231); -fx-border-color: rgba(1,23,28,0.11); -fx-text-fill: #01171c;" text="Connect" />
+        </VBox>
+    </AnchorPane>
+</StackPane>
