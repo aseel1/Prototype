@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane alignment="TOP_LEFT" prefHeight="603.0" prefWidth="788.0" style="-fx-background-color: linear-gradient(to bottom, #f7f7f7, rgba(213,188,188,0.89));" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
+<StackPane alignment="TOP_LEFT" prefHeight="603.0" prefWidth="788.0" style="-fx-background-color: linear-gradient(to bottom, #f7f7f7, rgba(213,188,188,0.89));" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.PrimaryController">
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
    </padding>
@@ -24,17 +24,17 @@
                      <Font name="Arial Italic" size="14.0" />
                   </font>
                </Button>
-               <Button fx:id="showTasksButton" layoutX="310.0" layoutY="322.0" onAction="#handleShowTasksButtonAction" prefHeight="34.0" prefWidth="127.0" style="-fx-background-color: rgba(168,137,131,0.85); -fx-border-color: #f7efe7; -fx-text-fill: white;" text="Show Tasks">
+               <Button fx:id="showTasksButton" layoutX="279.0" layoutY="286.0" onAction="#handleShowTasksButtonAction" prefHeight="34.0" prefWidth="127.0" style="-fx-background-color: rgba(168,137,131,0.85); -fx-border-color: #f7efe7; -fx-text-fill: white;" text="Show Tasks">
                   <font>
                      <Font name="Arial Italic" size="16.0" />
                   </font>
                </Button>
-               <Button fx:id="openTaskButton" layoutX="313.0" layoutY="537.0" onAction="#openTaskButtonAction" prefHeight="34.0" prefWidth="121.0" style="-fx-background-color: rgba(168,137,131,0.53); -fx-border-color: #f7efe7; -fx-text-fill: white;" text="Open task">
+               <Button fx:id="openTaskButton" layoutX="282.0" layoutY="541.0" onAction="#openTaskButtonAction" prefHeight="34.0" prefWidth="121.0" style="-fx-background-color: rgba(168,137,131,0.53); -fx-border-color: #f7efe7; -fx-text-fill: white;" text="Open task">
                   <font>
                      <Font name="Arial Italic" size="16.0" />
                   </font>
                </Button>
-               <Button fx:id="notificationButton" graphicTextGap="0.0" layoutX="570.0" layoutY="72.0" onAction="#notificationButtonAction" prefHeight="33.0" prefWidth="37.0" style="-fx-background-color: #a88983; -fx-border-color: #a88983; -fx-text-fill: white;" text="🔔" textAlignment="CENTER">
+               <Button fx:id="notificationButton" graphicTextGap="0.0" layoutX="582.0" layoutY="72.0" minWidth="31.0" onAction="#notificationButtonAction" prefHeight="22.0" prefWidth="31.0" style="-fx-background-color: #a88983; -fx-border-color: #a88983; -fx-text-fill: white;" text="🔔" textAlignment="CENTER">
                   <font>
                      <Font name="System Bold" size="14.0" />
                   </font></Button>
