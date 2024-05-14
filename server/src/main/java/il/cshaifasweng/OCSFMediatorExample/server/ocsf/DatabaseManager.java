@@ -60,7 +60,7 @@ public class DatabaseManager {
         int index = random.nextInt(strings.length);
         return strings[index];
     }
-
+    
     public static void generateUsers(Session session) throws Exception {
         Random random = new Random();
         User user0 = new User(-1, "boot", "boot", "1234", "20", "", "manager","");
@@ -70,15 +70,15 @@ public class DatabaseManager {
             String communityManager=null;
             String role = (i % 2 == 0) ? "Manager" : "Regular"; // This is just an example, adjust the logic as needed
             if (role.equals("Manager")){
-                communityManager=selectRandomString("Haifa");
+                communityManager=selectRandomString("Cana");
             }
             User user = new User(i, "User" + i, "Male", "password" + random.nextInt(),
                     Integer.toString(20 + random.nextInt(60)), selectRandomString("Haifa", "Nazareth"), role,communityManager);
             session.save(user);
         }
         User user1 = new User(212393532, "aseel", "male", "1234", "20", "Haifa", "manager","Nazareth");
-        User user2 = new User(2345, "nawal", "female", "1234", "20", "Nazareth", "manager","Haifa");
-        User user3 = new User(76543, "maya", "female", "1234", "20", "Nazareth", "manager","Haifa");
+        User user2 = new User(2345, "nawal", "female", "1234", "20", "Nazareth", "manager","Cana");
+        User user3 = new User(76543, "maya", "female", "1234", "20", "Nazareth", "manager","Cana");
         User user4 = new User(1234567, "samih", "male", "123", "20", "Nazareth", "manager","Haifa");
         User user5 = new User(1111, "mary", "female", "123", "20", "Cana", "manager","Cana");
 
