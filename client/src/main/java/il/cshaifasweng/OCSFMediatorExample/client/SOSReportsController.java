@@ -2,22 +2,24 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.SOS;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.chart.XYChart;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -50,26 +52,47 @@ public class SOSReportsController {
     }
 
     @FXML
-    public void handleloadDataButton(javafx.event.ActionEvent actionEvent) {
+    public void handleloadDataButton(ActionEvent actionEvent) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String startDate = startDatePicker.getValue().format(formatter);
-        String endDate = endDatePicker.getValue().format(formatter);
-
-        // Assuming "My Community" selection requires fetching the community of the current user
-        String community = communityComboBox.getValue();
-        if (community.equals("My Community")) {
-            community = SimpleClient.getCurrentUser().getCommunityManager(); // Implement this method according to your application's structure
-        } else if (community.equals("All Communities")) {
-            community = "all"; // Use a special identifier for all communities
+        LocalDate today = LocalDate.now();
+        if(startDatePicker.getValue()==null || endDatePicker.getValue()==null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid Input");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select a date range.");
+            alert.showAndWait();
+            return;
         }
+        LocalDate startDate = LocalDate.parse(startDatePicker.getValue().format(formatter));
+        LocalDate endDate = LocalDate.parse(endDatePicker.getValue().format(formatter));
+        if (startDate.isAfter(endDate) || startDate.isAfter(today) || endDate.isAfter(today)) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid Input");
+            alert.setHeaderText(null);
+            alert.setContentText("Illegal input, please try again.");
 
-        Message message = new Message("#showSOS" , startDate +" " + endDate +" " +community);
-        try {
-            SimpleClient.getClient().sendToServer(message);
-            System.out.println("(SOS) Sending message to server with dates: " + startDate + " to " + endDate + " and community: " + community);
-        } catch (IOException e) {
-            System.out.println("Failed to connect to the server.");
-            e.printStackTrace();
+            alert.showAndWait();
+            startDatePicker.setValue(null);
+            endDatePicker.setValue(null);
+
+        }
+        else {
+            // Assuming "My Community" selection requires fetching the community of the current user
+            String community = communityComboBox.getValue();
+            if (community.equals("My Community")) {
+                community = SimpleClient.getCurrentUser().getCommunityManager(); // Implement this method according to your application's structure
+            } else if (community.equals("All Communities")) {
+                community = "all"; // Use a special identifier for all communities
+            }
+
+            Message message = new Message("#showSOS", startDate + " " + endDate + " " + community);
+            try {
+                SimpleClient.getClient().sendToServer(message);
+                System.out.println("(SOS) Sending message to server with dates: " + startDate + " to " + endDate + " and community: " + community);
+            } catch (IOException e) {
+                System.out.println("Failed to connect to the server.");
+                e.printStackTrace();
+            }
         }
     }
     public void initialize() {

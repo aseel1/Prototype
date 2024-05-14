@@ -47,6 +47,9 @@ public class TasksController {
     @FXML
     private TableColumn<Task, String> date;
 
+    @FXML
+    private TableColumn<Task, String> volunteer;
+
 
     @FXML
     private void switchToPrimary() throws IOException {
@@ -68,7 +71,14 @@ public class TasksController {
         user.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getUserName()));
         date.setCellValueFactory(new PropertyValueFactory<Task, String>("date"));
 //        time.setCellValueFactory(new PropertyValueFactory<Task, Integer>("time"));
-//        volunteer.setCellValueFactory(new PropertyValueFactory<Task, User>("volunteer"));
+
+        volunteer.setCellValueFactory(cellData -> {
+            if (cellData.getValue().getVolunteer() != null) {
+                return new SimpleStringProperty(cellData.getValue().getVolunteer().getUserName());
+            } else {
+                return new SimpleStringProperty("");
+            }
+        });
 //        status.setCellValueFactory(new PropertyValueFactory<Task, String>("status"));
 
         ObservableList<Task> observableTasks = FXCollections.observableArrayList((List<Task>) tableMessage.getObject());
@@ -84,6 +94,10 @@ public class TasksController {
     }
 
     public void showTaskDetails(Task task) {
+//        if(task.getStatus().equals("done"))
+//             return;
+
+
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Task Details");
         dialog.setHeaderText("Details of task: " + task.getTaskName());
@@ -108,10 +122,16 @@ public class TasksController {
         TextField text6 = new TextField(task.getUser().getUserName());
         TextField text7 = new TextField(task.getDetails());
         Button changeStatusButton = new Button();
-        if (task.getVolunteer()!=null && SimpleClient.getCurrentUser().getId()==task.getVolunteer().getId()) {
-            changeStatusButton.setText("Done");
-        } else {
-            changeStatusButton.setText("I want to do this");
+        if(!task.getStatus().equals("done")) {
+
+            if (task.getVolunteer() != null && SimpleClient.getCurrentUser().getId() == task.getVolunteer().getId()) {
+                changeStatusButton.setText("Done");
+            } else {
+                changeStatusButton.setText("I want to do this");
+            }
+        }
+        else {
+            changeStatusButton.setVisible(false);
         }
         Button AcceptRequest = new Button("Accept Help Request");
         Button DeclineRequest = new Button("Decline Help Request");
