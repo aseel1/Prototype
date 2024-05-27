@@ -1,5 +1,5 @@
 .root {
-    -fx-background-color: linear-gradient(to top, rgba(213, 188, 188, 0.89), #f7f7f7);
+    -fx-background-color: linear-gradient(to top, rgb(232, 217, 217), rgb(232, 217, 217));
 }
 
 .title {

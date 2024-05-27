@@ -170,7 +170,7 @@ public class SimpleClient extends AbstractClient {
 
 				// sending a notification to everyone
 				String txt = "A new help-request was opened! Come on, help us help them! TaskId=" + task.getTaskId();
-				SimpleClient.sendNotification(SimpleClient.currentUser, -1, txt);
+				SimpleClient.sendNotification(task.getUser(), -1, txt);
 				Message message = new Message("#showPendingList", SimpleClient.getCurrentUser());
 				try {
 					SimpleClient.getClient().sendToServer(message);

@@ -3,11 +3,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="NotificationsListView" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.NotificationsController" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css">
+<AnchorPane fx:id="NotificationsListView" prefHeight="400.0" prefWidth="600.0" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.NotificationsController">
    <children>
-      <Button fx:id="SOSbutton" layoutX="55.0" layoutY="421.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;"  text="SOS" />
-      <Button fx:id="ReturnButton" layoutX="276.0" layoutY="338.0" mnemonicParsing="false" onAction="#switchToPrimary" text="return" />
-      <TableView fx:id="notificationTableView" layoutX="73.0" layoutY="39.0" prefHeight="282.0" prefWidth="442.0">
+      <Button fx:id="SOSbutton" layoutX="36.0" layoutY="356.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;" text="SOS" />
+      <Button fx:id="ReturnButton" layoutX="36.0" layoutY="23.0" mnemonicParsing="false" onAction="#switchToPrimary" style="-fx-background-color: rgba(210,199,199,0.8); -fx-border-color: #f7efe7; -fx-text-fill: #01171c; -fx-font-size: 15px;" text="◀HOME" />
+      <TableView fx:id="notificationTableView" layoutX="126.0" layoutY="68.0" prefHeight="282.0" prefWidth="442.0">
          <columns>
 
             <TableColumn fx:id="sender" prefWidth="75.0" text="sender" />

@@ -5,15 +5,13 @@ import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.Notification;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -62,9 +60,24 @@ public class NotificationsController {
 //                showNotification(newSelection);
 //            }
 //        });
+        notificationTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                showNotification(newSelection);
+            }
+        });
 
         System.out.println("Initialized TableView with " + notificationTableView.getColumns().size() + " columns.");
         System.out.println("In initialize. userTable is " + (notificationTableView == null ? "null" : "not null"));
+
+    }
+    private void showNotification(Notification notification) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Notification Details");
+        alert.setHeaderText(null);
+        alert.setContentText(notification.getMessage());
+        alert.showAndWait();
+        Platform.runLater(() -> notificationTableView.getSelectionModel().clearSelection());
+
 
     }
 
