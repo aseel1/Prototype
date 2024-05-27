@@ -253,6 +253,13 @@ public class SimpleServer extends AbstractServer {
 						foundManager = 1;
 						task.setManagerId(user.getId());
 						message.setSecondObject(user);
+						//if found manager and manager is online, send him an event via eventbus
+						if(user.isLoggedIn()){
+							Message eventMessage= new Message("#refreshRequestTable",task);
+							ConnectionToClient managerClient= LoggedInClients.getClientById(user.getId());
+							managerClient.sendToClient(eventMessage);
+
+						}
 						break;
 					}
 				}
@@ -263,6 +270,8 @@ public class SimpleServer extends AbstractServer {
 				}
 				message.setMessage("#taskSubmitted");
 				client.sendToClient(message);
+
+
 			}
 
 			// manager approved the task. just update the status
@@ -277,6 +286,11 @@ public class SimpleServer extends AbstractServer {
 				client.sendToClient(message);
 				message= new Message("#refreshTable");
 				sendToAllClients(message);
+				//now let's send event to all online users to refresh their table too:
+				for(ConnectionToClient subsClient: LoggedInClients.getLoggedInClients().values()){
+					Message eventMessage= new Message("#refreshRequestTable",task);
+					subsClient.sendToClient(eventMessage);
+				}
 			}
 
 			// manager declined the task.
@@ -325,6 +339,8 @@ public class SimpleServer extends AbstractServer {
 						System.err.println("Login success");
 						message.setMessage("#loginSuccess");
 						message.setObject(userFromDB); // Return the updated user object
+						//add to loggesInList:
+						LoggedInClients.addClient(userFromDB.getId(), client);
 					}
 				} else {
 					System.err.println("Login failed");
@@ -338,6 +354,8 @@ public class SimpleServer extends AbstractServer {
 				if (userFromDB != null && userFromDB.isLoggedIn()) {
 					userFromDB.setLoggedIn(false); // Correctly update the userFromDB instance
 					session.update(userFromDB); // Persist the changes for userFromDB
+					//remove from loggesInList:
+					LoggedInClients.removeClient(userFromDB.getId());
 					// Prepare a response message indicating success
 					Message responseMessage = new Message("#LoggedOut");
 					client.sendToClient(responseMessage); // Send success message back to client
@@ -381,7 +399,15 @@ public class SimpleServer extends AbstractServer {
 				}
 
 
-			} else if (request.startsWith("#createUser")) {
+			}
+		/*	else if (request.startsWith("#refreshRequestTable")) {
+				message.setMessage("#refreshTable");
+				System.out.println("simpleServer refresh Request Tasks Table");
+				client.sendToClient(message);
+
+			}*/
+			else if (request.startsWith("#createUser")) {
+
 				User user = (User) message.getObject();
 				System.out.println("User created: " + user.getUserName() + " " + user.getPasswordHash() + " "
 						+ user.getAge() + " " + user.getGender() + " " + user.getCommunity() + " " + user.getStatus());
@@ -416,6 +442,10 @@ public class SimpleServer extends AbstractServer {
 				sendNot.setRecipient(receiver);
 				session.save(sendNot);
 				updateNotification(session, sendNot);
+				//send notification event of a new notification received to all clients
+				Message newMessage= new Message("#notificationSent", sendNot);
+				System.out.println("(Simple Server) new notification event sent to all clients");
+				sendToAllClients(newMessage);
 				session.clear();
 			}
 

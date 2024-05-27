@@ -89,6 +89,7 @@ public class DatabaseManager {
 
 
         session.save(user1);
+        session.save(user1);
         session.save(user2);
         session.save(user3);
         session.save(user4);

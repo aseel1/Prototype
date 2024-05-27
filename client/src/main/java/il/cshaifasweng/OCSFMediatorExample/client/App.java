@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -20,6 +22,7 @@ import org.greenrobot.eventbus.Subscribe;
 public class App extends Application {
 
     private static Scene scene;
+
     private SimpleClient client;
 
     // @Override
@@ -43,7 +46,6 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        EventBus.getDefault().register(this);
 
         scene = new Scene(loadFXML("Connect"), 788, 603);
         stage.setScene(scene);
@@ -62,7 +64,7 @@ public class App extends Application {
     @Override
     public void stop() throws Exception {
         // TODO Auto-generated method stub
-        EventBus.getDefault().unregister(this);
+      //  EventBus.getDefault().unregister(this);
         super.stop();
     }
 

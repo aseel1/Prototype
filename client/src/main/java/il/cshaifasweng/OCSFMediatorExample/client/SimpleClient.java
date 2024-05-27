@@ -1,29 +1,21 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import java.io.IOException;
-import java.util.List;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import javafx.scene.control.ButtonType;
-import org.greenrobot.eventbus.EventBus;
 
 //for custom alert:
 import javafx.scene.control.TextInputDialog;
 import java.util.Optional;
 
-import antlr.debug.MessageEvent;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TableView;
+import org.greenrobot.eventbus.EventBus;
 
 public class SimpleClient extends AbstractClient {
 
@@ -32,6 +24,7 @@ public class SimpleClient extends AbstractClient {
 	public static Message tableMessage;
 
 	private static User currentUser = null; // this is for the current user(logged in user) holds his details
+
 
 	private SimpleClient(String host, int port) {
 		super(host, port);
@@ -133,7 +126,7 @@ public class SimpleClient extends AbstractClient {
 			Message message = new Message("#refreshMyTable", SimpleClient.getCurrentUser());
 			try {
 				SimpleClient.getClient().sendToServer(message);
-				System.out.println("(client)refreshMytale");
+				System.out.println("(client)refreshMytable");
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -159,6 +152,15 @@ public class SimpleClient extends AbstractClient {
 							+ " taskid= " + task.getTaskId() +
 							" taskstatus= " + task.getStatus() + " taskdetails= " + task.getDetails());
 					SimpleClient.sendNotification(SimpleClient.currentUser, manager.getId(), notification);
+					//sending a new task event via eventBus:
+					try {
+						TaskSubmittedEvent event = new TaskSubmittedEvent(task);
+						EventBusManager.getEventBus().post(event);
+						System.out.println("(simple client) event sent from taskSubmitted func");
+					} catch (Exception e) {
+						System.err.println("Error sending event: " + e.getMessage());
+						e.printStackTrace();
+					}
 				}
 			});
 		} else if (message.getMessage().equals("#managerApproved")) {
@@ -330,6 +332,12 @@ public class SimpleClient extends AbstractClient {
 				});
 			} catch (Exception e) {
 			}
+		}else if (message.getMessage().equals("#refreshRequestTable")) {
+			//if reached here, then manager is online, refresh his request tasks table :)
+			TaskSubmittedEvent event = new TaskSubmittedEvent((Task)message.getObject());
+			EventBusManager.getEventBus().post(event);
+			System.out.println("(Simple Client) event sent by "+getCurrentUser().getUserName());
+
 		} else if (message.getMessage().equals("#addSOSDone")) {
 			Platform.runLater(() -> {
 				try {
@@ -345,7 +353,20 @@ public class SimpleClient extends AbstractClient {
 					showAlert("Error", "Failed to contact help.", Alert.AlertType.ERROR);
 				}
 			});
-		} else if (message.getMessage().equals("#showNotificationsList")) {
+		} else if (message.getMessage().equals("#notificationSent")) {
+			//sending new notification event via eventBus:
+			try {
+				Notification newNotification= (Notification) message.getObject();
+				//System.out.println("(simple client) in notificationSent func, recipient is:"+ newNotification.getRecipient().getUserName());
+				NotificationReceivedEvent event = new NotificationReceivedEvent(newNotification);
+				EventBusManager.getEventBus().post(event);
+				System.out.println("(simple client) event sent from notificationSent func");
+			} catch (Exception e) {
+				System.err.println("Error sending event: " + e.getMessage());
+				e.printStackTrace();
+			}
+
+	}else if (message.getMessage().equals("#showNotificationsList")) {
 			System.out.println(message.getMessage() + "haayyhee");
 			tableMessage = message;
 			try {

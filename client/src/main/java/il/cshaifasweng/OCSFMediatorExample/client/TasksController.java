@@ -32,6 +32,9 @@ import java.util.Objects;
 
 import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.*;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 public class TasksController {
 
     @FXML
@@ -51,12 +54,16 @@ public class TasksController {
 
     @FXML // fx:id="userPic"
     private TableColumn<Task, Image> userPic; // Value injected by FXMLLoader
+    private TaskSubmittedEvent event;
 
 
     @FXML
     private void switchToPrimary() throws IOException {
         App.setRoot("primary");
         SimpleClient.getCurrentUser().setTaskListOpen(false);
+        //unsubscribe from eventBus:
+        EventBusManager.getEventBus().unregister(this);
+        System.out.println("(Tasks Controller) unsubscribed from eventBus");
         Message message = new Message ("#closeTaskList",SimpleClient.getCurrentUser());
         try{
             SimpleClient.getClient().sendToServer(message);
@@ -65,8 +72,14 @@ public class TasksController {
         }
     }
 
+    private final EventBus eventBus = EventBusManager.getEventBus();
     @FXML
     public void initialize() {
+
+        eventBus.register(this);
+        if(eventBus.isRegistered(this)){
+            System.out.println("FXML TaskController registered to event bus");
+        }
 
         taskId.setCellValueFactory(new PropertyValueFactory<Task, Integer>("taskId"));
         taskName.setCellValueFactory(new PropertyValueFactory<Task, String>("taskName"));
@@ -114,6 +127,30 @@ public class TasksController {
        // SimpleClient.getCurrentUser().setTaskListOpen(true);
 
     }
+
+    // Define methods to handle events posted on the EventBus
+    @Subscribe
+    public void onTaskSubmitted(TaskSubmittedEvent event) {
+        System.out.println("(TasksController) event received by "+getCurrentUser().getUserName());
+        //this.event = event;
+        // Handle the task submission event
+        Task newTask = event.getNewTask();
+
+            Message message = new Message("#refreshRequestTable");
+            try {
+                SimpleClient.getClient().sendToServer(message);
+            } catch (IOException b) {
+                b.printStackTrace();
+            }
+        // Add the new task to the observable list
+        ObservableList<Task> tasks = taskTable.getItems();
+        tasks.add(newTask); //I should check weather same status?
+        // Refresh the taskTable to reflect the changes
+        taskTable.setItems(tasks);
+        taskTable.refresh();
+
+    }
+
 
     public void showTaskDetails(Task task) {
         Dialog<String> dialog = new Dialog<>();
