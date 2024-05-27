@@ -90,7 +90,7 @@ public class TasksController {
         user.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUser().getUserName()));
         date.setCellValueFactory(new PropertyValueFactory<Task, String>("date"));
 
-       time.setCellValueFactory(new PropertyValueFactory<Task, Integer>("time"));
+       //time.setCellValueFactory(new PropertyValueFactory<Task, Integer>("time"));
 
         volunteer.setCellValueFactory(cellData -> {
             if (cellData.getValue().getVolunteer() != null) {

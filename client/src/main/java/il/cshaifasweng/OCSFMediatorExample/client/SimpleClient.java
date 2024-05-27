@@ -152,6 +152,7 @@ public class SimpleClient extends AbstractClient {
 							+ " taskid= " + task.getTaskId() +
 							" taskstatus= " + task.getStatus() + " taskdetails= " + task.getDetails());
 					SimpleClient.sendNotification(SimpleClient.currentUser, manager.getId(), notification);
+					/*
 					//sending a new task event via eventBus:
 					try {
 						TaskSubmittedEvent event = new TaskSubmittedEvent(task);
@@ -160,7 +161,7 @@ public class SimpleClient extends AbstractClient {
 					} catch (Exception e) {
 						System.err.println("Error sending event: " + e.getMessage());
 						e.printStackTrace();
-					}
+					}*/
 				}
 			});
 		} else if (message.getMessage().equals("#managerApproved")) {
@@ -333,10 +334,17 @@ public class SimpleClient extends AbstractClient {
 			} catch (Exception e) {
 			}
 		}else if (message.getMessage().equals("#refreshRequestTable")) {
-			//if reached here, then manager is online, refresh his request tasks table :)
-			TaskSubmittedEvent event = new TaskSubmittedEvent((Task)message.getObject());
-			EventBusManager.getEventBus().post(event);
+			//if reached here, then manager is online/ user, refresh his tasks table :)
 			System.out.println("(Simple Client) event sent by "+getCurrentUser().getUserName());
+			Task task= (Task)message.getObject();
+			//sending a new task event via eventBus:
+			try {
+				TaskSubmittedEvent event = new TaskSubmittedEvent(task);
+				EventBusManager.getEventBus().post(event);
+			} catch (Exception e) {
+				System.err.println("Error sending event: " + e.getMessage());
+				e.printStackTrace();
+			}
 
 		} else if (message.getMessage().equals("#addSOSDone")) {
 			Platform.runLater(() -> {

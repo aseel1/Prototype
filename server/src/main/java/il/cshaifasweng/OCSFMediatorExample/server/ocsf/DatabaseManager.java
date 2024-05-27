@@ -80,9 +80,9 @@ public class DatabaseManager {
         User user2 = new User(2345, "nawal", "female", "1234", "20", "Nazareth", "manager","Cana");
         User user3 = new User(76543, "maya", "female", "1234", "20", "Nazareth", "manager","Cana");
         User user4 = new User(1234567, "samih", "male", "123", "20", "Nazareth", "manager","Haifa");
-        User user5 = new User(1111, "mary", "female", "123", "20", "Cana", "manager","Cana");
+        User user5 = new User(1111, "mary", "female", "123", "20", "Cana", "manager","CanaGa");
 
-        User user6 = new User(2222, "user1", "female", "123", "21", "Cana", "user"," ");
+        User user6 = new User(2222, "user1", "female", "123", "21", "CanaGa", "user"," ");
         SOS sos1=new SOS(user1,"2024-03-03");
         SOS sos2=new SOS(user2,"2024-03-28");
         SOS sos3=new SOS(user3,"2024-04-03");

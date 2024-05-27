@@ -37,6 +37,7 @@ public class NotificationsController {
     @FXML
     private TableColumn<Notification, String> message;
 
+    private static ObservableList<Notification> observableNotification;
     @FXML
     private void initialize() {
         // You can initialize your ListView or perform other setup here
@@ -50,8 +51,7 @@ public class NotificationsController {
             System.out.println("FXML NotificationController registered to event bus");
         }
 
-        ObservableList<Notification> observableNotification =
-                FXCollections.observableArrayList((List<Notification>) tableMessage.getObject());
+         observableNotification = FXCollections.observableArrayList((List<Notification>) tableMessage.getObject());
         System.out.println("Created ObservableList with " + observableNotification.size() + " notifications.");
         notificationTableView.setItems(observableNotification);
 //  idk if we want this
@@ -92,7 +92,7 @@ public class NotificationsController {
         if(newNotification.getRecipient()==null || newNotification.getRecipient().getId()==getCurrentUser().getId()) {
             System.out.println("(NotificationController) currentUser is indeed recipient");
             //create a new table in order to add the new Item:
-            ObservableList<Notification> observableNotification = FXCollections.observableArrayList((List<Notification>) tableMessage.getObject());
+          //  ObservableList<Notification> observableNotification = FXCollections.observableArrayList((List<Notification>) tableMessage.getObject());
             // Add the newNotification to the observableNotification list
             observableNotification.add(newNotification);
             // Set the updated observableNotification list as the items of the notificationTableView

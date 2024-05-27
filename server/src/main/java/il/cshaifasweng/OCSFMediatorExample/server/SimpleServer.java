@@ -238,7 +238,7 @@ public class SimpleServer extends AbstractServer {
 				// receive task, print it and update in taskstable
 				Task task = (Task) message.getObject(); // derefrence the object from the message
 				System.out.println(" taskname " + task.getTaskName() + " taskid " + task.getTaskId()
-						+ " taskstatus " + task.getStatus() + " taskdetails " + task.getDetails());
+						+ " taskstatus " + task.getStatus() + " taskdetails " + task.getDetails()+ " user name:"+task.getUser().getUserName()+ " manger: "+ task.getUser().getCommunity());
 				DatabaseManager.addTask(task, session);
 				System.out.println("task updated as pending");
 				// now we need the user in order to know the manager
@@ -254,11 +254,12 @@ public class SimpleServer extends AbstractServer {
 						task.setManagerId(user.getId());
 						message.setSecondObject(user);
 						//if found manager and manager is online, send him an event via eventbus
+						System.out.println("(Simple Server) current task manager is: "+ user.getUserName()+", is he online? "+ user.isLoggedIn());
 						if(user.isLoggedIn()){
+							System.out.println("(Simple Server) manager is online");
 							Message eventMessage= new Message("#refreshRequestTable",task);
 							ConnectionToClient managerClient= LoggedInClients.getClientById(user.getId());
 							managerClient.sendToClient(eventMessage);
-
 						}
 						break;
 					}

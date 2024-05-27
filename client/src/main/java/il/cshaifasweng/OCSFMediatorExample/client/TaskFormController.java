@@ -145,7 +145,8 @@ public class TaskFormController {
                     + task.getUser().getGender()
                     + task.getUser().getCommunity()
                     + task.getUser().getPasswordHash()
-                    + " " + task.getStatus());
+                    + " " + task.getStatus()
+                    +" user manager: "+ task.getUser().getCommunityManager());
             try {
                 SimpleClient.getClient().sendToServer(message);
                 System.out.println("(Task from client) sent task request");
