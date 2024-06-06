@@ -421,6 +421,9 @@ public class SimpleServer extends AbstractServer {
 				String page = message.getMessage().substring("#SOSAdd".length()).trim();
 				Message doneMessage = new Message("#addSOSDone", page);
 				client.sendToClient(doneMessage);
+				// Fetch the latest SOS records and broadcast them
+//				Message updateMessage = new Message("#updateSOSHistogram", updatedSOSList);
+//				sendToAllClients(updateMessage); // Send updated SOS list to all clients
 			} else if (request.startsWith("#getUserNotifications")) {
 
 				User user = (User) message.getObject();

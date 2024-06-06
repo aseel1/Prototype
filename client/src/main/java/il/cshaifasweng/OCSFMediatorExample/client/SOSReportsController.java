@@ -80,9 +80,9 @@ public class SOSReportsController {
             // Assuming "My Community" selection requires fetching the community of the current user
             String community = communityComboBox.getValue();
             if (community.equals("My Community")) {
-                community = SimpleClient.getCurrentUser().getCommunityManager(); // Implement this method according to your application's structure
+                community = SimpleClient.getCurrentUser().getCommunityManager();
             } else if (community.equals("All Communities")) {
-                community = "all"; // Use a special identifier for all communities
+                community = "all";
             }
 
             Message message = new Message("#showSOS", startDate + " " + endDate + " " + community);
