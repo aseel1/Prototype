@@ -1,7 +1,9 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.SOS;
 import il.cshaifasweng.OCSFMediatorExample.entities.Message;
+import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,10 +21,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.chart.XYChart;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+
+import static il.cshaifasweng.OCSFMediatorExample.client.SimpleClient.getCurrentUser;
 
 public class SOSReportsController {
     private static SOSReportsController currentInstance;
@@ -47,6 +52,7 @@ public class SOSReportsController {
     @FXML
     private Button LoadDataButton;
 
+    private boolean isButtonClicked = false;
 
     public static void onServerResponse(Message message) {
     }
@@ -77,6 +83,7 @@ public class SOSReportsController {
 
         }
         else {
+            isButtonClicked=true;
             // Assuming "My Community" selection requires fetching the community of the current user
             String community = communityComboBox.getValue();
             if (community.equals("My Community")) {
@@ -96,6 +103,8 @@ public class SOSReportsController {
         }
     }
     public void initialize() {
+        //register to eventBus:
+        EventBusManager.getEventBus().register(this);
         currentInstance = this; // Update the current instance reference
         communityComboBox.getItems().addAll("All Communities", "My Community");
         communityComboBox.getSelectionModel().select("All Communities");
@@ -108,6 +117,20 @@ public class SOSReportsController {
                 // Assuming message.getObject() returns a List<SOS>, requires casting
                 List<SOS> sosRecords = (List<SOS>) message.getObject();
                 currentInstance.updateHistogram(sosRecords); // Call instance method to update the histogram
+            });
+        }
+    }
+
+    // Define methods to handle events posted on the EventBus
+    @Subscribe
+    public void onNewSosReport(NewSosReportEvent event) {
+        System.out.println("(SosReportController) event received by "+getCurrentUser().getUserName());
+       //check if manager clicked on the button
+        if(isButtonClicked) {
+            //as if I clicked again
+            ActionEvent event1 = new ActionEvent();
+            Platform.runLater(() -> {
+                handleloadDataButton(event1);
             });
         }
     }
@@ -136,6 +159,8 @@ public class SOSReportsController {
 
     @FXML
     private void switchToPrimary() throws IOException {
+        //unsubscribe from eventBus:
+        EventBusManager.getEventBus().unregister(this);
         App.setRoot("primary");
     }
 

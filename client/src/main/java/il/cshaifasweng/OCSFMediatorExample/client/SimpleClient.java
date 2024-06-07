@@ -361,7 +361,19 @@ public class SimpleClient extends AbstractClient {
 					showAlert("Error", "Failed to contact help.", Alert.AlertType.ERROR);
 				}
 			});
-		} else if (message.getMessage().equals("#notificationSent")) {
+		}else if (message.getMessage().equals("#newSosEvent")) {
+			//send event via eventBus to SOS reports page:
+			try {
+				SOS newSosReport= (SOS) message.getObject();
+				NewSosReportEvent event = new NewSosReportEvent(newSosReport);
+				EventBusManager.getEventBus().post(event);
+				System.out.println("(simple client) event sent from newSosEvent received");
+			} catch (Exception e) {
+				System.err.println("Error sending event: " + e.getMessage());
+				e.printStackTrace();
+			}
+
+		}else if (message.getMessage().equals("#notificationSent")) {
 			//sending new notification event via eventBus:
 			try {
 				Notification newNotification= (Notification) message.getObject();
