@@ -1,28 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox alignment="CENTER" prefHeight="603.0" prefWidth="788.0" spacing="20.0" style="-fx-background-color: rgba(213,188,188,0.89);" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.TaskFormController">
- 
+<VBox alignment="CENTER" prefHeight="603.0" prefWidth="788.0" spacing="20.0" style="-fx-background-color: rgba(213,188,188,0.89);" stylesheets="@/il/cshaifasweng/OCSFMediatorExample/client/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.TaskFormController">
+
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <children>
         <AnchorPane prefHeight="516.0" prefWidth="696.0">
             <children>
-                <Text fill="#c41212c7" layoutX="88.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Task Details" textAlignment="CENTER" underline="true" wrappingWidth="488.2892761230469">
+                <Text layoutX="37.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Task Details" textAlignment="CENTER" wrappingWidth="488.2892761230469">
                     <font>
-                        <Font name="System Bold Italic" size="30.0" />
+                        <Font name="System Bold" size="30.0" />
                     </font>
                 </Text>
                 <Label layoutX="76.0" layoutY="151.0" style="-fx-font-size: 18px;" text="Task Name:" />
@@ -30,12 +23,12 @@
 
 
 
-                <Button fx:id="submitButton" layoutX="263.0" layoutY="367.0" onAction="#submitTask" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Submit">                    <font>
+                <Button fx:id="submitButton" layoutX="263.0" layoutY="367.0" onAction="#submitTask" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: rgba(210,199,199,0.8); -fx-border-color: #f7efe7; -fx-text-fill: #01171c; -fx-font-size: 15px;" text="Submit">                    <font>
                         <Font name="System Italic" size="18.0" />
                     </font>
                 </Button>
-                <Button fx:id="SOSbutton" layoutX="531.0" layoutY="179.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;" text="SOS" />
-                <Button fx:id="secondaryButton" layoutX="220.0" layoutY="481.0" onAction="#switchToPrimary" prefHeight="42.0" prefWidth="224.0" style="-fx-background-color: #F7EFE7; -fx-border-color: #D30F0F; -fx-font-size: 18px;" text="Switch to Primary View">                    <font>
+                <Button fx:id="SOSbutton" layoutX="16.0" layoutY="458.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;" text="SOS" />
+                <Button fx:id="secondaryButton" layoutX="16.0" layoutY="18.0" minWidth="99.0" onAction="#switchToPrimary" prefHeight="29.0" prefWidth="99.0" style="-fx-background-color: rgba(210,199,199,0.8); -fx-border-color: #f7efe7; -fx-text-fill: #01171c; -fx-font-size: 15px;" text="◀HOME">                    <font>
                         <Font name="System Italic" size="18.0" />
                     </font>
                 </Button>
@@ -51,9 +44,9 @@
             <Label layoutX="76.0" layoutY="206.0" prefHeight="27.0" prefWidth="130.0" style="-fx-font-size: 18px;" text="Task options:" />
             <Label layoutX="76.0" layoutY="268.0" prefHeight="27.0" prefWidth="130.0" style="-fx-font-size: 18px;" text="Specifications:" />
             <CheckBox layoutX="78.0" layoutY="326.0" mnemonicParsing="false" onAction="#checkedBx" text="By checking this box, I declare that I have chosen only one task per form." />
-                
+
             </children>
         </AnchorPane>
     </children>
-    
+
 </VBox>
