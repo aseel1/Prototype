@@ -12,7 +12,7 @@
     <AnchorPane prefHeight="568.0" prefWidth="748.0">
       <children>
         <Button fx:id="SOSbutton" layoutX="96.0" layoutY="495.0" mnemonicParsing="false" onAction="#handlePressingSOS" prefHeight="27.0" prefWidth="62.0" style="-fx-background-color: rgb(180,34,34); -fx-border-color: #9a5454; -fx-text-fill: white;" styleClass="button" text="SOS" />
-        <Button fx:id="secondaryButton" layoutX="320.0" layoutY="496.0" onAction="#switchToPrimary" styleClass="button" text="Switch to Primary View" />
+        <Button fx:id="secondaryButton" layoutY="-16.0" onAction="#switchToPrimary" prefHeight="29.0" prefWidth="120.0" style="-fx-background-color: rgba(210,199,199,0.8); -fx-border-color: #f7efe7; -fx-text-fill: #01171c; -fx-font-size: 15px;" styleClass="button" text="◀HOME" />
         <TableView fx:id="taskTable" layoutX="6.0" layoutY="47.0" prefHeight="380.0" prefWidth="740.0">
           <columns>
             <TableColumn fx:id="taskId" prefWidth="75.0" text="Task ID" />
