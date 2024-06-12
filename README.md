@@ -35,7 +35,7 @@ To install and run the project locally, follow these steps:
 
 2. **Set up the database**:
    - Ensure you have a compatible database system installed.
-   - Configure the database connection in `DatabaseManager.java`.
+   - Configure the database connection in `hibernate.properties`.
 
 3. **Compile and run the project**:
    - Using a Java IDE like IntelliJ IDEA or Eclipse:
