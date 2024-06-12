@@ -88,6 +88,7 @@ Please ensure your code adheres to the project's coding standards and includes r
 
 ## Contact
 
+
 For any questions or suggestions, please contact any of us:
 
 - **Maya Atwan**: [maya.atwan.2000@gmail.com](mailto:maya.atwan.2000@gmail.com)
