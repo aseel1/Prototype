@@ -94,6 +94,6 @@ For any questions or suggestions, please contact any of us:
 - **Maya Atwan**: [maya.atwan.2000@gmail.com](mailto:maya.atwan.2000@gmail.com)
 - **Aseel Shaheen**: [AseelShaheen1@gmail.com](mailto:AseelShaheen1@gmail.com)
 - **Mery Shalabi**: [merryshalabi59@gmail.com](mailto:merryshalabi59@gmail.com)
-- **Mary Qubty**: [maryq1-99@hotmail.com](mailto:maryq1-99@hotmail.com)
+- **Mary Qubty**: [qubtymary1@gmail.com](mailto:qubtymary1@gmail.com)
 - **Samih Warwar**: [samih.warwar@gmail.com](mailto:samih.warwar@gmail.com)
 - **Nawal Khoury**: [Nawalkhoury20@gmail.com](mailto:Nawalkhoury20@gmail.com)
